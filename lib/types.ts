@@ -52,6 +52,10 @@ export type InsertWeightLog = Omit<WeightLog, 'id' | 'user_id' | 'created_at' | 
   unit?: 'kg' | 'lbs';
 };
 
+export type UpdateWeightLog = Partial<
+  Omit<WeightLog, 'id' | 'user_id' | 'created_at' | 'updated_at'>
+>;
+
 // Side effect types
 export interface SideEffect {
   id: string;
@@ -68,6 +72,10 @@ export interface SideEffect {
 export type InsertSideEffect = Omit<SideEffect, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'medication_id'> & {
   medication_id?: string | null;
 };
+
+export type UpdateSideEffect = Partial<
+  Omit<SideEffect, 'id' | 'user_id' | 'created_at' | 'updated_at'>
+>;
 
 // Achievement types
 export interface Achievement {
@@ -103,18 +111,44 @@ export type InsertMedicationApplication = Omit<MedicationApplication, 'id' | 'us
 
 export type UpdateMedicationApplication = Partial<Omit<MedicationApplication, 'id' | 'user_id' | 'medication_id' | 'created_at' | 'updated_at'>>;
 
+// Nutrition types
+export interface DailyNutrition {
+  id: string;
+  user_id: string;
+  date: string;
+  calories: number | null;
+  protein: number | null;
+  carbs: number | null;
+  fats: number | null;
+  water_ml: number | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type InsertDailyNutrition = Omit<DailyNutrition, 'id' | 'user_id' | 'created_at' | 'updated_at'> & {
+  calories?: number | null;
+  protein?: number | null;
+  carbs?: number | null;
+  fats?: number | null;
+  water_ml?: number | null;
+  notes?: string | null;
+};
+
+export type UpdateDailyNutrition = Partial<Omit<DailyNutrition, 'id' | 'user_id' | 'date' | 'created_at' | 'updated_at'>>;
+
 // Timeline Event (união de aplicações + pesos)
 export interface TimelineEvent {
   id: string;
   type: 'application' | 'weight';
   date: string;
   time?: string;
-  
+
   // Se type = 'application'
   medicationName?: string;
   dosage?: number;
   applicationNotes?: string;
-  
+
   // Se type = 'weight'
   weight?: number;
   weightNotes?: string;

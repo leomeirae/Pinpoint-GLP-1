@@ -29,7 +29,8 @@
     "plugins": [
       "expo-router",
       "expo-web-browser",
-      "expo-system-ui"
+      "expo-system-ui",
+      "expo-audio"
     ]
   }
 }

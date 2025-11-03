@@ -88,10 +88,10 @@ const getStyles = (colors: any) => StyleSheet.create({
     marginTop: 4,
   },
   timelineDotPositive: {
-    backgroundColor: '#10b981', // Verde para peso perdido
+    backgroundColor: colors.success, // Verde para peso perdido
   },
   timelineDotNegative: {
-    backgroundColor: '#ef4444', // Vermelho para peso ganho
+    backgroundColor: colors.error, // Vermelho para peso ganho
   },
   timelineContent: {
     flex: 1,
@@ -117,10 +117,10 @@ const getStyles = (colors: any) => StyleSheet.create({
     marginBottom: 4,
   },
   diffPositive: {
-    color: '#10b981',
+    color: colors.success,
   },
   diffNegative: {
-    color: '#ef4444',
+    color: colors.error,
   },
   timelineNotes: {
     fontSize: 12,
@@ -128,3 +128,8 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontStyle: 'italic',
   },
 });
+
+
+
+
+

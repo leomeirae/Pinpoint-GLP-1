@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import * as AuthSession from 'expo-auth-session';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
 import { useColors } from '@/constants/colors';
+import { FontAwesome } from '@expo/vector-icons';
 
 // Handle any pending authentication sessions
 import * as WebBrowser from 'expo-web-browser';
@@ -90,7 +91,7 @@ export function GoogleOAuthButton({ mode = 'signin' }: GoogleOAuthButtonProps) {
         <ActivityIndicator color={colors.text} />
       ) : (
         <View style={styles.content}>
-          <Text style={styles.icon}>🔐</Text>
+          <FontAwesome name="google" size={24} color={colors.text} />
           <Text style={styles.text}>{buttonText}</Text>
         </View>
       )}
@@ -114,12 +115,14 @@ const getStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  icon: {
-    fontSize: 24,
-  },
   text: {
     fontSize: 16,
     fontWeight: '600',
     color: colors.text,
   },
 });
+
+
+
+
+

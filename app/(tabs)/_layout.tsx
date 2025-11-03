@@ -1,98 +1,144 @@
-import { Tabs, useRouter } from 'expo-router';
-import { Text, ActivityIndicator, View } from 'react-native';
-import { useColors } from '@/constants/colors';
-import { useUser } from '@/hooks/useUser';
 import { useEffect } from 'react';
+import { Tabs, useRouter } from 'expo-router';
+import { View, ActivityIndicator } from 'react-native';
+import { ClipboardText, Syringe, ChartLineUp, Calendar, GearSix } from 'phosphor-react-native';
+import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useAuth } from '@/lib/clerk';
 
-export default function TabsLayout() {
-  const { user, loading } = useUser();
+export default function Layout() {
+  const colors = useShotsyColors();
+  const { isSignedIn, isLoaded } = useAuth();
   const router = useRouter();
-  const colors = useColors();
 
+  // Auth Guard: Redireciona para tela inicial se não estiver autenticado
   useEffect(() => {
-    if (!loading && user && !user.onboarding_completed) {
-      console.log('Redirecting to onboarding...');
-      router.replace('/(auth)/onboarding');
+    if (isLoaded && !isSignedIn) {
+      console.log('User not authenticated, redirecting to welcome...');
+      router.replace('/');
     }
-  }, [loading, user]);
+  }, [isSignedIn, isLoaded]);
 
-  if (loading) {
+  // Mostrar loading enquanto verifica autenticação
+  if (!isLoaded) {
     return (
-      <View style={{ 
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        backgroundColor: colors.background 
-      }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
+  // Se não estiver autenticado, não renderizar as tabs
+  if (!isSignedIn) {
+    return null;
+  }
+
   return (
     <Tabs
       screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.backgroundLight,
-        },
-        headerTintColor: colors.text,
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
-          backgroundColor: colors.backgroundLight,
+          backgroundColor: colors.card,
           borderTopColor: colors.border,
         },
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textMuted,
       }}
     >
       <Tabs.Screen
         name="index"
+        options={{ href: null }} // Esconde do tab bar
+      />
+      <Tabs.Screen
+        name="dashboard"
         options={{
-          title: 'Dashboard',
-          tabBarLabel: 'Início',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>🏠</Text>,
+          title: 'Resumo',
+          tabBarIcon: ({ color, focused }) => (
+            <ClipboardText
+              size={28}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+            />
+          ),
         }}
       />
+      <Tabs.Screen
+        name="injections"
+        options={{
+          title: 'Injeções',
+          tabBarIcon: ({ color, focused }) => (
+            <Syringe
+              size={28}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="results"
+        options={{
+          title: 'Resultados',
+          tabBarIcon: ({ color, focused }) => (
+            <ChartLineUp
+              size={28}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="calendar"
+        options={{
+          title: 'Calendário',
+          tabBarIcon: ({ color, focused }) => (
+            <Calendar
+              size={28}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Ajustes',
+          tabBarIcon: ({ color, focused }) => (
+            <GearSix
+              size={28}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+            />
+          ),
+        }}
+      />
+
+      {/* Telas adicionais que NÃO devem aparecer no tab bar */}
       <Tabs.Screen
         name="add-application"
-        options={{
-          title: 'Registrar Aplicação',
-          tabBarLabel: 'Aplicação',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>💉</Text>,
-        }}
-      />
-      <Tabs.Screen
-        name="add-weight"
-        options={{
-          title: 'Registrar Peso',
-          tabBarLabel: 'Peso',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>⚖️</Text>,
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Perfil',
-          tabBarLabel: 'Perfil',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>👤</Text>,
-        }}
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="add-medication"
-        options={{
-          href: null, // Esconder da tab bar
-        }}
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="add-side-effect"
-        options={{
-          href: null, // Esconder da tab bar
-        }}
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="add-weight"
+        options={{ href: null }}
       />
       <Tabs.Screen
         name="notification-settings"
-        options={{
-          href: null, // Esconder da tab bar
-        }}
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{ href: null }}
       />
     </Tabs>
   );

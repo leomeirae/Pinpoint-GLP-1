@@ -10,7 +10,6 @@ interface LevelCardProps {
 export function LevelCard({ level, currentXP, xpToNextLevel }: LevelCardProps) {
   const colors = useColors();
   const xpForCurrentLevel = (level - 1) * 100;
-  const xpForNextLevel = level * 100;
   const progressPercent = ((currentXP - xpForCurrentLevel) / 100) * 100;
 
   const styles = getStyles(colors);

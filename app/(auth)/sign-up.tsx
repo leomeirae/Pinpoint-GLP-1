@@ -9,7 +9,7 @@ import { useColors } from '@/constants/colors';
 
 export default function SignUpScreen() {
   const colors = useColors();
-  const { signUp, setActive, isLoaded } = useSignUp();
+  const { signUp, isLoaded } = useSignUp();
   const router = useRouter();
 
   const [email, setEmail] = useState('');

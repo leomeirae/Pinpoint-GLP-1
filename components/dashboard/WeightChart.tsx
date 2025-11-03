@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { useColors } from '@/constants/colors';
 import { WeightLog } from '@/lib/types';
+import { ResultsIcon, WeightIcon, ArrowRightIcon } from '@/components/ui/icons';
 
 interface WeightChartProps {
   data: WeightLog[];
@@ -16,7 +17,8 @@ export function WeightChart({ data, goalWeight, initialWeight: userInitialWeight
 
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>📊 Nenhum registro de peso ainda</Text>
+        <ResultsIcon size="md" color={colors.text} />
+        <Text style={styles.emptyText}>Nenhum registro de peso ainda</Text>
         <Text style={styles.emptySubtext}>Comece registrando seu peso hoje!</Text>
       </View>
     );
@@ -35,7 +37,10 @@ export function WeightChart({ data, goalWeight, initialWeight: userInitialWeight
     <View style={styles.container}>
       {/* Progress Card */}
       <View style={styles.progressCard}>
-        <Text style={styles.title}>⚖️ Peso e Meta</Text>
+        <View style={styles.titleContainer}>
+          <WeightIcon size="md" color={colors.text} />
+          <Text style={styles.title}>Peso e Meta</Text>
+        </View>
         
         <View style={styles.weightFlow}>
           <View style={styles.weightPoint}>
@@ -44,7 +49,7 @@ export function WeightChart({ data, goalWeight, initialWeight: userInitialWeight
           </View>
           
           <View style={styles.arrow}>
-            <Text style={styles.arrowText}>→</Text>
+            <ArrowRightIcon size="md" color={colors.primary} />
           </View>
           
           <View style={styles.weightPoint}>
@@ -53,7 +58,7 @@ export function WeightChart({ data, goalWeight, initialWeight: userInitialWeight
           </View>
           
           <View style={styles.arrow}>
-            <Text style={styles.arrowText}>→</Text>
+            <ArrowRightIcon size="md" color={colors.primary} />
           </View>
           
           <View style={styles.weightPoint}>
@@ -102,11 +107,16 @@ const getStyles = (colors: any) => StyleSheet.create({
     borderRadius: 16,
     padding: 20,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 16,
+  },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     color: colors.text,
-    marginBottom: 16,
   },
   weightFlow: {
     flexDirection: 'row',
@@ -136,7 +146,7 @@ const getStyles = (colors: any) => StyleSheet.create({
     marginHorizontal: 8,
   },
   arrowText: {
-    fontSize: 20,
+    // fontSize: 20, // Removed as AppIcon handles its own size
     color: colors.primary,
   },
   progressBarContainer: {

@@ -5,13 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useColors } from '@/constants/colors';
 import { supabase } from '@/lib/supabase';
-import { useAuth, useUser as useClerkUser } from '@/lib/clerk';
+import { useAuth } from '@/lib/clerk';
 
 export default function OnboardingScreen() {
   const colors = useColors();
   const router = useRouter();
   const { userId } = useAuth();
-  const { user: clerkUser } = useClerkUser();
 
   const [name, setName] = useState('');
   const [currentWeight, setCurrentWeight] = useState('');

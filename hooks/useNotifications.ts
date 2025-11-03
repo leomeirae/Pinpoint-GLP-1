@@ -3,7 +3,6 @@ import { useUser } from './useUser';
 import { useWeightLogs } from './useWeightLogs';
 import { useMedicationApplications } from './useMedicationApplications';
 import { useMedications } from './useMedications';
-import * as Notifications from 'expo-notifications';
 import {
   registerForPushNotifications,
   scheduleWeightReminder,
@@ -147,5 +146,9 @@ export function useNotifications() {
     scheduleReminders,
   };
 }
+
+
+
+
 
 

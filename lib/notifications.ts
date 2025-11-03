@@ -8,6 +8,8 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
@@ -73,19 +75,19 @@ export async function scheduleWeightReminder(time: string, frequency: 'daily' | 
   // Criar nova notificação
   const [hours, minutes] = time.split(':').map(Number);
   
-  const trigger: any = {
-    hour: hours,
-    minute: minutes,
-    repeats: true,
-  };
-
-  if (frequency === 'daily') {
-    // Todos os dias
-    trigger.type = 'daily';
-  } else if (frequency === 'weekly') {
-    // Uma vez por semana (segunda-feira)
-    trigger.weekday = 2;
-  }
+  const trigger: Notifications.NotificationTriggerInput =
+    frequency === 'daily'
+      ? {
+          type: Notifications.SchedulableTriggerInputTypes.DAILY,
+          hour: hours,
+          minute: minutes,
+        }
+      : {
+          type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+          weekday: 2,
+          hour: hours,
+          minute: minutes,
+        };
 
   const identifier = await Notifications.scheduleNotificationAsync({
     content: {
@@ -118,6 +120,7 @@ export async function scheduleApplicationReminder(
       data: { type: 'application_reminder', screen: '/(tabs)/add-application' },
     },
     trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
       date: nextDate,
     },
   });
@@ -156,7 +159,9 @@ export async function scheduleInactivityReminder(daysSinceLastLog: number) {
       data: { type: 'inactivity', screen: '/(tabs)' },
     },
     trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
       seconds: 60, // 1 minuto (para teste, em prod seria horas)
+      repeats: false,
     },
   });
 }
@@ -166,5 +171,7 @@ export async function getNextScheduledNotification(type: string) {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   return scheduled.find(n => n.content.data?.type === type);
 }
+
+
 
 

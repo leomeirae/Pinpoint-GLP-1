@@ -76,7 +76,6 @@ export function useStreaks() {
       const totalXP = user.total_experience_points || 0;
       const newXP = totalXP + (currentWeightStreak > (user.current_weight_streak || 0) ? 10 : 0);
       const level = Math.floor(newXP / 100) + 1;
-      const xpToNextLevel = (level * 100) - newXP;
 
       // Atualizar banco
       await supabase

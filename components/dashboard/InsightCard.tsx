@@ -62,3 +62,8 @@ const getStyles = (colors: any) => StyleSheet.create({
     color: colors.textSecondary,
   },
 });
+
+
+
+
+

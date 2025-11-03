@@ -294,3 +294,8 @@ const getStyles = (colors: any) => StyleSheet.create({
     padding: 24,
   },
 });
+
+
+
+
+

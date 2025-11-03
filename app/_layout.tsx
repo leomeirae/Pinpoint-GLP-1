@@ -15,7 +15,7 @@ function RootStack() {
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: colors.backgroundLight,
+            backgroundColor: colors.card,
           },
           headerTintColor: colors.text,
           headerTitleStyle: {
@@ -34,24 +34,9 @@ function RootStack() {
           }} 
         />
         <Stack.Screen 
-          name="(auth)/sign-in" 
+          name="(auth)" 
           options={{ 
-            title: 'Entrar',
-            presentation: 'modal',
-          }} 
-        />
-        <Stack.Screen 
-          name="(auth)/sign-up" 
-          options={{ 
-            title: 'Criar Conta',
-            presentation: 'modal',
-          }} 
-        />
-        <Stack.Screen 
-          name="(auth)/verify-email" 
-          options={{ 
-            title: 'Verificar Email',
-            presentation: 'modal',
+            headerShown: false,
           }} 
         />
         <Stack.Screen 

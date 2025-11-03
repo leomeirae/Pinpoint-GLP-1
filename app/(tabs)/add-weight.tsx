@@ -5,16 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useWeightLogs } from '@/hooks/useWeightLogs';
 import { useColors } from '@/constants/colors';
+import { AppIcon, SmileyIcon, FistIcon, CheckCircleIcon, FaceNeutralIcon, FaceSadIcon, FaceAngryIcon, StomachIcon, MoonStarsIcon } from '@/components/ui/icons';
 
 const MOOD_OPTIONS = [
-  { emoji: '😊', label: 'Feliz', value: 'Feliz' },
-  { emoji: '💪', label: 'Motivado', value: 'Motivado' },
-  { emoji: '😌', label: 'Bem', value: 'Bem' },
-  { emoji: '😐', label: 'Normal', value: 'Normal' },
-  { emoji: '😔', label: 'Triste', value: 'Triste' },
-  { emoji: '😤', label: 'Frustrado', value: 'Frustrado' },
-  { emoji: '🤢', label: 'Nauseado', value: 'Nauseado' },
-  { emoji: '😴', label: 'Cansado', value: 'Cansado' },
+  { icon: 'smiley', label: 'Feliz', value: 'Feliz' },
+  { icon: 'fist', label: 'Motivado', value: 'Motivado' },
+  { icon: 'checkCircle', label: 'Bem', value: 'Bem' },
+  { icon: 'faceNeutral', label: 'Normal', value: 'Normal' },
+  { icon: 'faceSad', label: 'Triste', value: 'Triste' },
+  { icon: 'faceAngry', label: 'Frustrado', value: 'Frustrado' },
+  { icon: 'stomach', label: 'Nauseado', value: 'Nauseado' },
+  { icon: 'moonStars', label: 'Cansado', value: 'Cansado' },
 ];
 
 export default function AddWeightScreen() {
@@ -122,7 +123,7 @@ export default function AddWeightScreen() {
                   ]}
                   onPress={() => setSelectedMood(mood.value)}
                 >
-                  <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+                  <AppIcon name={mood.icon as any} size="xl" color={colors.text} />
                   <Text style={[
                     styles.moodButtonLabel,
                     selectedMood === mood.value && styles.moodLabelSelected,
@@ -202,7 +203,7 @@ const getStyles = (colors: any) => StyleSheet.create({
     backgroundColor: colors.backgroundLight,
   },
   moodEmoji: {
-    fontSize: 32,
+    // fontSize: 32, // Removed as AppIcon handles its own size
     marginBottom: 4,
   },
   moodButtonLabel: {

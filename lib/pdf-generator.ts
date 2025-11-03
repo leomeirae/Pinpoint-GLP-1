@@ -349,6 +349,10 @@ function createHTMLReport(data: PDFReportData): string {
         <span class="stat-value">${goalWeight}kg</span>
         <span class="stat-label">Meta</span>
       </div>
+      <div class="stat-card">
+        <span class="stat-value">${totalLogs}</span>
+        <span class="stat-label">Pesagens Registradas</span>
+      </div>
     </div>
     
     <div class="progress-bar-container">
@@ -432,5 +436,4 @@ function createHTMLReport(data: PDFReportData): string {
 </html>
   `;
 }
-
 

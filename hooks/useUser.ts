@@ -58,26 +58,10 @@ export function useUser() {
       if (error) {
         console.error('Error fetching user from Supabase:', error);
         
-        // Se usuário não existe, criar automaticamente
+        // Se usuário não existe, será criado pelo useUserSync
         if (error.code === 'PGRST116') {
-          console.log('User not found, creating new user in Supabase...');
-          const { data: userData, error: createError } = await supabase
-            .from('users')
-            .insert({
-              clerk_id: userId,
-              email: '', // Será preenchido depois
-              onboarding_completed: false,
-            })
-            .select()
-            .single();
-          
-          if (createError) {
-            console.error('Error creating user:', createError);
-            setUser(null);
-          } else {
-            console.log('User created successfully:', userData?.id);
-            setUser(userData);
-          }
+          console.log('User not found in Supabase, will be created by useUserSync');
+          setUser(null);
         } else {
           setUser(null);
         }

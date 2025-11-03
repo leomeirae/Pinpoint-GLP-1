@@ -38,6 +38,10 @@ class ThemeManager {
     return this.mode;
   }
 
+  getModeSync(): ThemeMode {
+    return this.mode;
+  }
+
   getEffectiveMode(): 'light' | 'dark' {
     if (this.mode === 'system') {
       return Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
@@ -86,7 +90,7 @@ export function useTheme() {
 
     // Listen to system theme changes
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      if (themeManager.mode === 'system') {
+      if (themeManager.getModeSync() === 'system') {
         setEffectiveMode(colorScheme === 'dark' ? 'dark' : 'light');
       }
     });
@@ -107,4 +111,3 @@ export function useTheme() {
     setMode,
   };
 }
-

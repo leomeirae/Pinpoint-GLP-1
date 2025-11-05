@@ -304,12 +304,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 60,
-    paddingBottom: 12,
+    paddingTop: 56,  // Mudança: 60 → 56px (Shotsy header padding)
+    paddingBottom: 16,  // Mudança: 12 → 16px (Shotsy bottom padding)
     borderBottomWidth: 1,
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 26,  // Mudança: 28 → 26px (Shotsy title size)
     fontWeight: '700',
   },
   content: {

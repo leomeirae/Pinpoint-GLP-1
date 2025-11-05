@@ -750,6 +750,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    minHeight: 56,  // Adicionar minHeight para touch target adequado
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
@@ -770,7 +771,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   dosageTag: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,  // Mudança: 12 → 8px (Shotsy badge padding)
     paddingVertical: 6,
     borderRadius: 16,
   },
@@ -858,6 +859,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    minHeight: 60,  // Adicionar minHeight para touch target adequado
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,

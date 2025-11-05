@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   contentWrapper: {
     paddingHorizontal: 24,
     paddingBottom: 40,
-    paddingTop: 24,
+    paddingTop: 32,  // Mudança: 24 → 32px (Shotsy spacing)
   },
   textContainer: {
     marginBottom: 24,
@@ -302,18 +302,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 12,
-    lineHeight: 40,
+    lineHeight: 42,  // Mudança: 40 → 42px (Shotsy line height)
   },
   subtitle: {
     fontSize: 16,
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 26,  // Mudança: 24 → 26px (Shotsy line height)
   },
   pagination: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,  // Mudança: 8 → 10px (Shotsy dot spacing)
     marginBottom: 24,
   },
   dot: {
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   buttonContainer: {
-    marginBottom: 16,
+    marginBottom: 20,  // Mudança: 16 → 20px (Shotsy spacing to terms)
   },
   termsContainer: {
     paddingHorizontal: 12,

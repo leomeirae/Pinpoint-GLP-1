@@ -336,7 +336,7 @@ const getStyles = (colors: any) => StyleSheet.create({
       backgroundColor: colors.background,
     },
   header: {
-    paddingTop: 60,
+    paddingTop: 56,  // Mudança: 60 → 56px (consistência com Results e Settings)
     paddingHorizontal: 20,
     paddingBottom: 16,
     backgroundColor: colors.background,

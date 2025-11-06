@@ -9,7 +9,7 @@ import {
   Image,
   Linking,
 } from 'react-native';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { ShotsyButton } from '@/components/ui/shotsy-button';
 import { trackEvent } from '@/lib/analytics';
@@ -55,7 +55,7 @@ const slides = [
 ];
 
 export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);

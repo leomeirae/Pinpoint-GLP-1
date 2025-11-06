@@ -13,7 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useSubscription } from '@/hooks/useSubscription';
 import { usePremiumFeatures } from '@/hooks/usePremiumFeatures';
 import { Ionicons } from '@expo/vector-icons';
@@ -67,7 +67,7 @@ const PREMIUM_FEATURES = [
 ];
 
 export default function PremiumScreen() {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const router = useRouter();
   const { subscription, status, startTrial, loading: subscriptionLoading } = useSubscription();
   const { hasPremium, hasActiveTrial, daysUntilTrialExpires } = usePremiumFeatures();

@@ -1,26 +1,22 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet, RefreshControl, Text } from 'react-native';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import React, { useState, useMemo, useCallback } from 'react';
+import { ScrollView, View, StyleSheet, RefreshControl, Text, TouchableOpacity } from 'react-native';
+import { useColors } from '@/hooks/useShotsyColors';
 import { EstimatedLevelsChart } from '@/components/dashboard/EstimatedLevelsChart';
 import { NextShotWidget } from '@/components/dashboard/NextShotWidget';
-import { TodaySection } from '@/components/dashboard/TodaySection';
-import { ShotHistoryCards } from '@/components/dashboard/ShotHistoryCards';
-import { ResultsPreview, Metrics } from '@/components/dashboard/ResultsPreview';
 import { ShotsyButton } from '@/components/ui/shotsy-button';
 import { router } from 'expo-router';
 import { useApplications } from '@/hooks/useApplications';
 import { useWeights } from '@/hooks/useWeights';
 import { useProfile } from '@/hooks/useProfile';
-import { useNutrition } from '@/hooks/useNutrition';
-import { NextShotWidgetSkeleton, ShotHistoryCardsSkeleton } from '@/components/ui/shotsy-skeleton';
-import { calculateNextShotDate } from '@/lib/pharmacokinetics';
+import { calculateNextShotDate, getCurrentEstimatedLevel, MedicationApplication } from '@/lib/pharmacokinetics';
 import { createLogger } from '@/lib/logger';
+import { Ionicons } from '@expo/vector-icons';
 
 const logger = createLogger('Dashboard');
 
 export default function DashboardScreen() {
-  const colors = useShotsyColors();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const colors = useColors();
+  const [refreshing, setRefreshing] = useState(false);
 
   // Fetch real data from Supabase
   const {
@@ -30,9 +26,8 @@ export default function DashboardScreen() {
   } = useApplications();
   const { weights, loading: weightsLoading } = useWeights();
   const { profile, loading: profileLoading } = useProfile();
-  const { getTodayNutrition, loading: nutritionLoading } = useNutrition();
 
-  const isLoading = applicationsLoading || weightsLoading || profileLoading || nutritionLoading;
+  const isLoading = applicationsLoading || weightsLoading || profileLoading;
 
   // Calculate real metrics from Supabase data
   const totalShots = applications.length;
@@ -44,7 +39,7 @@ export default function DashboardScreen() {
   const frequency = profile?.frequency || 'weekly';
 
   // Calculate next shot date using pharmacokinetics library
-  const nextShotDate = React.useMemo(() => {
+  const nextShotDate = useMemo(() => {
     if (applications.length === 0) return undefined;
 
     // Determine interval days based on frequency
@@ -58,9 +53,9 @@ export default function DashboardScreen() {
     }
 
     // Convert applications to pharmacokinetics format
-    const medicationApps = applications.map((app) => ({
+    const medicationApps: MedicationApplication[] = applications.map((app) => ({
       dose: app.dosage,
-      date: app.date,
+      date: new Date(app.date),
     }));
 
     // Use pharmacokinetics library to calculate next shot date
@@ -68,102 +63,19 @@ export default function DashboardScreen() {
     return nextDate || undefined;
   }, [applications, frequency]);
 
-  // Basic estimated level calculation (simplified - will be improved later)
-  const calculateEstimatedLevel = (): number | null => {
-    if (!lastShot) return null;
+  // Calculate estimated level
+  const estimatedLevel = useMemo(() => {
+    if (applications.length === 0) return null;
 
-    const daysSinceLastShot = Math.floor(
-      (new Date().getTime() - new Date(lastShot.date).getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const medicationApps: MedicationApplication[] = applications.map((app) => ({
+      dose: app.dosage,
+      date: new Date(app.date),
+    }));
 
-    // Simple decay model: 50% reduction every 7 days
-    const halfLife = 7;
-    const decayFactor = Math.pow(0.5, daysSinceLastShot / halfLife);
-    const estimatedLevel = lastShot.dosage * decayFactor;
+    return getCurrentEstimatedLevel(medicationApps);
+  }, [applications]);
 
-    return parseFloat(estimatedLevel.toFixed(2));
-  };
-
-  const estimatedLevel = calculateEstimatedLevel();
-  const currentLevel = estimatedLevel || 0;
-
-  // Calculate metrics for ResultsPreview
-  const calculateMetrics = (): Metrics => {
-    const startWeight = weights.length > 0 ? weights[weights.length - 1].weight : 0;
-    const currentWeight = weights.length > 0 ? weights[0].weight : 0;
-    const targetWeight = profile?.target_weight || 75;
-    const height = profile?.height || 1.75;
-
-    const weightChange = currentWeight - startWeight;
-    const currentBMI = currentWeight > 0 && height > 0 ? currentWeight / (height * height) : 0;
-
-    // Progress to goal
-    const totalToLose = startWeight - targetWeight;
-    const lost = startWeight - currentWeight;
-    const progressPercent = totalToLose > 0 ? (lost / totalToLose) * 100 : 0;
-
-    // Remaining to goal
-    const remainingToGoal = currentWeight - targetWeight;
-
-    // Calculate weeks in treatment
-    const weeks = React.useMemo(() => {
-      if (weights.length < 2) return 0;
-      const firstDate = weights[weights.length - 1].date;
-      const lastDate = weights[0].date;
-      const diffTime = Math.abs(lastDate.getTime() - firstDate.getTime());
-      const diffWeeks = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 7));
-      return diffWeeks || 1;
-    }, [weights]);
-
-    // Average weekly loss
-    const avgWeeklyLoss = weeks > 0 ? Math.abs(weightChange) / weeks : 0;
-
-    return {
-      totalChange: weightChange,
-      currentBMI,
-      currentWeight,
-      percentProgress: progressPercent,
-      weeklyAverage: avgWeeklyLoss,
-      toGoal: remainingToGoal,
-    };
-  };
-
-  const metrics = calculateMetrics();
-
-  // Calculate today's data for TodaySection
-  const getTodayData = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Get today's weight
-    const todayWeight = weights.find((w) => {
-      const weightDate = new Date(w.date);
-      weightDate.setHours(0, 0, 0, 0);
-      return weightDate.getTime() === today.getTime();
-    });
-
-    // Get today's side effects from applications
-    const todayApplication = applications.find((app) => {
-      const appDate = new Date(app.date);
-      appDate.setHours(0, 0, 0, 0);
-      return appDate.getTime() === today.getTime();
-    });
-
-    // Get today's nutrition
-    const todayNutrition = getTodayNutrition();
-
-    return {
-      todayWeight: todayWeight?.weight,
-      todayCalories: todayNutrition?.calories,
-      todayProtein: todayNutrition?.protein,
-      todaySideEffects: todayApplication?.side_effects,
-      todayNotes: todayWeight?.notes || todayApplication?.notes || todayNutrition?.notes,
-    };
-  };
-
-  const todayData = getTodayData();
-
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
       await refetchApplications();
@@ -178,27 +90,20 @@ export default function DashboardScreen() {
     router.push('/(tabs)/add-application');
   };
 
-  // Empty state component
-  const EmptyState = () => (
-    <View style={styles.emptyStateContainer}>
-      <Text style={[styles.emptyStateEmoji, { color: colors.text }]}>💉</Text>
-      <Text style={[styles.emptyStateTitle, { color: colors.text }]}>
-        Bem-vindo ao Mounjaro Tracker!
-      </Text>
-      <Text style={[styles.emptyStateSubtitle, { color: colors.textSecondary }]}>
-        Adicione sua primeira injeção para começar a acompanhar seu progresso
-      </Text>
-      <ShotsyButton
-        title="+ Adicionar Primeira Injeção"
-        onPress={handleAddShot}
-        size="large"
-        style={styles.emptyStateButton}
-      />
-    </View>
-  );
-
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Header - V0 Design */}
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
+        <TouchableOpacity style={styles.menuButton}>
+          <Ionicons name="menu" size={24} color={colors.primary} />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Resumo</Text>
+        <TouchableOpacity onPress={handleAddShot} style={styles.addButton}>
+          <Ionicons name="add" size={20} color={colors.primary} />
+          <Text style={[styles.addButtonText, { color: colors.primary }]}>Injeção</Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -212,62 +117,88 @@ export default function DashboardScreen() {
           />
         }
       >
-        {isLoading ? (
-          // Loading state
-          <>
-            <View style={styles.chartPlaceholder} />
-            <NextShotWidgetSkeleton />
-            <ShotHistoryCardsSkeleton />
-          </>
-        ) : applications.length === 0 ? (
-          // Empty state
-          <EmptyState />
-        ) : (
-          // Data loaded state
-          <>
-            {/* Estimated Levels Chart - now calculates level internally */}
-            <EstimatedLevelsChart />
+        {/* Injection History - V0 Design */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Histórico de Injeções</Text>
+            <TouchableOpacity onPress={() => router.push('/(tabs)/injections')}>
+              <Text style={[styles.seeAllButton, { color: colors.primary }]}>
+                Ver tudo <Text style={styles.seeAllArrow}>›</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-            {/* Next Shot Widget */}
-            <NextShotWidget
-              totalShots={totalShots}
-              nextShotDate={nextShotDate}
-              lastShotDate={lastShotDate}
-              frequency={frequency}
-            />
-
-            {/* Today Section */}
-            <TodaySection
-              todayWeight={todayData.todayWeight}
-              todayCalories={todayData.todayCalories}
-              todayProtein={todayData.todayProtein}
-              todaySideEffects={todayData.todaySideEffects}
-              todayNotes={todayData.todayNotes}
-            />
-
-            {/* Shot History Cards */}
-            <ShotHistoryCards
-              data={{
-                totalShots,
-                lastDose,
-                estimatedLevel,
-              }}
-            />
-
-            {/* Results Preview - Only show if we have weight data */}
-            {weights.length > 0 && <ResultsPreview metrics={metrics} />}
-
-            {/* Add Shot Button */}
-            <View style={styles.buttonContainer}>
-              <ShotsyButton
-                title="+ Adicionar Injeção"
-                onPress={handleAddShot}
-                size="large"
-                style={styles.addButton}
-              />
+          {/* Stats Grid - V0 Design */}
+          <View style={styles.statsGrid}>
+            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <View style={styles.statHeader}>
+                <Text style={styles.statIcon}>💉</Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Injeções tomadas</Text>
+              </View>
+              <Text style={[styles.statValue, { color: colors.text }]}>{totalShots}</Text>
             </View>
-          </>
-        )}
+
+            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <View style={styles.statHeader}>
+                <Text style={styles.statIcon}>💊</Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Última dose</Text>
+              </View>
+              <Text style={[styles.statValue, { color: colors.text }]}>
+                {lastDose ? (
+                  <>
+                    {lastDose}
+                    <Text style={[styles.statUnit, { color: colors.textSecondary }]}>mg</Text>
+                  </>
+                ) : (
+                  <Text style={[styles.statValueEmpty, { color: colors.textMuted }]}>—</Text>
+                )}
+              </Text>
+            </View>
+
+            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <View style={styles.statHeader}>
+                <Text style={styles.statIcon}>📊</Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Nível Est.</Text>
+              </View>
+              <Text style={[styles.statValue, { color: colors.text }]}>
+                {estimatedLevel !== null ? (
+                  <>
+                    {estimatedLevel.toFixed(1)}
+                    <Text style={[styles.statUnit, { color: colors.textSecondary }]}>mg</Text>
+                  </>
+                ) : (
+                  <Text style={[styles.statValueEmpty, { color: colors.textMuted }]}>—</Text>
+                )}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Estimated Medication Levels - V0 Design */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <View style={styles.sectionTitleRow}>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                Níveis Estimados de Medicação
+              </Text>
+              <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
+            </View>
+          </View>
+
+          {/* Chart - V0 Design */}
+          <EstimatedLevelsChart />
+        </View>
+
+        {/* Next Injection - V0 Design */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Próxima Injeção</Text>
+          <NextShotWidget
+            totalShots={totalShots}
+            nextShotDate={nextShotDate}
+            lastShotDate={lastShotDate}
+            frequency={frequency}
+          />
+        </View>
 
         {/* Bottom spacing for safe area */}
         <View style={styles.bottomSpacer} />
@@ -280,51 +211,101 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 60,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+  },
+  menuButton: {
+    padding: 8,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  addButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: 20, // Mudança: 16 → 20px (Shotsy horizontal padding)
-    paddingTop: 64, // Mudança: 60 → 64px (Shotsy status bar + title space)
+    padding: 16,
+    paddingBottom: 80,
   },
-  buttonContainer: {
-    marginVertical: 16,
+  section: {
+    marginBottom: 24,
   },
-  addButton: {
-    width: '100%',
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+  seeAllButton: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  seeAllArrow: {
+    fontSize: 16,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  statCard: {
+    flex: 1,
+    borderRadius: 16,
+    padding: 12,
+  },
+  statHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 8,
+  },
+  statIcon: {
+    fontSize: 16,
+  },
+  statLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  statValueEmpty: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  statUnit: {
+    fontSize: 14,
+    fontWeight: '400',
   },
   bottomSpacer: {
     height: 24,
-  },
-  chartPlaceholder: {
-    height: 220, // Mudança: 200 → 220px (Shotsy chart height)
-    marginBottom: 16,
-  },
-  emptyStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 80,
-    paddingHorizontal: 32,
-  },
-  emptyStateEmoji: {
-    fontSize: 72, // Mudança: 80 → 72px (Shotsy emoji size)
-    marginBottom: 24,
-  },
-  emptyStateTitle: {
-    fontSize: 22, // Mudança: 24 → 22px (Shotsy title size)
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  emptyStateSubtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    lineHeight: 24,
-    marginBottom: 32,
-  },
-  emptyStateButton: {
-    width: '100%',
-    maxWidth: 300,
   },
 });

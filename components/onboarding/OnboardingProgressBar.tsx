@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 
 interface OnboardingProgressBarProps {
@@ -9,7 +9,7 @@ interface OnboardingProgressBarProps {
 }
 
 export function OnboardingProgressBar({ current, total }: OnboardingProgressBarProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const progress = (current / total) * 100;
 

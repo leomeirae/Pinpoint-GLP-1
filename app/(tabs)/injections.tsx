@@ -8,25 +8,20 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
-import { ShotCard, Shot } from '@/components/shots/ShotCard';
-import { FilterChips } from '@/components/shots/FilterChips';
-import { ShotsStats } from '@/components/shots/ShotsStats';
-import { AppIcon } from '@/components/ui/icons';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { useColors } from '@/hooks/useShotsyColors';
+import { ShotCard, Shot } from '@/components/shots/ShotCard';
 import { useApplications } from '@/hooks/useApplications';
 import { useProfile } from '@/hooks/useProfile';
-import { calculateNextShotDate } from '@/lib/pharmacokinetics';
+import { calculateNextShotDate, getCurrentEstimatedLevel, MedicationApplication } from '@/lib/pharmacokinetics';
 import { createLogger } from '@/lib/logger';
+import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 const logger = createLogger('Injections');
 
-const FILTERS = ['Todos', 'Últimos 7 dias', 'Últimos 30 dias', 'Últimos 90 dias', 'Este ano'];
-
 export default function ShotsScreen() {
-  const colors = useShotsyColors();
-  const [selectedFilter, setSelectedFilter] = useState('Todos');
+  const colors = useColors();
   const [refreshing, setRefreshing] = useState(false);
 
   // Fetch real data from Supabase
@@ -42,64 +37,41 @@ export default function ShotsScreen() {
   const shots = useMemo(() => {
     return applications.map((app) => ({
       id: app.id,
-      date: app.date,
+      date: app.date || new Date(app.application_date),
       dosage: app.dosage,
-      injectionSites: app.injection_sites,
-      sideEffects: app.side_effects,
+      injectionSites: app.injection_sites || [],
+      sideEffects: app.side_effects_list || [],
       notes: app.notes,
     }));
   }, [applications]);
 
-  // Filtrar shots baseado no filtro selecionado
-  const filteredShots = useMemo(() => {
-    const now = new Date();
-
-    switch (selectedFilter) {
-      case 'Últimos 7 dias':
-        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        return shots.filter((shot) => shot.date >= sevenDaysAgo);
-      case 'Últimos 30 dias':
-        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-        return shots.filter((shot) => shot.date >= thirtyDaysAgo);
-      case 'Últimos 90 dias':
-        const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
-        return shots.filter((shot) => shot.date >= ninetyDaysAgo);
-      case 'Este ano':
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
-        return shots.filter((shot) => shot.date >= startOfYear);
-      default:
-        return shots;
-    }
-  }, [shots, selectedFilter]);
-
-  // Agrupar shots por mês/ano
-  const groupedShots = useMemo(() => {
-    const groups: { [key: string]: Shot[] } = {};
-
-    // ✅ Criar formatter UMA VEZ fora do loop para melhor performance
-    const monthYearFormatter = new Intl.DateTimeFormat('pt-BR', {
-      month: 'long',
-      year: 'numeric',
-    });
-
-    filteredShots.forEach((shot) => {
-      const key = monthYearFormatter.format(shot.date);
-
-      if (!groups[key]) {
-        groups[key] = [];
-      }
-      groups[key].push(shot);
-    });
-
-    return groups;
-  }, [filteredShots]);
-
-  // Calcular estatísticas reais
+  // Calculate statistics
   const totalShots = shots.length;
-  const currentDose = shots[0]?.dosage || 0;
+  const lastShot = shots.length > 0 ? shots[0] : null;
+  const lastDose = lastShot?.dosage || 0;
 
-  const daysUntilNext = useMemo(() => {
+  // Calculate estimated level
+  const estimatedLevel = useMemo(() => {
     if (applications.length === 0) return 0;
+
+    const medApplications: MedicationApplication[] = applications.map((app) => ({
+      dose: app.dosage,
+      date: app.date || new Date(app.application_date),
+    }));
+
+    return getCurrentEstimatedLevel(medApplications);
+  }, [applications]);
+
+  // Calculate next injection date
+  const nextInjectionData = useMemo(() => {
+    if (applications.length === 0) {
+      return {
+        daysUntil: null,
+        percentage: 0,
+        message: 'Bem-vindo!',
+        subtitle: 'Adicione sua primeira injeção para começar.',
+      };
+    }
 
     const frequency = profile?.frequency || 'weekly';
     let intervalDays = 7; // Default weekly
@@ -111,17 +83,36 @@ export default function ShotsScreen() {
       intervalDays = 1;
     }
 
-    const medicationApps = applications.map((app) => ({
+    const medApplications: MedicationApplication[] = applications.map((app) => ({
       dose: app.dosage,
-      date: app.date,
+      date: app.date || new Date(app.application_date),
     }));
 
-    const nextDate = calculateNextShotDate(medicationApps, intervalDays);
-    if (!nextDate) return 0;
+    const nextDate = calculateNextShotDate(medApplications, intervalDays);
+    if (!nextDate) {
+      return {
+        daysUntil: null,
+        percentage: 0,
+        message: 'Bem-vindo!',
+        subtitle: 'Adicione sua primeira injeção para começar.',
+      };
+    }
 
     const now = new Date();
     const daysDiff = Math.ceil((nextDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    return Math.max(0, daysDiff);
+    const daysUntil = Math.max(0, daysDiff);
+
+    // Calculate percentage (0-100) based on days until next injection
+    // If interval is 7 days, and we're 0 days away, we're at 0%
+    // If we're 7 days away, we're at 100%
+    const percentage = Math.min(100, Math.max(0, ((intervalDays - daysUntil) / intervalDays) * 100));
+
+    return {
+      daysUntil,
+      percentage,
+      message: daysUntil === 0 ? 'Hoje!' : daysUntil === 1 ? 'Amanhã' : `${daysUntil} dias`,
+      subtitle: daysUntil === 0 ? 'Hora da sua injeção!' : `Próxima injeção em ${daysUntil} dia(s)`,
+    };
   }, [applications, profile?.frequency]);
 
   const handleRefresh = async () => {
@@ -150,64 +141,249 @@ export default function ShotsScreen() {
     );
   }
 
-  // Empty state
-  if (shots.length === 0) {
     return (
-      <View style={[styles.emptyContainer, { backgroundColor: colors.background }]}>
-        <AppIcon name="syringe" size="xl" color={colors.textSecondary} />
-        <Text style={[styles.emptyTitle, { color: colors.text }]}>Nenhuma injeção registrada</Text>
-        <Text style={[styles.emptySubtitle, { color: colors.textSecondary }]}>
-          Comece adicionando sua primeira aplicação
-        </Text>
-        <TouchableOpacity
-          style={[styles.emptyButton, { backgroundColor: colors.primary }]}
-          onPress={() => router.push('/(tabs)/add-application')}
-        >
-          <Text style={styles.emptyButtonText}>Adicionar Injeção</Text>
-        </TouchableOpacity>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Header - V0 Design */}
+      <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Injeções</Text>
       </View>
-    );
-  }
 
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <ScrollView
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        style={styles.scrollView}
         >
-          <FilterChips
-            filters={FILTERS}
-            selectedFilter={selectedFilter}
-            onFilterChange={setSelectedFilter}
-          />
+        <View style={styles.content}>
+          {/* Title - V0 Design */}
+          <Text style={[styles.title, { color: colors.text }]}>Histórico de Injeções</Text>
 
-          <ShotsStats
-            totalShots={totalShots}
-            currentDose={currentDose}
-            daysUntilNext={daysUntilNext}
-          />
-
-          <View style={styles.listContainer}>
-            {Object.entries(groupedShots).map(([monthYear, groupShots]) => (
-              <View key={monthYear} style={styles.group}>
-                <Text style={[styles.groupHeader, { color: colors.textSecondary }]}>
-                  {monthYear}
+          {/* Stats Grid - V0 Design */}
+          <View style={styles.statsGrid}>
+            {/* Injeções tomadas */}
+            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <View style={styles.statHeader}>
+                <Text style={styles.statIcon}>💉</Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
+                  Injeções tomadas
                 </Text>
-                {groupShots.map((shot) => (
-                  <ShotCard key={shot.id} shot={shot} onDelete={handleDelete} />
-                ))}
               </View>
-            ))}
+              <Text style={[styles.statValue, { color: colors.text }]}>{totalShots}</Text>
+            </View>
+
+            {/* Última dose */}
+            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <View style={styles.statHeader}>
+                <Text style={styles.statIcon}>💊</Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Última dose</Text>
+              </View>
+              {lastDose > 0 ? (
+                <Text style={[styles.statValue, { color: colors.text }]}>{lastDose}mg</Text>
+              ) : (
+                <Text style={[styles.statPlaceholder, { color: colors.textMuted }]}>—</Text>
+              )}
+            </View>
+
+            {/* Nível Est. */}
+            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+              <View style={styles.statHeader}>
+                <Text style={styles.statIcon}>📊</Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Nível Est.</Text>
+              </View>
+              {estimatedLevel > 0 ? (
+                <Text style={[styles.statValue, { color: colors.text }]}>
+                  {estimatedLevel.toFixed(2)}mg
+                </Text>
+              ) : (
+                <Text style={[styles.statPlaceholder, { color: colors.textMuted }]}>—</Text>
+              )}
+            </View>
+          </View>
+
+          {/* Next Injection Section - V0 Design */}
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Próxima Injeção</Text>
+
+          <View
+            style={[
+              styles.nextInjectionCard,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
+            {/* Circular Progress - V0 Design */}
+            <View style={styles.progressContainer}>
+              <Svg width="192" height="192" viewBox="0 0 200 200">
+                <Defs>
+                  <LinearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <Stop offset="0%" stopColor="#EF4444" />
+                    <Stop offset="25%" stopColor="#F97316" />
+                    <Stop offset="50%" stopColor="#EAB308" />
+                    <Stop offset="75%" stopColor="#22C55E" />
+                    <Stop offset="100%" stopColor="#06B6D4" />
+                  </LinearGradient>
+                </Defs>
+                {/* Background circle */}
+                <Circle
+                  cx="100"
+                  cy="100"
+                  r="80"
+                  fill="none"
+                  stroke={colors.border}
+                  strokeWidth="12"
+                />
+                {/* Progress circle */}
+                {nextInjectionData.percentage > 0 && (
+                  <Circle
+                    cx="100"
+                    cy="100"
+                    r="80"
+                    fill="none"
+                    stroke="url(#progressGradient)"
+                    strokeWidth="12"
+                    strokeDasharray={`${2 * Math.PI * 80 * (nextInjectionData.percentage / 100)} ${2 * Math.PI * 80}`}
+                    strokeLinecap="round"
+                    transform={`rotate(-90 100 100)`}
+                  />
+                )}
+              </Svg>
+              {/* Center text */}
+              <View style={styles.progressTextContainer}>
+                <Text style={[styles.progressMessage, { color: colors.text }]}>
+                  {nextInjectionData.message}
+                </Text>
+                <Text style={[styles.progressSubtitle, { color: colors.textSecondary }]}>
+                  {nextInjectionData.subtitle}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Add Shot Section - V0 Design */}
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Add Shot</Text>
+          <TouchableOpacity
+            style={[styles.addButton, { backgroundColor: colors.primary }]}
+            onPress={() => router.push('/(tabs)/add-application')}
+          >
+            <Ionicons name="add" size={20} color="#FFFFFF" />
+            <Text style={styles.addButtonText}>Adicionar Injeção</Text>
+          </TouchableOpacity>
+
+          {/* Shots List */}
+          {shots.length > 0 && (
+            <View style={styles.listContainer}>
+              {shots.map((shot) => (
+                <ShotCard key={shot.id} shot={shot} onDelete={handleDelete} />
+              ))}
+            </View>
+          )}
           </View>
         </ScrollView>
       </View>
-    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  content: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 24,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 32,
+  },
+  statCard: {
+    flex: 1,
+    borderRadius: 16,
+    padding: 16,
+  },
+  statHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  statIcon: {
+    fontSize: 16,
+  },
+  statLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  statValue: {
+    fontSize: 30,
+    fontWeight: '700',
+  },
+  statPlaceholder: {
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+  nextInjectionCard: {
+    borderRadius: 24,
+    borderWidth: 2,
+    padding: 32,
+    marginBottom: 24,
+  },
+  progressContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  progressTextContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 192,
+    height: 192,
+  },
+  progressMessage: {
+    fontSize: 20,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  progressSubtitle: {
+    fontSize: 14,
+    textAlign: 'center',
+    paddingHorizontal: 16,
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 24,
+    borderRadius: 16,
+    marginBottom: 24,
+  },
+  addButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  listContainer: {
+    gap: 12,
   },
   loadingContainer: {
     flex: 1,
@@ -217,49 +393,5 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 16,
     fontSize: 16,
-  },
-  listContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 32,
-  },
-  group: {
-    marginBottom: 24,
-  },
-  groupHeader: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 12,
-    textTransform: 'capitalize',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  emptyIcon: {
-    fontSize: 72, // Mudança: 80 → 72px (Shotsy icon size standard)
-    marginBottom: 24,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 32,
-  },
-  emptyButton: {
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 28,
-  },
-  emptyButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
   },
 });

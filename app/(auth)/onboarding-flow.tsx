@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, StatusBar, Alert, ActivityIndicator } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { OnboardingProgressBar } from '@/components/onboarding';
 import { useFeatureFlag } from '@/lib/feature-flags';
 import { useOnboarding } from '@/hooks/useOnboarding';
@@ -102,8 +102,22 @@ interface OnboardingData {
   [key: string]: any;
 }
 
+// Helper para serializar dados de forma segura
+const serializeOnboardingData = (data: OnboardingData): string => {
+  return JSON.stringify(data, (key, value) => {
+    // Remover funções e valores não serializáveis
+    if (typeof value === 'function') return undefined;
+    if (value instanceof Date) return value.toISOString();
+    if (typeof value === 'object' && value !== null && '__typename' in value) {
+      // GraphQL objects sometimes have circular references
+      return undefined;
+    }
+    return value;
+  });
+};
+
 export default function OnboardingFlowScreen() {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const router = useRouter();
   const { isSignedIn, isLoaded: authLoaded } = useAuth();
   const { user, loading: userLoading } = useUser();
@@ -202,9 +216,13 @@ export default function OnboardingFlowScreen() {
 
   const saveProgress = async (step: OnboardingStep, data: OnboardingData) => {
     try {
-      await AsyncStorage.setItem(ONBOARDING_PROGRESS_KEY, JSON.stringify({ step, data }));
+      // Use safe serialization to handle circular references and non-serializable types
+      const serialized = serializeOnboardingData({ step, data });
+      await AsyncStorage.setItem(ONBOARDING_PROGRESS_KEY, serialized);
     } catch (error) {
       logger.error('Error saving onboarding progress', error as Error);
+      // Don't throw - allow flow to continue even if save fails
+      // This is important so that JSON serialization errors don't block the onboarding flow
     }
   };
 

@@ -1,3 +1,7 @@
+// MUST be at the very top, before any other imports
+// This is the first module executed by expo-router
+import 'react-native-gesture-handler';
+
 import { ClerkProvider } from '@clerk/clerk-expo';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';

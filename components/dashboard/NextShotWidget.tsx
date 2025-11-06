@@ -159,8 +159,6 @@ export function NextShotWidget({
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>Próxima Injeção</Text>
-
       <ShotsyCard style={styles.card}>
         <ShotsyCircularProgress size={240} progress={state.progress}>
           <View style={styles.content}>
@@ -190,11 +188,6 @@ export function NextShotWidget({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 24,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 12,
   },
   card: {
     padding: 24,

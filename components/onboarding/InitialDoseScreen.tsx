@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
-import { Ionicons } from '@expo/vector-icons';
 
 interface InitialDoseScreenProps {
   onNext: (data: { initialDose: string }) => void;
@@ -11,36 +10,17 @@ interface InitialDoseScreenProps {
   medication?: string;
 }
 
-const doses = {
-  tirzepatide: [
-    { id: '2.5mg', label: '2,5 mg', description: 'Dose inicial típica' },
-    { id: '5mg', label: '5 mg', description: 'Segunda dose típica' },
-    { id: '7.5mg', label: '7,5 mg', description: 'Dose intermediária' },
-    { id: '10mg', label: '10 mg', description: 'Dose intermediária' },
-    { id: '12.5mg', label: '12,5 mg', description: 'Dose alta' },
-    { id: '15mg', label: '15 mg', description: 'Dose máxima' },
-  ],
-  semaglutide: [
-    { id: '0.25mg', label: '0,25 mg', description: 'Dose inicial típica' },
-    { id: '0.5mg', label: '0,5 mg', description: 'Segunda dose típica' },
-    { id: '1mg', label: '1 mg', description: 'Dose intermediária' },
-    { id: '1.7mg', label: '1,7 mg', description: 'Dose intermediária' },
-    { id: '2.4mg', label: '2,4 mg', description: 'Dose máxima' },
-  ],
-};
+// V0 Design: Simple list with "Outro" option
+const dosages = ['2.5mg', '5mg', '7.5mg', '10mg', '12.5mg', '15mg', 'Outro'];
 
 export function InitialDoseScreen({
   onNext,
   onBack,
   medication = 'tirzepatide',
 }: InitialDoseScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
-
-  const isSemaglutide =
-    medication === 'ozempic' || medication === 'wegovy' || medication === 'semaglutide';
-  const availableDoses = isSemaglutide ? doses.semaglutide : doses.tirzepatide;
 
   const handleNext = () => {
     if (selected) {
@@ -50,37 +30,42 @@ export function InitialDoseScreen({
 
   return (
     <OnboardingScreenBase
-      title="Qual dose inicial foi recomendada?"
-      subtitle="Selecione a dose que você vai começar ou está tomando"
+      title="Você sabe sua dose inicial recomendada?"
+      subtitle="Não tem problema se você não tiver certeza!"
       onNext={handleNext}
       onBack={onBack}
       disableNext={!selected}
+      progress={50}
     >
       <View style={styles.content}>
-        {availableDoses.map((dose) => (
+        {dosages.map((dosage) => (
           <TouchableOpacity
-            key={dose.id}
+            key={dosage}
             style={[
               styles.option,
               {
-                backgroundColor: colors.card,
-                borderColor: selected === dose.id ? currentAccent : colors.border,
-                borderWidth: selected === dose.id ? 2 : 1,
+                backgroundColor: colors.backgroundSecondary,
+                borderColor: selected === dosage ? colors.primary : 'transparent',
+                borderWidth: selected === dosage ? 2 : 0,
               },
             ]}
-            onPress={() => setSelected(dose.id)}
+            onPress={() => setSelected(dosage)}
           >
-            <View style={styles.optionContent}>
-              <View style={styles.optionText}>
-                <Text style={[styles.optionTitle, { color: colors.text }]}>{dose.label}</Text>
-                <Text style={[styles.optionDescription, { color: colors.textSecondary }]}>
-                  {dose.description}
-                </Text>
+            <View style={styles.radioContainer}>
+              <View
+                style={[
+                  styles.radio,
+                  {
+                    borderColor: selected === dosage ? colors.primary : colors.border,
+                  },
+                ]}
+              >
+                {selected === dosage && (
+                  <View style={[styles.radioInner, { backgroundColor: colors.primary }]} />
+                )}
               </View>
+              <Text style={[styles.optionLabel, { color: colors.text }]}>{dosage}</Text>
             </View>
-            {selected === dose.id && (
-              <Ionicons name="checkmark-circle" size={24} color={currentAccent} />
-            )}
           </TouchableOpacity>
         ))}
       </View>
@@ -91,30 +76,37 @@ export function InitialDoseScreen({
 const styles = StyleSheet.create({
   content: {
     gap: 12,
+    paddingHorizontal: 24,
   },
   option: {
-    borderRadius: 12, // Mudança: 16 → 12px (design system)
-    padding: 16,
-    minHeight: 60, // Touch target adequado
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  optionContent: {
-    flex: 1,
+    borderRadius: 16,
+    padding: 20,
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  optionText: {
+  radioContainer: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
-  optionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 2,
+  radio: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  optionDescription: {
-    fontSize: 13,
-    lineHeight: 18,
+  radioInner: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
   },
 });

@@ -1,145 +1,116 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
-import { ShotsyCard } from '@/components/ui/shotsy-card';
-import { VictoryLine, VictoryChart, VictoryAxis, VictoryArea } from 'victory-native';
+import Svg, { Path, Line, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 interface FluctuationsEducationScreenProps {
   onNext: () => void;
   onBack: () => void;
 }
 
-// Dados de exemplo mostrando flutuações típicas de peso
-const fluctuationData = [
-  { day: 1, weight: 80.0 },
-  { day: 2, weight: 81.2 }, // +1.2kg (retenção líquidos)
-  { day: 3, weight: 80.5 }, // -0.7kg
-  { day: 4, weight: 80.8 }, // +0.3kg
-  { day: 5, weight: 79.6 }, // -1.2kg (grande variação)
-  { day: 6, weight: 80.2 }, // +0.6kg
-  { day: 7, weight: 79.8 }, // -0.4kg (tendência geral: ↓)
+// V0 Design: Level data (0.15, 0.18, etc.)
+// Converted to SVG coordinates (x: 0-360, y: 0-200, inverted for SVG)
+const data = [
+  { x: 0, y: 0.15 }, // 16/10 -> 0.15 (150px from top)
+  { x: 60, y: 0.18 }, // 18/10 -> 0.18 (120px from top)
+  { x: 120, y: 0.12 }, // 20/10 -> 0.12 (180px from top)
+  { x: 180, y: 0.24 }, // 22/10 -> 0.24 (60px from top)
+  { x: 240, y: 0.2 }, // 24/10 -> 0.2 (100px from top)
+  { x: 300, y: 0.16 }, // 26/10 -> 0.16 (140px from top)
+  { x: 360, y: 0.14 }, // 28/10 -> 0.14 (160px from top)
 ];
 
 export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEducationScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
+  const { width: screenWidth } = useWindowDimensions();
+  const chartWidth = Math.min(screenWidth - 96, 400); // Max width with padding
 
   return (
     <OnboardingScreenBase
-      title="É normal ter flutuações"
-      subtitle="Seu peso pode variar de um dia para o outro, e está tudo bem"
+      title="Supere seus dias mais difíceis."
+      subtitle="A jornada com GLP-1 pode ter altos e baixos. O Mounjaro Tracker vai ajudar você a entender as flutuações e como equilibrar os efeitos colaterais com o progresso."
       onNext={onNext}
       onBack={onBack}
-      nextButtonText="Entendi"
+      progress={65}
     >
       <View style={styles.content}>
-        <ShotsyCard variant="elevated" style={styles.graphCard}>
-          <Text style={[styles.graphTitle, { color: colors.text }]}>
-            Flutuações típicas de peso
-          </Text>
-
-          <VictoryChart
-            height={180}
-            width={Dimensions.get('window').width - 80}
-            padding={{ top: 20, bottom: 30, left: 50, right: 20 }}
-          >
-            {/* Área sombreada (±2kg zona normal) */}
-            <VictoryArea
-              data={[
-                { day: 1, y0: 78, y: 82 },
-                { day: 7, y0: 78, y: 82 },
-              ]}
-              style={{
-                data: { fill: colors.textMuted, opacity: 0.1 },
-              }}
-            />
-
-            {/* Linha de peso com variações */}
-            <VictoryLine
-              data={fluctuationData}
-              x="day"
-              y="weight"
-              style={{
-                data: {
-                  stroke: currentAccent,
-                  strokeWidth: 3,
-                },
-              }}
-              interpolation="natural"
-            />
-
-            {/* Eixos */}
-            <VictoryAxis
-              dependentAxis
-              tickFormat={(t) => `${t}kg`}
-              style={{
-                tickLabels: { fontSize: 10, fill: colors.textMuted },
-                grid: { stroke: colors.border, strokeDasharray: '2,2', strokeOpacity: 0.5 },
-                axis: { stroke: colors.border },
-              }}
-            />
-            <VictoryAxis
-              label="Dias"
-              style={{
-                axisLabel: { fontSize: 12, padding: 25, fill: colors.textSecondary },
-                tickLabels: { fontSize: 10, fill: colors.textMuted },
-                axis: { stroke: colors.border },
-              }}
-            />
-          </VictoryChart>
-
-          <Text style={[styles.graphCaption, { color: colors.textMuted }]}>
-            Variações de até 2kg são completamente normais
-          </Text>
-        </ShotsyCard>
-
-        <ShotsyCard style={styles.factorsCard}>
-          <Text style={[styles.factorsTitle, { color: colors.text }]}>
-            Fatores que afetam o peso diário:
-          </Text>
-          <View style={styles.factorsList}>
-            <View style={styles.factor}>
-              <Text style={styles.factorEmoji}>💧</Text>
-              <Text style={[styles.factorText, { color: colors.textSecondary }]}>
-                Retenção de líquidos
-              </Text>
+        {/* Chart Card - V0 Design */}
+        <View style={[styles.chartCard, { backgroundColor: colors.backgroundSecondary }]}>
+          <View style={styles.chartHeader}>
+            <Text style={[styles.chartTitle, { color: colors.text }]}>Semanas de Exemplo</Text>
+            <View style={styles.logoContainer}>
+              <View style={[styles.logoIcon, { backgroundColor: colors.primary }]}>
+                <View style={styles.logoDots}>
+                  {[...Array(5)].map((_, i) => (
+                    <View key={i} style={[styles.logoDot, { backgroundColor: colors.background }]} />
+                  ))}
             </View>
-            <View style={styles.factor}>
-              <Text style={styles.factorEmoji}>🍽️</Text>
-              <Text style={[styles.factorText, { color: colors.textSecondary }]}>
-                Última refeição
-              </Text>
             </View>
-            <View style={styles.factor}>
-              <Text style={styles.factorEmoji}>😴</Text>
-              <Text style={[styles.factorText, { color: colors.textSecondary }]}>
-                Qualidade do sono
-              </Text>
+              <Text style={[styles.logoText, { color: colors.text }]}>Mounjaro Tracker</Text>
             </View>
-            <View style={styles.factor}>
-              <Text style={styles.factorEmoji}>🏃</Text>
-              <Text style={[styles.factorText, { color: colors.textSecondary }]}>
-                Exercícios recentes
-              </Text>
             </View>
-            <View style={styles.factor}>
-              <Text style={styles.factorEmoji}>🧂</Text>
-              <Text style={[styles.factorText, { color: colors.textSecondary }]}>
-                Consumo de sódio
-              </Text>
+
+          <View style={styles.chartContainer}>
+            <Svg
+              width={chartWidth}
+              height={192}
+              viewBox="0 0 400 200"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <Defs>
+                <LinearGradient id="colorLevel" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <Stop offset="5%" stopColor={colors.primary} stopOpacity="0.8" />
+                  <Stop offset="95%" stopColor={colors.primary} stopOpacity="0.2" />
+                </LinearGradient>
+              </Defs>
+
+              {/* Grid lines - horizontal */}
+              <Line x1="0" y1="50" x2="400" y2="50" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line x1="0" y1="100" x2="400" y2="100" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line x1="0" y1="150" x2="400" y2="150" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+
+              {/* Grid lines - vertical */}
+              <Line x1="66" y1="0" x2="66" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line x1="133" y1="0" x2="133" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line x1="200" y1="0" x2="200" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line x1="266" y1="0" x2="266" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line x1="333" y1="0" x2="333" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+
+              {/* Filled area path - flutuações */}
+              <Path
+                d="M 0,150 L 66,120 L 133,180 L 200,60 L 266,100 L 333,140 L 400,160 L 400,200 L 0,200 Z"
+                fill="url(#colorLevel)"
+              />
+
+              {/* Solid line - flutuações */}
+              <Path
+                d="M 0,150 L 66,120 L 133,180 L 200,60 L 266,100 L 333,140 L 400,160"
+                fill="none"
+                stroke={colors.primary}
+                strokeWidth="2"
+              />
+            </Svg>
+
+            {/* X-axis labels */}
+            <View style={styles.xAxisLabels}>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>16/10</Text>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>18/10</Text>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>20/10</Text>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>22/10</Text>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>24/10</Text>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>26/10</Text>
+              <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>28/10</Text>
             </View>
           </View>
-        </ShotsyCard>
 
-        <ShotsyCard style={[styles.tipCard, { borderLeftColor: currentAccent }]}>
-          <Text style={styles.tipEmoji}>💡</Text>
-          <Text style={[styles.tipText, { color: colors.textSecondary }]}>
-            Foque na tendência geral, não nos números diários. O que importa é a direção que você
-            está seguindo ao longo das semanas.
+          <Text style={[styles.chartCaption, { color: colors.textSecondary }]}>
+            O Mounjaro Tracker estima níveis com base em médias, não em medições. Trabalhe com seu
+            médico para gerenciar os níveis de dosagem para seu corpo.
           </Text>
-        </ShotsyCard>
+        </View>
       </View>
     </OnboardingScreenBase>
   );
@@ -147,58 +118,72 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
 
 const styles = StyleSheet.create({
   content: {
-    gap: 20,
+    gap: 24,
+    paddingHorizontal: 24,
   },
-  graphCard: {
+  chartCard: {
+    borderRadius: 24,
     padding: 20,
+    overflow: 'hidden',
   },
-  graphTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  graphCaption: {
-    fontSize: 13,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  factorsCard: {
-    padding: 20,
-  },
-  factorsTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-    marginBottom: 16,
-  },
-  factorsList: {
-    gap: 12,
-  },
-  factor: {
+  chartHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  factorEmoji: {
-    fontSize: 24,
+  chartTitle: {
+    fontSize: 18,
+    fontWeight: '700',
   },
-  factorText: {
-    fontSize: 15,
-    flex: 1,
-  },
-  tipCard: {
-    padding: 16,
+  logoContainer: {
     flexDirection: 'row',
-    gap: 12,
-    alignItems: 'flex-start',
-    borderLeftWidth: 4,
+    alignItems: 'center',
+    gap: 8,
   },
-  tipEmoji: {
-    fontSize: 24,
+  logoIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  tipText: {
-    flex: 1,
-    fontSize: 14,
-    lineHeight: 22,
+  logoDots: {
+    flexDirection: 'row',
+    gap: 2,
+  },
+  logoDot: {
+    width: 2,
+    height: 2,
+    borderRadius: 1,
+  },
+  logoText: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  chartContainer: {
+    height: 192,
+    marginBottom: 16,
+    position: 'relative',
+    width: '100%',
+    overflow: 'hidden',
+  },
+  xAxisLabels: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 0,
+  },
+  xAxisLabel: {
+    fontSize: 10,
+  },
+  chartCaption: {
+    fontSize: 12,
+    textAlign: 'center',
+    lineHeight: 18,
+    paddingHorizontal: 8,
   },
 });

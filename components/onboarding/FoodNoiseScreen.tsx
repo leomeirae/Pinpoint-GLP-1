@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { ShotsyCard } from '@/components/ui/shotsy-card';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,7 +23,7 @@ const daysOfWeek = [
 ];
 
 export function FoodNoiseScreen({ onNext, onBack }: FoodNoiseScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
 

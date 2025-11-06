@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyButton } from '@/components/ui/shotsy-button';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -16,6 +16,7 @@ interface OnboardingScreenBaseProps {
   showBackButton?: boolean;
   loading?: boolean;
   contentContainerStyle?: any;
+  progress?: number; // Progress percentage (0-100)
 }
 
 export function OnboardingScreenBase({
@@ -29,16 +30,34 @@ export function OnboardingScreenBase({
   showBackButton = true,
   loading = false,
   contentContainerStyle,
+  progress,
 }: OnboardingScreenBaseProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {showBackButton && onBack && (
         <TouchableOpacity style={[styles.backButton, { top: insets.top + 16 }]} onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+          <Ionicons name="arrow-back" size={24} color={colors.primary} />
         </TouchableOpacity>
+      )}
+
+      {/* Progress Bar - V0 Design */}
+      {progress !== undefined && (
+        <View style={[styles.progressContainer, { top: insets.top + 60 }]}>
+          <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
+            <View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${progress}%`,
+                  backgroundColor: colors.primary,
+                },
+              ]}
+            />
+          </View>
+        </View>
       )}
 
       <ScrollView
@@ -98,6 +117,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  progressContainer: {
+    position: 'absolute',
+    left: 24,
+    right: 24,
+    zIndex: 9,
+    marginTop: 8,
+  },
+  progressBar: {
+    height: 4,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
   scrollView: {
     flex: 1,
   },
@@ -106,6 +141,10 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 32,
+    paddingLeft: 0, // Ensure no overlap with back button
+  },
+  headerWithBackButton: {
+    paddingLeft: 0, // No extra padding needed, back button is absolute
   },
   title: {
     fontSize: 28,

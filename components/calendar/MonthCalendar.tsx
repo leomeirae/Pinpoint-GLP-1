@@ -100,9 +100,9 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
 
   return (
     <View style={styles.container}>
-      {/* Dias da semana */}
+      {/* Dias da semana - V0 Design */}
       <View style={styles.weekDaysRow}>
-        {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
+        {['DOM.', 'SEG.', 'TER.', 'QUA.', 'QUI.', 'SEX.', 'SÁB.'].map((day) => (
           <Text key={day} style={[styles.weekDay, { color: colors.textSecondary }]}>
             {day}
           </Text>
@@ -155,11 +155,14 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    width: '100%',
+    paddingHorizontal: 8,
+    paddingVertical: 12,
   },
   weekDaysRow: {
     flexDirection: 'row',
     marginBottom: 8,
+    paddingHorizontal: 4,
   },
   weekDay: {
     flex: 1,
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
   daysGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    width: '100%',
   },
   dayCell: {
     width: `${100 / 7}%`,
@@ -178,6 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     position: 'relative',
+    minHeight: 40,
   },
   dayNumber: {
     fontSize: 16,
@@ -187,5 +192,13 @@ const styles = StyleSheet.create({
     bottom: 4,
     flexDirection: 'row',
     gap: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  eventDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
   },
 });

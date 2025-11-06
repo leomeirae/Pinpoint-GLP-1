@@ -12,7 +12,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { Ionicons } from '@expo/vector-icons';
 import { trackEvent } from '@/lib/analytics';
 import { useFeatureFlag } from '@/lib/feature-flags';
@@ -112,7 +112,7 @@ const FAQ_ITEMS: FAQItem[] = [
 ];
 
 export default function FAQScreen() {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const router = useRouter();
   const useFAQ = useFeatureFlag('FF_FAQ');
   const [searchQuery, setSearchQuery] = useState('');

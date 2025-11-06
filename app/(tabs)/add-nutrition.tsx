@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useGeminiChat } from '@/hooks/useGeminiChat';
 import { useNutrition } from '@/hooks/useNutrition';
 import { InstructionsCard } from '@/components/nutrition/InstructionsCard';
@@ -26,7 +26,7 @@ import * as Haptics from 'expo-haptics';
 type Tab = 'chat' | 'history';
 
 export default function NutritionChatScreen() {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const router = useRouter();
   const flatListRef = useRef<FlatList>(null);
   const inputRef = useRef<TextInput>(null);

@@ -5,8 +5,12 @@ import { useRouter } from 'expo-router';
 import { useColors } from '@/constants/colors';
 import { useUser } from '@/hooks/useUser';
 import { createLogger } from '@/lib/logger';
+import { trackEvent } from '@/lib/analytics';
 
 const logger = createLogger('IndexScreen');
+
+// Aumentado de 8s para 10s para acomodar sincronização do Supabase
+const MAX_WAIT_TIME = 10;
 
 export default function IndexScreen() {
   const colors = useColors();
@@ -15,7 +19,6 @@ export default function IndexScreen() {
   const router = useRouter();
   const hasRedirectedRef = useRef(false);
   const [waitTime, setWaitTime] = useState(0);
-  const maxWaitTime = 8; // 8 segundos máximo de espera
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -42,8 +45,12 @@ export default function IndexScreen() {
     }
 
     // Se passou do tempo máximo de espera e ainda não tem user, assumir que precisa de onboarding
-    if (!user && waitTime >= maxWaitTime) {
-      logger.warn('User data not loaded after timeout, redirecting to onboarding', { waitTime });
+    if (!user && waitTime >= MAX_WAIT_TIME) {
+      logger.warn('User data not loaded after timeout, assuming new user needs onboarding', {
+        waitTime,
+        isSignedIn,
+        userLoading
+      });
       hasRedirectedRef.current = true;
       router.replace('/(auth)/onboarding-flow');
       setTimeout(() => {
@@ -71,9 +78,19 @@ export default function IndexScreen() {
         // Se o onboarding não foi completado, ir para onboarding
         if (!user.onboarding_completed) {
           logger.info('Redirecting to onboarding flow');
+          trackEvent('auth_guard_evaluation', {
+            user_id: user.id,
+            route: 'onboarding',
+            onboarding_completed: false,
+          });
           router.replace('/(auth)/onboarding-flow');
         } else {
           logger.info('Redirecting to dashboard');
+          trackEvent('auth_guard_evaluation', {
+            user_id: user.id,
+            route: 'dashboard',
+            onboarding_completed: true,
+          });
           router.replace('/(tabs)');
         }
         // Resetar após redirecionar
@@ -81,6 +98,10 @@ export default function IndexScreen() {
           hasRedirectedRef.current = false;
         }, 500);
       } else if (!isSignedIn) {
+        trackEvent('auth_guard_evaluation', {
+          route: 'welcome',
+          signed_in: false,
+        });
         router.replace('/(auth)/welcome');
         setTimeout(() => {
           hasRedirectedRef.current = false;

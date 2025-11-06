@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyCard } from '@/components/ui/shotsy-card';
 import {
   AppIcon,
@@ -17,7 +17,7 @@ interface WidgetsIntroScreenProps {
 }
 
 export function WidgetsIntroScreen({ onNext, onBack }: WidgetsIntroScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
 
   return (
     <OnboardingScreenBase

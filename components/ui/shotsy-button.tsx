@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useTheme } from '@/lib/theme-context';
 
-interface ShotsyButtonProps {
+export interface ShotsyButtonProps {
   title: string;
   onPress: () => void;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -18,6 +18,7 @@ interface ShotsyButtonProps {
   loading?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  accessibilityLabel?: string;
 }
 
 export function ShotsyButton({
@@ -29,6 +30,7 @@ export function ShotsyButton({
   loading = false,
   style,
   textStyle,
+  accessibilityLabel,
 }: ShotsyButtonProps) {
   const { colors, currentAccent, effectiveMode } = useTheme();
   const isDark = effectiveMode === 'dark';
@@ -93,6 +95,9 @@ export function ShotsyButton({
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.7}
+      accessibilityLabel={accessibilityLabel || title}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: disabled || loading }}
     >
       {loading ? (
         <ActivityIndicator color={getTextColor()} />

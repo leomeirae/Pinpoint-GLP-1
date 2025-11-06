@@ -1,6 +1,6 @@
 import { useTheme } from '@/lib/theme-context';
 
-export function useShotsyColors() {
+export function useColors() {
   const { effectiveMode, colors } = useTheme();
   const isDark = effectiveMode === 'dark';
 
@@ -45,3 +45,6 @@ export function useShotsyColors() {
     isDark,
   };
 }
+
+// Backward compatibility alias
+export const useShotsyColors = useColors;

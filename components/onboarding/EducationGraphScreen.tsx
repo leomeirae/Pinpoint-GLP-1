@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { ShotsyCard } from '@/components/ui/shotsy-card';
-import { VictoryArea, VictoryChart, VictoryAxis, VictoryScatter } from 'victory-native';
+import Svg, { Path, Circle, Line, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 interface EducationGraphScreenProps {
   onNext: () => void;
@@ -25,8 +25,10 @@ const pharmacokineticData = [
 ];
 
 export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
+  const { width: screenWidth } = useWindowDimensions();
+  const chartWidth = Math.min(screenWidth - 64 - 50, 280); // Max width with padding
 
   return (
     <OnboardingScreenBase
@@ -38,80 +40,71 @@ export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenPro
     >
       <View style={styles.content}>
         <ShotsyCard variant="elevated" style={styles.graphCard}>
-          <VictoryChart
+          <View style={styles.chartContainer}>
+            {/* Y-axis labels */}
+            <View style={styles.yAxisLabels}>
+              <Text style={[styles.yAxisLabel, { color: colors.textMuted }]}>1.5mg</Text>
+              <Text style={[styles.yAxisLabel, { color: colors.textMuted }]}>1.0mg</Text>
+              <Text style={[styles.yAxisLabel, { color: colors.textMuted }]}>0.5mg</Text>
+              <Text style={[styles.yAxisLabel, { color: colors.textMuted }]}>0mg</Text>
+            </View>
+
+            {/* Chart area */}
+            <View style={styles.chartArea}>
+              <Svg
+                width={chartWidth}
             height={220}
-            width={Dimensions.get('window').width - 64}
-            padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
-          >
-            {/* Eixo Y - Níveis de medicamento */}
-            <VictoryAxis
-              dependentAxis
-              label="Nível (mg)"
-              style={{
-                axisLabel: {
-                  fontSize: 12,
-                  padding: 35,
-                  fill: colors.textSecondary,
-                },
-                tickLabels: {
-                  fontSize: 10,
-                  fill: colors.textMuted,
-                },
-                grid: {
-                  stroke: colors.border,
-                  strokeDasharray: '4,4',
-                  strokeOpacity: 0.5,
-                },
-                axis: { stroke: colors.border },
-              }}
-              tickValues={[0, 0.5, 1.0, 1.5]}
+                viewBox="0 0 280 200"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <Defs>
+                  <LinearGradient id="pharmaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <Stop offset="0%" stopColor={currentAccent} stopOpacity="0.3" />
+                    <Stop offset="100%" stopColor={currentAccent} stopOpacity="0.1" />
+                  </LinearGradient>
+                </Defs>
+
+                {/* Grid lines - horizontal */}
+                <Line x1="0" y1="50" x2="280" y2="50" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="0" y1="100" x2="280" y2="100" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="0" y1="150" x2="280" y2="150" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+
+                {/* Grid lines - vertical */}
+                <Line x1="40" y1="0" x2="40" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="80" y1="0" x2="80" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="120" y1="0" x2="120" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="160" y1="0" x2="160" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="200" y1="0" x2="200" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line x1="240" y1="0" x2="240" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+
+                {/* Filled area path - curva farmacológica */}
+                <Path
+                  d="M 0,200 L 40,170 L 80,130 L 120,90 L 160,80 L 200,90 L 240,140 L 280,170 L 280,200 Z"
+                  fill="url(#pharmaGradient)"
+                />
+
+                {/* Solid line - curva farmacológica */}
+                <Path
+                  d="M 0,200 L 40,170 L 80,130 L 120,90 L 160,80 L 200,90 L 240,140 L 280,170"
+                  fill="none"
+                  stroke={currentAccent}
+                  strokeWidth="3"
             />
 
-            {/* Eixo X - Dias */}
-            <VictoryAxis
-              label="Dias"
-              style={{
-                axisLabel: {
-                  fontSize: 12,
-                  padding: 30,
-                  fill: colors.textSecondary,
-                },
-                tickLabels: {
-                  fontSize: 10,
-                  fill: colors.textMuted,
-                },
-                axis: { stroke: colors.border },
-              }}
-              tickValues={[0, 2, 4, 6, 7]}
-            />
+                {/* Ponto do pico (Tmax) - dia 4 */}
+                <Circle cx="160" cy="80" r="6" fill={currentAccent} stroke={colors.background} strokeWidth="2" />
+              </Svg>
 
-            {/* Área preenchida - curva farmacológica */}
-            <VictoryArea
-              data={pharmacokineticData}
-              x="day"
-              y="level"
-              style={{
-                data: {
-                  fill: currentAccent,
-                  fillOpacity: 0.3,
-                  stroke: currentAccent,
-                  strokeWidth: 2,
-                },
-              }}
-              interpolation="natural" // Curva suave
-            />
-
-            {/* Ponto do pico (Tmax) */}
-            <VictoryScatter
-              data={[{ day: 4, level: 1.2 }]}
-              x="day"
-              y="level"
-              size={6}
-              style={{
-                data: { fill: currentAccent },
-              }}
-            />
-          </VictoryChart>
+              {/* X-axis labels */}
+              <View style={styles.xAxisLabels}>
+                <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>0</Text>
+                <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>2</Text>
+                <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>4</Text>
+                <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>6</Text>
+                <Text style={[styles.xAxisLabel, { color: colors.textMuted }]}>7</Text>
+              </View>
+            </View>
+          </View>
 
           {/* Label do pico */}
           <Text style={[styles.peakLabel, { color: currentAccent }]}>← Pico: 1.2mg (dia 4)</Text>
@@ -140,15 +133,50 @@ export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenPro
 const styles = StyleSheet.create({
   content: {
     gap: 16,
+    paddingHorizontal: 24,
   },
   graphCard: {
     padding: 20,
+    overflow: 'hidden',
+  },
+  chartContainer: {
+    flexDirection: 'row',
+    minHeight: 220,
+    marginBottom: 8,
+    width: '100%',
+  },
+  yAxisLabels: {
+    width: 50,
+    justifyContent: 'space-between',
+    paddingRight: 8,
+    paddingBottom: 20,
+  },
+  yAxisLabel: {
+    fontSize: 10,
+  },
+  chartArea: {
+    flex: 1,
+    position: 'relative',
+    width: '100%',
+    overflow: 'hidden',
+  },
+  xAxisLabels: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 0,
+  },
+  xAxisLabel: {
+    fontSize: 10,
   },
   peakLabel: {
     fontSize: 13,
     fontWeight: '600',
     textAlign: 'right',
-    marginTop: -40, // Sobrepor ao gráfico
+    marginTop: 8,
     marginRight: 20,
   },
   infoCard: {

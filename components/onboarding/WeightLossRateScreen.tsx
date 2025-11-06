@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { ShotsyCard } from '@/components/ui/shotsy-card';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,7 +28,7 @@ export function WeightLossRateScreen({
   onBack,
   weightUnit = 'kg',
 }: WeightLossRateScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(1);
 

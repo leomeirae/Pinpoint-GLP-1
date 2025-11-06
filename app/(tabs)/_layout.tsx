@@ -2,14 +2,14 @@ import { useEffect, useRef } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { ClipboardText, Syringe, ChartLineUp, Calendar, GearSix } from 'phosphor-react-native';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useAuth } from '@/lib/clerk';
 import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('_layout');
 
 export default function Layout() {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { isSignedIn, isLoaded } = useAuth();
   const router = useRouter();
   const hasRedirectedRef = useRef(false);

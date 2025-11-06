@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { supabase } from '@/lib/supabase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('BasicInfoStep');
@@ -23,7 +23,7 @@ interface BasicInfoStepProps {
 }
 
 export const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ onComplete }) => {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { user } = useUser();
 
   const [name, setName] = useState(user?.fullName || user?.firstName || '');

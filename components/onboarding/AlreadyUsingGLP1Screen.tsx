@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,77 +11,99 @@ interface AlreadyUsingGLP1ScreenProps {
 }
 
 export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1ScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
-  const [selected, setSelected] = useState<boolean | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
 
   const handleNext = () => {
     if (selected !== null) {
-      onNext({ alreadyUsing: selected });
+      onNext({ alreadyUsing: selected === 'Já estou tomando GLP-1' });
     }
   };
 
   return (
     <OnboardingScreenBase
       title="Você já está tomando algum medicamento com GLP-1?"
-      subtitle="Isso nos ajudará a personalizar sua experiência"
+      subtitle="Vamos personalizar o app de acordo com a sua etapa na jornada com GLP-1."
       onNext={handleNext}
       onBack={onBack}
       disableNext={selected === null}
+      progress={30}
     >
+      {/* Logo Section - V0 Design */}
+      <View style={styles.logoSection}>
+        <View style={[styles.logoContainer, { backgroundColor: colors.primary }]}>
+          <View style={styles.logoDots}>
+            <View style={[styles.dot, { backgroundColor: colors.background }]} />
+            <View style={[styles.dot, { backgroundColor: colors.background }]} />
+            <View style={[styles.dot, { backgroundColor: colors.background }]} />
+            <View style={[styles.dot, { backgroundColor: colors.background }]} />
+            <View style={[styles.dot, styles.dotInactive, { backgroundColor: colors.background }]} />
+          </View>
+        </View>
+        <Text style={[styles.logoText, { color: colors.primary }]}>MOUNJARO TRACKER</Text>
+      </View>
+
+      {/* Radio Options - V0 Design */}
       <View style={styles.content}>
         <TouchableOpacity
           style={[
             styles.option,
             {
-              backgroundColor: colors.card,
-              borderColor: selected === true ? currentAccent : colors.border,
-              borderWidth: selected === true ? 2 : 1,
+              backgroundColor: colors.backgroundSecondary,
+              borderColor: selected === 'Já estou tomando GLP-1' ? colors.primary : 'transparent',
+              borderWidth: selected === 'Já estou tomando GLP-1' ? 2 : 0,
             },
           ]}
-          onPress={() => setSelected(true)}
+          onPress={() => setSelected('Já estou tomando GLP-1')}
         >
-          <View style={styles.optionContent}>
-            <Text style={styles.emoji}>💉</Text>
-            <View style={styles.optionText}>
-              <Text style={[styles.optionTitle, { color: colors.text }]}>
-                Já estou tomando GLP-1
-              </Text>
-              <Text style={[styles.optionDescription, { color: colors.textSecondary }]}>
-                Já comecei meu tratamento e quero acompanhar meu progresso
-              </Text>
+          <View style={styles.radioContainer}>
+            <View
+              style={[
+                styles.radio,
+                {
+                  borderColor: selected === 'Já estou tomando GLP-1' ? colors.primary : colors.border,
+                },
+              ]}
+            >
+              {selected === 'Já estou tomando GLP-1' && (
+                <View style={[styles.radioInner, { backgroundColor: colors.primary }]} />
+              )}
             </View>
+            <Text style={[styles.optionLabel, { color: colors.text }]}>
+              Já estou tomando GLP-1
+            </Text>
           </View>
-          {selected === true && (
-            <Ionicons name="checkmark-circle" size={24} color={currentAccent} />
-          )}
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.option,
             {
-              backgroundColor: colors.card,
-              borderColor: selected === false ? currentAccent : colors.border,
-              borderWidth: selected === false ? 2 : 1,
+              backgroundColor: colors.backgroundSecondary,
+              borderColor: selected === 'Eu ainda não comecei a usar GLP-1' ? colors.primary : 'transparent',
+              borderWidth: selected === 'Eu ainda não comecei a usar GLP-1' ? 2 : 0,
             },
           ]}
-          onPress={() => setSelected(false)}
+          onPress={() => setSelected('Eu ainda não comecei a usar GLP-1')}
         >
-          <View style={styles.optionContent}>
-            <Text style={styles.emoji}>📝</Text>
-            <View style={styles.optionText}>
-              <Text style={[styles.optionTitle, { color: colors.text }]}>
-                Eu ainda não comecei a usar GLP-1
-              </Text>
-              <Text style={[styles.optionDescription, { color: colors.textSecondary }]}>
-                Vou começar em breve e quero me preparar
-              </Text>
+          <View style={styles.radioContainer}>
+            <View
+              style={[
+                styles.radio,
+                {
+                  borderColor: selected === 'Eu ainda não comecei a usar GLP-1' ? colors.primary : colors.border,
+                },
+              ]}
+            >
+              {selected === 'Eu ainda não comecei a usar GLP-1' && (
+                <View style={[styles.radioInner, { backgroundColor: colors.primary }]} />
+              )}
             </View>
+            <Text style={[styles.optionLabel, { color: colors.text }]}>
+              Eu ainda não comecei a usar GLP-1
+            </Text>
           </View>
-          {selected === false && (
-            <Ionicons name="checkmark-circle" size={24} color={currentAccent} />
-          )}
         </TouchableOpacity>
       </View>
     </OnboardingScreenBase>
@@ -89,36 +111,69 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
 }
 
 const styles = StyleSheet.create({
+  logoSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 32,
+    paddingHorizontal: 24,
+  },
+  logoContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoDots: {
+    flexDirection: 'row',
+    gap: 4,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  dotInactive: {
+    opacity: 0.5,
+  },
+  logoText: {
+    fontSize: 30,
+    fontWeight: '700',
+  },
   content: {
-    gap: 16,
+    gap: 12,
+    paddingHorizontal: 24,
   },
   option: {
-    borderRadius: 12, // Mudança: 16 → 12px (consistência design system)
+    borderRadius: 16,
     padding: 20,
-    minHeight: 100, // Garantir altura adequada para opções com emoji + texto
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
-  optionContent: {
+  radioContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
+    gap: 12,
   },
-  emoji: {
-    fontSize: 40,
+  radio: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  optionText: {
+  radioInner: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '500',
     flex: 1,
-  },
-  optionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  optionDescription: {
-    fontSize: 14,
-    lineHeight: 20,
   },
 });

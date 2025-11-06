@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -10,23 +10,16 @@ interface SideEffectsConcernsScreenProps {
   onBack: () => void;
 }
 
-const sideEffects = [
-  { id: 'nausea', label: 'Náusea', emoji: '🤢' },
-  { id: 'vomiting', label: 'Vômito', emoji: '🤮' },
-  { id: 'diarrhea', label: 'Diarreia', emoji: '🚽' },
-  { id: 'constipation', label: 'Constipação', emoji: '😣' },
-  { id: 'fatigue', label: 'Fadiga', emoji: '😴' },
-  { id: 'headache', label: 'Dor de cabeça', emoji: '🤕' },
-  { id: 'other', label: 'Outros', emoji: '❓' },
-];
+// V0 Design: Simple list
+const options = ['Náusea', 'Azia', 'Fadiga', 'Queda de cabelo', 'Prisão de Ventre', 'Perda de massa muscular'];
 
 export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcernsScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [selected, setSelected] = useState<string[]>([]);
 
-  const toggleSelection = (id: string) => {
-    setSelected((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+  const toggleSelection = (option: string) => {
+    setSelected((prev) => (prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]));
   };
 
   const handleNext = () => {
@@ -35,47 +28,46 @@ export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcern
 
   return (
     <OnboardingScreenBase
-      title="Quais efeitos colaterais te preocupam?"
-      subtitle="Selecione todos que se aplicam. Isso nos ajuda a fornecer dicas personalizadas"
+      title="Quais efeitos colaterais mais te preocupam (se houver)?"
+      subtitle="Nos informe para que possamos personalizar sua experiência."
       onNext={handleNext}
       onBack={onBack}
-      nextButtonText={selected.length > 0 ? 'Continuar' : 'Pular'}
+      disableNext={selected.length === 0}
+      progress={90}
     >
       <View style={styles.content}>
-        <View style={styles.optionsList}>
-          {sideEffects.map((effect) => (
+        {options.map((option) => {
+          const isSelected = selected.includes(option);
+          return (
             <TouchableOpacity
-              key={effect.id}
+              key={option}
               style={[
                 styles.option,
                 {
-                  backgroundColor: colors.card,
-                  borderColor: selected.includes(effect.id) ? currentAccent : colors.border,
-                  borderWidth: selected.includes(effect.id) ? 2 : 1,
+                  backgroundColor: isSelected ? colors.backgroundSecondary : colors.backgroundSecondary,
+                  borderColor: isSelected ? colors.border : 'transparent',
+                  borderWidth: isSelected ? 2 : 0,
                 },
               ]}
-              onPress={() => toggleSelection(effect.id)}
+              onPress={() => toggleSelection(option)}
             >
-              <View style={styles.optionContent}>
-                <Text style={styles.emoji}>{effect.emoji}</Text>
-                <Text style={[styles.optionLabel, { color: colors.text }]}>{effect.label}</Text>
+              <View style={styles.checkboxContainer}>
+                <View
+                  style={[
+                    styles.checkbox,
+                    {
+                      borderColor: isSelected ? colors.primary : colors.border,
+                      backgroundColor: isSelected ? colors.primary : 'transparent',
+                    },
+                  ]}
+                >
+                  {isSelected && <Ionicons name="checkmark" size={16} color="#FFFFFF" />}
+                </View>
+                <Text style={[styles.optionLabel, { color: colors.text }]}>{option}</Text>
               </View>
-              {selected.includes(effect.id) ? (
-                <Ionicons name="checkbox" size={24} color={currentAccent} />
-              ) : (
-                <Ionicons name="square-outline" size={24} color={colors.border} />
-              )}
             </TouchableOpacity>
-          ))}
-        </View>
-
-        {selected.length > 0 && (
-          <View style={[styles.selectedCount, { backgroundColor: colors.card }]}>
-            <Text style={[styles.selectedCountText, { color: colors.textSecondary }]}>
-              {selected.length} {selected.length === 1 ? 'selecionado' : 'selecionados'}
-            </Text>
-          </View>
-        )}
+          );
+        })}
       </View>
     </OnboardingScreenBase>
   );
@@ -83,40 +75,34 @@ export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcern
 
 const styles = StyleSheet.create({
   content: {
-    gap: 20,
-  },
-  optionsList: {
     gap: 12,
+    paddingHorizontal: 24,
+    paddingTop: 8, // Extra padding to avoid overlap with back button
   },
   option: {
-    borderRadius: 16, // Mudança: 12 → 16px (match Shotsy)
-    paddingVertical: 20, // Mudança: separar padding vertical
-    paddingHorizontal: 16, // Mudança: padding horizontal explícito
-    minHeight: 72, // Mudança: 60 → 72px (match Shotsy)
+    borderRadius: 16,
+    padding: 16,
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
-  optionContent: {
+  checkboxContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    flex: 1,
   },
-  emoji: {
-    fontSize: 28,
-  },
-  optionLabel: {
-    fontSize: 18, // Mudança: 17 → 18px (match Shotsy)
-    fontWeight: '500',
-  },
-  selectedCount: {
-    padding: 12,
+  checkbox: {
+    width: 24,
+    height: 24,
     borderRadius: 12,
+    borderWidth: 2,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  selectedCountText: {
-    fontSize: 14,
-    fontWeight: '600',
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
   },
 });

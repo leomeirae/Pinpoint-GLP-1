@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Linking, Platform } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyCard } from '@/components/ui/shotsy-card';
 import { ShotsyButton } from '@/components/ui/shotsy-button';
 import { createLogger } from '@/lib/logger';
@@ -14,7 +14,7 @@ interface AppRatingScreenProps {
 }
 
 export function AppRatingScreen({ onNext, onBack }: AppRatingScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
 
   const handleRateNow = async () => {
     const appStoreUrl = Platform.select({

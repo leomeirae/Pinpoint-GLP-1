@@ -1,138 +1,113 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
-import { ShotsyCard } from '@/components/ui/shotsy-card';
-import { Picker } from '@react-native-picker/picker';
-import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 
 interface CurrentWeightScreenProps {
-  onNext: (data: { currentWeight: number; weightUnit: 'kg' | 'lb' }) => void;
+  onNext: (data: { currentWeight: number; weightUnit: 'kg' }) => void;
   onBack: () => void;
 }
 
-// Gerar arrays para o picker
-const generateWholeNumbers = (min: number, max: number) =>
-  Array.from({ length: max - min + 1 }, (_, i) => i + min);
-
-const DECIMALS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const UNITS = ['kg', 'lb'] as const;
+// V0 Design: Simple range 50-150kg
+const WEIGHT_RANGE_KG = Array.from({ length: 100 }, (_, i) => 50 + i); // 50-150kg
 
 export function CurrentWeightScreen({ onNext, onBack }: CurrentWeightScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
-
-  // Estado: 3 valores separados (inteiro, decimal, unidade)
-  const [wholeNumber, setWholeNumber] = useState(75);
-  const [decimal, setDecimal] = useState(0);
-  const [unit, setUnit] = useState<'kg' | 'lb'>('kg');
+  const [weight, setWeight] = useState<number | null>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const handleNext = () => {
-    const weight = wholeNumber + decimal / 10;
-    onNext({ currentWeight: weight, weightUnit: unit });
+    if (weight !== null) {
+      onNext({ currentWeight: weight, weightUnit: 'kg' });
+    }
   };
 
-  const isValid = wholeNumber > 0;
+  // Scroll to selected weight on mount
+  useEffect(() => {
+    if (weight !== null) {
+      const timer = setTimeout(() => {
+        const index = WEIGHT_RANGE_KG.indexOf(weight);
+        if (index !== -1 && scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({
+            y: index * 48 - 104, // Center the item
+            animated: false,
+          });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [weight]);
+
+  const handleWeightChange = (value: number) => {
+    Haptics.selectionAsync();
+    setWeight(value);
+    // Scroll to selected weight
+    const index = WEIGHT_RANGE_KG.indexOf(value);
+    if (index !== -1 && scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        y: index * 48 - 104,
+        animated: true,
+      });
+    }
+  };
 
   return (
     <OnboardingScreenBase
-      title="Qual é o seu peso atual?"
-      subtitle="Essa será a base para acompanhar seu progresso"
+      title="Seu peso atual"
+      subtitle="Agora vamos registrar seu peso atual, para que possamos acompanhar seu progresso."
       onNext={handleNext}
       onBack={onBack}
-      disableNext={!isValid}
+      disableNext={weight === null}
+      progress={35}
     >
       <View style={styles.content}>
-        <ShotsyCard variant="elevated" style={styles.pickerCard}>
-          <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>Peso atual</Text>
-
-          {/* Container dos 3 pickers com fade effects */}
+        {/* Weight Picker - V0 Design */}
           <View style={styles.pickerContainer}>
-            {/* Top Fade */}
-            <LinearGradient
-              colors={[colors.card, 'transparent']}
-              style={styles.fadeTop}
-              pointerEvents="none"
-            />
-
-            <View style={styles.pickersRow}>
-              {/* Picker 1: Parte inteira (30-200 kg ou 66-440 lb) */}
-              <View style={styles.pickerColumn}>
-                <Picker
-                  selectedValue={wholeNumber}
-                  onValueChange={(value) => {
-                    setWholeNumber(value);
-                    Haptics.selectionAsync();
-                  }}
-                  itemStyle={[styles.pickerItem, { color: colors.text }]}
+          <ScrollView
+            ref={scrollViewRef}
+            style={styles.pickerScroll}
+            contentContainerStyle={styles.pickerContent}
+            showsVerticalScrollIndicator={false}
+            snapToInterval={48}
+            decelerationRate="fast"
+            onMomentumScrollEnd={(event) => {
+              const offsetY = event.nativeEvent.contentOffset.y;
+              const index = Math.round((offsetY + 104) / 48);
+              if (index >= 0 && index < WEIGHT_RANGE_KG.length) {
+                handleWeightChange(WEIGHT_RANGE_KG[index]);
+              }
+            }}
+          >
+            {WEIGHT_RANGE_KG.map((w) => {
+              const isSelected = w === weight;
+              return (
+                <TouchableOpacity
+                  key={w}
+                  style={styles.pickerItem}
+                  onPress={() => handleWeightChange(w)}
                 >
-                  {generateWholeNumbers(unit === 'kg' ? 30 : 66, unit === 'kg' ? 200 : 440).map(
-                    (num) => (
-                      <Picker.Item key={num} label={`${num}`} value={num} />
-                    )
-                  )}
-                </Picker>
-              </View>
-
-              {/* Picker 2: Parte decimal (.0 - .9) */}
-              <View style={styles.pickerColumn}>
-                <Picker
-                  selectedValue={decimal}
-                  onValueChange={(value) => {
-                    setDecimal(value);
-                    Haptics.selectionAsync();
-                  }}
-                  itemStyle={[styles.pickerItem, { color: colors.text }]}
+                  <Text
+                    style={[
+                      styles.pickerText,
+                      {
+                        color: isSelected ? colors.text : colors.textMuted,
+                        fontSize: isSelected ? 24 : 20,
+                        fontWeight: isSelected ? '700' : '400',
+                      },
+                    ]}
                 >
-                  {DECIMALS.map((dec) => (
-                    <Picker.Item key={dec} label={`.${dec}`} value={dec} />
-                  ))}
-                </Picker>
-              </View>
-
-              {/* Picker 3: Unidade (kg/lb) */}
-              <View style={styles.pickerColumn}>
-                <Picker
-                  selectedValue={unit}
-                  onValueChange={(value) => {
-                    setUnit(value);
-                    // Ajustar wholeNumber se mudar de unidade
-                    if (value === 'lb' && wholeNumber < 66) {
-                      setWholeNumber(165); // ~75kg
-                    } else if (value === 'kg' && wholeNumber > 200) {
-                      setWholeNumber(75);
-                    }
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  }}
-                  itemStyle={[styles.pickerItem, { color: colors.text }]}
-                >
-                  {UNITS.map((u) => (
-                    <Picker.Item key={u} label={u} value={u} />
-                  ))}
-                </Picker>
-              </View>
-            </View>
-
-            {/* Bottom Fade */}
-            <LinearGradient
-              colors={['transparent', colors.card]}
-              style={styles.fadeBottom}
-              pointerEvents="none"
-            />
+                    {w}kg
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+          {/* Selection Indicator */}
+          <View style={[styles.selectionIndicator, { backgroundColor: colors.backgroundSecondary }]} />
           </View>
-        </ShotsyCard>
-
-        <Text style={styles.emoji}>⚖️</Text>
-
-        <ShotsyCard style={styles.tipCard}>
-          <Text style={styles.tipEmoji}>💡</Text>
-          <Text style={[styles.tipText, { color: colors.textSecondary }]}>
-            Para resultados mais precisos, pese-se sempre no mesmo horário, de preferência pela
-            manhã, após ir ao banheiro.
-          </Text>
-        </ShotsyCard>
       </View>
     </OnboardingScreenBase>
   );
@@ -140,66 +115,38 @@ export function CurrentWeightScreen({ onNext, onBack }: CurrentWeightScreenProps
 
 const styles = StyleSheet.create({
   content: {
-    gap: 24,
-  },
-  pickerCard: {
-    padding: 20,
-  },
-  inputLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 12,
-    textAlign: 'center',
+    gap: 32,
+    paddingHorizontal: 24,
   },
   pickerContainer: {
-    height: 200,
     position: 'relative',
-    overflow: 'hidden',
+    height: 256,
+    marginBottom: 32,
   },
-  pickersRow: {
-    flexDirection: 'row',
-    height: '100%',
-  },
-  pickerColumn: {
+  pickerScroll: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  pickerContent: {
+    alignItems: 'center',
+    paddingVertical: 104, // Center the items
   },
   pickerItem: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  fadeTop: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 40,
-    zIndex: 1,
-  },
-  fadeBottom: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 40,
-    zIndex: 1,
-  },
-  emoji: {
-    fontSize: 64,
-    textAlign: 'center',
-  },
-  tipCard: {
-    padding: 16,
-    flexDirection: 'row',
-    gap: 12,
+    height: 48,
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 8,
   },
-  tipEmoji: {
+  pickerText: {
     fontSize: 24,
   },
-  tipText: {
-    flex: 1,
-    fontSize: 14,
-    lineHeight: 20,
+  selectionIndicator: {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    height: 48,
+    marginTop: -24,
+    borderRadius: 12,
+    zIndex: -1,
   },
 });

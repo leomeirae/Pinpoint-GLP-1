@@ -1,0 +1,19 @@
+name: Babel Config Check
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  check-babel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Check Babel Config
+        run: node scripts/check-babel-config.js
+

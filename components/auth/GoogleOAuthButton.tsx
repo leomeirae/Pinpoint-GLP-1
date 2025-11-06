@@ -6,6 +6,7 @@ import * as AuthSession from 'expo-auth-session';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
 import { useColors } from '@/constants/colors';
 import { FontAwesome } from '@expo/vector-icons';
+import { trackEvent } from '@/lib/analytics';
 
 // Handle any pending authentication sessions
 import * as WebBrowser from 'expo-web-browser';
@@ -50,8 +51,23 @@ export function GoogleOAuthButton({ mode = 'signin' }: GoogleOAuthButtonProps) {
           },
         });
 
-        // Navigate to home after successful login
-        router.replace('/(tabs)');
+        // Wait for user creation in Supabase before navigation
+        // This prevents race condition where user data isn't ready yet
+        logger.info('OAuth successful, waiting for user sync');
+        trackEvent('oauth_login_started', {
+          provider: 'google',
+          mode,
+        });
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        // Navigate to root and let the root router decide based on onboarding status
+        // This ensures new users are directed to onboarding, not dashboard
+        logger.info('Redirecting to root for auth guard evaluation');
+        trackEvent('oauth_login_complete', {
+          provider: 'google',
+          mode,
+        });
+        router.replace('/');
       } else {
         // If there is no createdSessionId, there are missing requirements
         logger.info('OAuth requires additional steps');

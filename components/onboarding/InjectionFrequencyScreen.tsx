@@ -1,104 +1,89 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 import { Ionicons } from '@expo/vector-icons';
 
 interface InjectionFrequencyScreenProps {
-  onNext: (data: { frequency: number }) => void;
+  onNext: (data: { frequency: string }) => void;
   onBack: () => void;
 }
 
+// V0 Design: Simple list with specific options
 const frequencies = [
-  { id: '7', label: 'Uma vez por semana', days: 7 },
-  { id: '5', label: 'A cada 5 dias', days: 5 },
-  { id: '3.5', label: 'Duas vezes por semana', days: 3.5 },
-  { id: 'custom', label: 'Personalizado', days: 0 },
+  'Todos os dias',
+  'A cada 7 dias (mais comum)',
+  'A cada 14 dias',
+  'Personalizado',
+  'Não tenho certeza, ainda estou descobrindo',
 ];
 
 export function InjectionFrequencyScreen({ onNext, onBack }: InjectionFrequencyScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
-  const [customDays, setCustomDays] = useState('');
 
   const handleNext = () => {
-    if (selected === 'custom' && customDays) {
-      const days = parseFloat(customDays);
-      if (!isNaN(days) && days > 0) {
-        onNext({ frequency: days });
-      }
-    } else if (selected) {
-      const freq = frequencies.find((f) => f.id === selected);
-      if (freq) {
-        onNext({ frequency: freq.days });
-      }
+    if (selected) {
+      onNext({ frequency: selected });
     }
   };
 
-  const isValid =
-    selected === 'custom'
-      ? customDays && !isNaN(parseFloat(customDays)) && parseFloat(customDays) > 0
-      : selected !== null;
+  const isValid = selected !== null;
 
   return (
     <OnboardingScreenBase
-      title="Com que frequência você aplica?"
-      subtitle="Selecione o intervalo entre suas aplicações"
+      title="Com que frequência você tomará suas injeções?"
+      subtitle="Escolha 'Não tenho certeza' se você ainda não souber. Você poderá editar isso depois."
       onNext={handleNext}
       onBack={onBack}
       disableNext={!isValid}
+      progress={70}
     >
       <View style={styles.content}>
-        {frequencies.map((freq) => (
-          <View key={freq.id}>
+        {frequencies.map((freq) => {
+          const isSelected = selected === freq;
+          return (
             <TouchableOpacity
+              key={freq}
               style={[
                 styles.option,
                 {
-                  backgroundColor: colors.card,
-                  borderColor: selected === freq.id ? currentAccent : colors.border,
-                  borderWidth: selected === freq.id ? 2 : 1,
+                  backgroundColor: isSelected ? '#1F2937' : colors.backgroundSecondary,
                 },
               ]}
-              onPress={() => setSelected(freq.id)}
+              onPress={() => setSelected(freq)}
             >
-              <View style={styles.optionContent}>
-                <View style={styles.optionText}>
-                  <Text style={[styles.optionTitle, { color: colors.text }]}>{freq.label}</Text>
+              <View style={styles.radioContainer}>
+                {isSelected ? (
+                  <View style={[styles.checkCircle, { backgroundColor: colors.primary }]}>
+                    <Ionicons name="checkmark" size={16} color="#FFFFFF" />
                 </View>
-              </View>
-              {selected === freq.id && (
-                <Ionicons name="checkmark-circle" size={24} color={currentAccent} />
-              )}
-            </TouchableOpacity>
-
-            {freq.id === 'custom' && selected === 'custom' && (
+                ) : (
               <View
                 style={[
-                  styles.customInput,
-                  { backgroundColor: colors.card, borderColor: colors.border },
+                      styles.radio,
+                      {
+                        borderColor: colors.border,
+                      },
                 ]}
-              >
-                <Text style={[styles.customLabel, { color: colors.textSecondary }]}>
-                  A cada quantos dias?
-                </Text>
-                <View style={styles.inputRow}>
-                  <TextInput
-                    style={[styles.input, { color: colors.text, borderColor: colors.border }]}
-                    value={customDays}
-                    onChangeText={setCustomDays}
-                    keyboardType="decimal-pad"
-                    placeholder="7"
-                    placeholderTextColor={colors.textMuted}
                   />
-                  <Text style={[styles.inputSuffix, { color: colors.textSecondary }]}>dias</Text>
-                </View>
+                )}
+                <Text
+                  style={[
+                    styles.optionLabel,
+                    {
+                      color: isSelected ? '#FFFFFF' : colors.text,
+                    },
+                  ]}
+                >
+                  {freq}
+                </Text>
               </View>
-            )}
-          </View>
-        ))}
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </OnboardingScreenBase>
   );
@@ -107,52 +92,38 @@ export function InjectionFrequencyScreen({ onNext, onBack }: InjectionFrequencyS
 const styles = StyleSheet.create({
   content: {
     gap: 12,
+    paddingHorizontal: 24,
+    paddingTop: 8, // Extra padding to avoid overlap with back button
   },
   option: {
-    borderRadius: 16, // Mudança: 12 → 16px (match Shotsy)
-    paddingVertical: 20, // Mudança: separar padding vertical
-    paddingHorizontal: 16, // Mudança: padding horizontal explícito
-    minHeight: 72, // Mudança: 60 → 72px (match Shotsy)
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  optionContent: {
-    flex: 1,
+    borderRadius: 16,
+    padding: 20,
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  optionText: {
+  radioContainer: {
     flex: 1,
-  },
-  optionTitle: {
-    fontSize: 18, // Mudança: 17 → 18px (match Shotsy)
-    fontWeight: '600',
-  },
-  customInput: {
-    marginTop: 12,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  customLabel: {
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    fontWeight: '600',
+  radio: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
   },
-  inputSuffix: {
+  checkCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  optionLabel: {
     fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
   },
 });

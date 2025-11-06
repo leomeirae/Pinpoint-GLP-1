@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
-import { ShotsyCard } from '@/components/ui/shotsy-card';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
 
 interface WeightDataPoint {
   date: Date;
   weight: number;
+  dosage?: number; // Optional dosage for tooltip
 }
 
 interface WeightChartProps {
@@ -17,16 +17,11 @@ interface WeightChartProps {
 }
 
 export const WeightChart: React.FC<WeightChartProps> = ({ data, targetWeight, periodFilter }) => {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const { width } = useWindowDimensions();
-  const [selectedPoint, setSelectedPoint] = useState<{
-    index: number;
-    value: number;
-    date: Date;
-  } | null>(null);
 
-  // Filtrar dados baseado no período
+  // Filter data based on period
   const filteredData = useMemo(() => {
     const now = new Date();
     switch (periodFilter) {
@@ -44,252 +39,122 @@ export const WeightChart: React.FC<WeightChartProps> = ({ data, targetWeight, pe
     }
   }, [data, periodFilter]);
 
-  // Calculate trend line using linear regression
-  const trendLine = useMemo(() => {
-    if (filteredData.length < 2) return null;
+  // Prepare chart data - V0 Design: Format dates as "Mar 2025"
+  const chartData = useMemo(() => {
+    const weights = filteredData.map((d) => d.weight);
+    const labels = filteredData.map((d) => {
+      // V0 Design: Format as "Mar 2025"
+      return d.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    });
 
-    const n = filteredData.length;
-    const xValues = filteredData.map((_, i) => i);
-    const yValues = filteredData.map((d) => d.weight);
-
-    const sumX = xValues.reduce((a, b) => a + b, 0);
-    const sumY = yValues.reduce((a, b) => a + b, 0);
-    const sumXY = xValues.reduce((sum, x, i) => sum + x * yValues[i], 0);
-    const sumX2 = xValues.reduce((sum, x) => sum + x * x, 0);
-
-    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    const intercept = (sumY - slope * sumX) / n;
-
-    return xValues.map((x) => slope * x + intercept);
+    return {
+      labels,
+      datasets: [
+        {
+          data: weights,
+        },
+      ],
+    };
   }, [filteredData]);
 
-  // Calculate average weekly loss for projection
-  const avgWeeklyLoss = useMemo(() => {
-    if (filteredData.length < 2) return 0.5;
-    const firstWeight = filteredData[filteredData.length - 1].weight;
-    const lastWeight = filteredData[0].weight;
-    const timeDiff =
-      filteredData[0].date.getTime() - filteredData[filteredData.length - 1].date.getTime();
-    const weeks = timeDiff / (7 * 24 * 60 * 60 * 1000);
-    return weeks > 0 ? (firstWeight - lastWeight) / weeks : 0.5;
+  // Calculate Y-axis domain - V0 Design: Fixed domain based on data range
+  const yDomain = useMemo(() => {
+    if (filteredData.length === 0) return [0, 100];
+    const weights = filteredData.map((d) => d.weight);
+    const min = Math.min(...weights);
+    const max = Math.max(...weights);
+    const padding = (max - min) * 0.1; // 10% padding
+    return [Math.max(0, min - padding), max + padding];
   }, [filteredData]);
 
-  // Preparar dados para o gráfico
-  const weights = filteredData.map((d) => d.weight);
-  const labels = filteredData.map((d) => {
-    const day = d.date.getDate();
-    const month = d.date.getMonth() + 1;
-    return `${day}/${month}`;
-  });
-
-  const hasData = weights.length > 0;
+  const hasData = filteredData.length > 0;
 
   if (!hasData) {
     return (
-      <ShotsyCard style={styles.card}>
-        <Text style={[styles.title, { color: colors.text }]}>Evolução de Peso</Text>
-        <View style={styles.emptyState}>
-          <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>
-            Ainda não há dados suficientes para montar o gráfico.
+      <View style={[styles.emptyChart, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Text style={[styles.emptyText, { color: colors.textMuted }]}>
+          Nenhum dado de peso disponível
           </Text>
         </View>
-      </ShotsyCard>
     );
   }
 
-  // Handle data point tap
-  const handleDataPointClick = (data: any) => {
-    const index = data.index;
-    if (index < weights.length) {
-      setSelectedPoint({
-        index,
-        value: weights[index],
-        date: filteredData[index].date,
-      });
-    }
-  };
+  const chartWidth = width - 96; // Account for padding
+  const chartHeight = 300; // V0 Design: 300px height
 
-  // Adicionar projeção até a meta
-  const lastWeight = weights[weights.length - 1];
-  const weeksToGoal =
-    avgWeeklyLoss > 0 ? Math.ceil((lastWeight - targetWeight) / avgWeeklyLoss) : 0;
-
-  // Adicionar pontos de projeção (máximo 12 semanas)
-  const projectionWeights = [];
-  for (let i = 1; i <= Math.min(weeksToGoal, 12); i++) {
-    projectionWeights.push(Math.max(lastWeight - avgWeeklyLoss * i, targetWeight));
-  }
-
-  // Prepare datasets with trend line and goal line
-  const datasets: any[] = [
-    {
-      data: [...weights, ...projectionWeights],
-      color: () => currentAccent,
-      strokeWidth: 3,
-    },
-  ];
-
-  // Add trend line dataset
-  if (trendLine) {
-    datasets.push({
-      data: [
-        ...trendLine,
-        ...Array(projectionWeights.length).fill(trendLine[trendLine.length - 1]),
-      ],
-      color: () => colors.textSecondary + '40',
-      strokeWidth: 2,
-      withDots: false,
-    });
-  }
-
-  // Add goal line (horizontal line at target weight)
-  const goalLineData = Array(weights.length + projectionWeights.length).fill(targetWeight);
-  datasets.push({
-    data: goalLineData,
-    color: () => colors.success,
-    strokeWidth: 2,
-    withDots: false,
-    strokeDasharray: [5, 5],
-  });
-
-  const chartData = {
-    labels: [...labels, ...Array(projectionWeights.length).fill('')],
-    datasets,
-  };
+  // V0 Design: Cyan color (#06b6d4) - using currentAccent which should be cyan
+  const chartColor = currentAccent || '#06b6d4';
 
   return (
-    <ShotsyCard style={styles.card}>
-      <Text style={[styles.title, { color: colors.text }]}>Evolução de Peso</Text>
-
-      {/* Selected Point Display */}
-      {selectedPoint && (
-        <TouchableOpacity
-          style={[styles.selectedPointBanner, { backgroundColor: colors.background }]}
-          onPress={() => setSelectedPoint(null)}
-        >
-          <Text style={[styles.selectedPointWeight, { color: currentAccent }]}>
-            {selectedPoint.value.toFixed(1)} kg
-          </Text>
-          <Text style={[styles.selectedPointDate, { color: colors.textSecondary }]}>
-            {new Intl.DateTimeFormat('pt-BR', {
-              day: '2-digit',
-              month: 'long',
-              year: 'numeric',
-            }).format(selectedPoint.date)}
-          </Text>
-        </TouchableOpacity>
-      )}
-
+    <View style={[styles.chartContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <LineChart
         data={chartData}
-        width={width - 64}
-        height={220}
+        width={chartWidth}
+        height={chartHeight}
         chartConfig={{
           backgroundColor: colors.card,
           backgroundGradientFrom: colors.card,
           backgroundGradientTo: colors.card,
           decimalPlaces: 1,
-          color: () => currentAccent,
-          labelColor: () => colors.textSecondary,
+          color: () => chartColor, // V0 Design: Cyan (#06b6d4)
+          labelColor: () => colors.textMuted, // V0 Design: Gray (#999)
           style: {
             borderRadius: 16,
           },
           propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: currentAccent,
+            r: '4', // V0 Design: radius 4
+            strokeWidth: '0',
+            stroke: chartColor,
+            fill: chartColor,
           },
           propsForBackgroundLines: {
-            strokeDasharray: '',
-            stroke: colors.border,
+            strokeDasharray: '3 3', // V0 Design: Dashed grid
+            stroke: colors.border, // V0 Design: Light gray (#f0f0f0)
             strokeWidth: 1,
           },
         }}
-        bezier
+        bezier={false} // V0 Design: Straight line (monotone)
         style={styles.chart}
         withInnerLines={true}
         withOuterLines={false}
         withVerticalLabels={true}
         withHorizontalLabels={true}
         segments={4}
-        onDataPointClick={handleDataPointClick}
+        // V0 Design: Custom tooltip showing weight and dosage
+        decorator={() => {
+          return null; // Tooltip is handled by react-native-chart-kit
+        }}
+        formatYLabel={(value) => {
+          return parseFloat(value).toFixed(0);
+        }}
+        formatXLabel={(value) => {
+          return value; // Already formatted as "Mar 2025"
+        }}
       />
-      <View style={styles.legend}>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: currentAccent }]} />
-          <Text style={[styles.legendText, { color: colors.textSecondary }]}>Peso atual</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View
-            style={[styles.legendDot, { backgroundColor: colors.textSecondary, opacity: 0.25 }]}
-          />
-          <Text style={[styles.legendText, { color: colors.textSecondary }]}>Tendência</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: colors.success }]} />
-          <Text style={[styles.legendText, { color: colors.textSecondary }]}>
-            Meta ({targetWeight.toFixed(1)} kg)
-          </Text>
-        </View>
       </View>
-    </ShotsyCard>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  chartContainer: {
+    borderRadius: 16,
+    borderWidth: 1,
     padding: 16,
     marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 16,
-  },
-  selectedPointBanner: {
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  selectedPointWeight: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  selectedPointDate: {
-    fontSize: 13,
   },
   chart: {
     marginVertical: 8,
     borderRadius: 16,
   },
-  legend: {
-    flexDirection: 'row',
+  emptyChart: {
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 24,
+    minHeight: 300,
     justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: 16,
-    marginTop: 12,
-  },
-  legendItem: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
   },
-  legendDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  legendText: {
-    fontSize: 11,
-  },
-  emptyState: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 32,
-  },
-  emptyStateText: {
+  emptyText: {
     fontSize: 14,
     textAlign: 'center',
   },

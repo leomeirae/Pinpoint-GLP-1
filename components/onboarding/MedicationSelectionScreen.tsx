@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { OnboardingScreenBase } from './OnboardingScreenBase';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useTheme } from '@/lib/theme-context';
-import { Ionicons } from '@expo/vector-icons';
 
 interface MedicationSelectionScreenProps {
   onNext: (data: { medication: string }) => void;
   onBack: () => void;
 }
 
-const medications = [
-  { id: 'zepbound', name: 'Zepbound®', description: 'Tirzepatida para perda de peso' },
-  { id: 'mounjaro', name: 'Mounjaro®', description: 'Tirzepatida para diabetes tipo 2' },
-  { id: 'ozempic', name: 'Ozempic®', description: 'Semaglutida para diabetes tipo 2' },
-  { id: 'wegovy', name: 'Wegovy®', description: 'Semaglutida para perda de peso' },
-  { id: 'tirzepatide', name: 'Tirzepatida', description: 'Genérico ou manipulado' },
-  { id: 'semaglutide', name: 'Semaglutida', description: 'Genérico ou manipulado' },
-];
+const medications = ['Zepbound®', 'Mounjaro®', 'Ozempic®', 'Wegovy®', 'Tirzepatida', 'Semaglutida'];
 
 export function MedicationSelectionScreen({ onNext, onBack }: MedicationSelectionScreenProps) {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const { currentAccent } = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -33,36 +25,41 @@ export function MedicationSelectionScreen({ onNext, onBack }: MedicationSelectio
   return (
     <OnboardingScreenBase
       title="Qual medicamento com GLP-1 você planeja usar?"
-      subtitle="Selecione o medicamento que você está tomando ou vai tomar"
+      subtitle="Se não tiver certeza, escolha a opção mais provável. Você pode mudar depois."
       onNext={handleNext}
       onBack={onBack}
       disableNext={!selected}
+      progress={40}
     >
       <View style={styles.content}>
         {medications.map((medication) => (
           <TouchableOpacity
-            key={medication.id}
+            key={medication}
             style={[
               styles.option,
               {
-                backgroundColor: colors.card,
-                borderColor: selected === medication.id ? currentAccent : colors.border,
-                borderWidth: selected === medication.id ? 2 : 1,
+                backgroundColor: colors.backgroundSecondary,
+                borderColor: selected === medication ? colors.primary : 'transparent',
+                borderWidth: selected === medication ? 2 : 0,
               },
             ]}
-            onPress={() => setSelected(medication.id)}
+            onPress={() => setSelected(medication)}
           >
-            <View style={styles.optionContent}>
-              <View style={styles.optionText}>
-                <Text style={[styles.optionTitle, { color: colors.text }]}>{medication.name}</Text>
-                <Text style={[styles.optionDescription, { color: colors.textSecondary }]}>
-                  {medication.description}
-                </Text>
+            <View style={styles.radioContainer}>
+              <View
+                style={[
+                  styles.radio,
+                  {
+                    borderColor: selected === medication ? colors.primary : colors.border,
+                  },
+                ]}
+              >
+                {selected === medication && (
+                  <View style={[styles.radioInner, { backgroundColor: colors.primary }]} />
+                )}
               </View>
+              <Text style={[styles.optionLabel, { color: colors.text }]}>{medication}</Text>
             </View>
-            {selected === medication.id && (
-              <Ionicons name="checkmark-circle" size={24} color={currentAccent} />
-            )}
           </TouchableOpacity>
         ))}
       </View>
@@ -73,31 +70,38 @@ export function MedicationSelectionScreen({ onNext, onBack }: MedicationSelectio
 const styles = StyleSheet.create({
   content: {
     gap: 12,
+    paddingHorizontal: 24,
   },
   option: {
-    borderRadius: 16, // Mudança: 12 → 16px (match Shotsy)
-    paddingVertical: 20, // Mudança: separar padding vertical
-    paddingHorizontal: 16, // Mudança: padding horizontal explícito
-    minHeight: 72, // Mudança: 60 → 72px (match Shotsy)
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  optionContent: {
-    flex: 1,
+    borderRadius: 16,
+    padding: 20,
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  optionText: {
+  radioContainer: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
-  optionTitle: {
-    fontSize: 18, // Mudança: 17 → 18px (match Shotsy)
-    fontWeight: '600',
-    marginBottom: 4, // Mudança: 2 → 4px (match Shotsy)
+  radio: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  optionDescription: {
-    fontSize: 13,
+  radioInner: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
     lineHeight: 18,
   },
 });

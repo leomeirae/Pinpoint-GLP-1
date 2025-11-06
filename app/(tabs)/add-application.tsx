@@ -13,11 +13,13 @@ import {
   FlatList,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useShotsyColors } from '@/hooks/useShotsyColors';
+import { Ionicons } from '@expo/vector-icons';
+import { useColors } from '@/hooks/useShotsyColors';
 import { useApplications } from '@/hooks/useApplications';
 import { useProfile } from '@/hooks/useProfile';
 import { useMedications } from '@/hooks/useMedications';
-import { EstimatedLevelsChart } from '@/components/dashboard/EstimatedLevelsChart';
+import { ForecastChart } from '@/components/application/ForecastChart';
+import { MedicationApplication } from '@/lib/pharmacokinetics';
 import Slider from '@react-native-community/slider';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
@@ -74,7 +76,7 @@ const DOSAGES = [
 ];
 
 export default function AddApplicationScreen() {
-  const colors = useShotsyColors();
+  const colors = useColors();
   const params = useLocalSearchParams();
   const isEditMode = !!params.editId;
 
@@ -334,7 +336,7 @@ export default function AddApplicationScreen() {
         </View>
 
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-          {/* DATA */}
+          {/* DATA - V0 Design */}
           <View style={styles.section}>
             <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>DATA</Text>
             <View
@@ -343,16 +345,50 @@ export default function AddApplicationScreen() {
                 { backgroundColor: colors.card, borderColor: colors.border },
               ]}
             >
-              <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateInput}>
-                <Text style={[styles.dateInputText, { color: colors.text }]}>
-                  {formatDate(data.date)}
-                </Text>
-                <Text style={{ color: colors.textSecondary }}>▼</Text>
-              </TouchableOpacity>
+              <View style={styles.dateNavigation}>
+                <TouchableOpacity
+                  onPress={() => {
+                    const newDate = new Date(data.date);
+                    newDate.setDate(newDate.getDate() - 1);
+                    setData({ ...data, date: newDate });
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                  style={styles.dateNavButton}
+                >
+                  <Ionicons name="chevron-back" size={20} color={colors.textMuted} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => setShowDatePicker(true)}
+                  style={styles.dateInput}
+                >
+                  <Text style={[styles.dateInputText, { color: colors.text }]}>
+                    {formatDate(data.date)}
+                  </Text>
+                  <Ionicons name="chevron-down" size={20} color={colors.text} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    const newDate = new Date(data.date);
+                    newDate.setDate(newDate.getDate() + 1);
+                    if (newDate <= new Date()) {
+                      setData({ ...data, date: newDate });
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    }
+                  }}
+                  style={styles.dateNavButton}
+                  disabled={data.date >= new Date()}
+                >
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={data.date >= new Date() ? colors.textMuted : colors.textMuted}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
-          {/* HORÁRIO */}
+          {/* HORÁRIO - V0 Design */}
           <View style={styles.section}>
             <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>HORÁRIO</Text>
             <View
@@ -362,14 +398,10 @@ export default function AddApplicationScreen() {
               ]}
             >
               <View style={styles.timeRow}>
-                <View style={styles.timeInput}>
-                  <Text style={[styles.timeInputText, { color: colors.text }]}>
-                    Tempo Decorrido
-                  </Text>
-                </View>
-                <Text style={[styles.timeValue, { color: colors.text }]}>
-                  {formatTimeElapsed()}
-                </Text>
+                <Text style={[styles.timeInputText, { color: colors.text }]}>Tempo Decorrido</Text>
+                <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+                  <Text style={[styles.timeValue, { color: colors.text }]}>{formatTime(data.date)}</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -378,7 +410,7 @@ export default function AddApplicationScreen() {
           <View style={styles.section}>
             <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>DETALHES</Text>
 
-            {/* Nome do Medicamento */}
+            {/* Nome do Medicamento - V0 Design */}
             <View
               style={[
                 styles.detailRow,
@@ -393,11 +425,11 @@ export default function AddApplicationScreen() {
                 <Text style={[styles.detailValueText, { color: colors.primary }]}>
                   {getMedicationName()}
                 </Text>
-                <Text style={{ color: colors.textSecondary }}>▼</Text>
+                <Ionicons name="chevron-down" size={16} color={colors.primary} />
               </TouchableOpacity>
             </View>
 
-            {/* Dosagem */}
+            {/* Dosagem - V0 Design */}
             <View
               style={[
                 styles.detailRow,
@@ -408,7 +440,10 @@ export default function AddApplicationScreen() {
               <TouchableOpacity style={styles.detailValue} onPress={() => setShowDosageModal(true)}>
                 {data.dosage ? (
                   <View
-                    style={[styles.dosageTag, { backgroundColor: getDosageColor(data.dosage) }]}
+                    style={[
+                      styles.dosageTag,
+                      { backgroundColor: '#4B5563' }, // V0 Design: gray-600
+                    ]}
                   >
                     <Text style={styles.dosageTagText}>{data.dosage}mg</Text>
                   </View>
@@ -417,11 +452,11 @@ export default function AddApplicationScreen() {
                     Selecione
                   </Text>
                 )}
-                <Text style={{ color: colors.textSecondary }}>▼</Text>
+                <Ionicons name="chevron-down" size={16} color={colors.text} />
               </TouchableOpacity>
             </View>
 
-            {/* Local de Injeção */}
+            {/* Local de Injeção - V0 Design */}
             <View
               style={[
                 styles.detailRow,
@@ -430,44 +465,49 @@ export default function AddApplicationScreen() {
             >
               <Text style={[styles.detailLabel, { color: colors.text }]}>Local de Injeção</Text>
               <TouchableOpacity
-                style={styles.detailValue}
+                style={[styles.detailValue, styles.detailValueRight]}
                 onPress={() => setShowInjectionSiteModal(true)}
               >
                 <Text
                   style={[
                     styles.detailValueText,
                     { color: data.injectionSite ? colors.primary : colors.textSecondary },
+                    styles.detailValueTextRight,
                   ]}
+                  numberOfLines={1}
                 >
                   {data.injectionSite ? getInjectionSiteName() : 'Selecione'}
                 </Text>
-                <Text style={{ color: colors.textSecondary }}>▼</Text>
+                <Ionicons name="chevron-down" size={16} color={colors.primary} />
               </TouchableOpacity>
             </View>
 
-            {/* Nível de Dor */}
+            {/* Nível de Dor - V0 Design */}
             <View
               style={[
                 styles.detailRow,
                 { backgroundColor: colors.card, borderColor: colors.border },
               ]}
             >
-              <Text style={[styles.detailLabel, { color: colors.text }]}>Nível de Dor</Text>
-              <View style={styles.painSliderContainer}>
-                <Slider
-                  style={styles.painSlider}
-                  minimumValue={0}
-                  maximumValue={10}
-                  value={data.painLevel}
-                  onValueChange={(value) => setData({ ...data, painLevel: value })}
-                  minimumTrackTintColor={colors.primary}
-                  maximumTrackTintColor={colors.border}
-                  thumbTintColor={colors.primary}
-                />
-                <Text style={[styles.painValue, { color: colors.primary }]}>
+              <View style={styles.painLevelContainer}>
+                <Text style={[styles.detailLabel, { color: colors.text }]}>Nível de Dor</Text>
+                <Text style={[styles.painValue, { color: colors.text }]}>
                   {Math.round(data.painLevel)}
                 </Text>
               </View>
+              <Slider
+                style={styles.painSlider}
+                minimumValue={0}
+                maximumValue={10}
+                value={data.painLevel}
+                onValueChange={(value) => {
+                  setData({ ...data, painLevel: value });
+                  Haptics.selectionAsync();
+                }}
+                minimumTrackTintColor={colors.primary}
+                maximumTrackTintColor={colors.border}
+                thumbTintColor={colors.primary}
+              />
             </View>
           </View>
 
@@ -483,22 +523,15 @@ export default function AddApplicationScreen() {
                   { backgroundColor: colors.card, borderColor: colors.border },
                 ]}
               >
-                <EstimatedLevelsChart
-                  applications={[
-                    {
-                      id: 'preview',
-                      user_id: '',
-                      date: data.date,
-                      dosage: data.dosage || 0,
-                      injection_sites: [],
-                      side_effects: [],
-                      notes: '',
-                      created_at: data.date,
-                      updated_at: data.date,
-                    },
-                    ...applications,
-                  ]}
-                  period="week"
+                <ForecastChart
+                  dosage={data.dosage}
+                  date={data.date}
+                  existingApplications={applications.map(
+                    (app): MedicationApplication => ({
+                      dose: app.dosage,
+                      date: new Date(app.date),
+                    })
+                  )}
                 />
               </View>
             </View>
@@ -754,40 +787,49 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 16,
   },
-  dateInput: {
+  dateNavigation: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  dateNavButton: {
+    padding: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dateInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flex: 1,
+    justifyContent: 'center',
+  },
   dateInputText: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '600',
   },
   timeRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  timeInput: {
-    flex: 1,
-  },
   timeInputText: {
     fontSize: 16,
     fontWeight: '500',
   },
   timeValue: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
   },
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minHeight: 56, // Adicionar minHeight para touch target adequado
+    minHeight: 56,
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    marginBottom: 8,
+    marginBottom: 0,
   },
   detailLabel: {
     fontSize: 16,
@@ -797,37 +839,44 @@ const styles = StyleSheet.create({
   detailValue: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
+  },
+  detailValueRight: {
+    maxWidth: '50%',
+    flex: 1,
+    justifyContent: 'flex-end',
   },
   detailValueText: {
     fontSize: 16,
     fontWeight: '600',
   },
+  detailValueTextRight: {
+    textAlign: 'right',
+  },
   dosageTag: {
-    paddingHorizontal: 8, // Mudança: 12 → 8px (Shotsy badge padding)
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 8,
   },
   dosageTagText: {
-    color: '#FFFFFF', // Always white for contrast on colored dosage badges
+    color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '600',
   },
-  painSliderContainer: {
+  painLevelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    flex: 1,
+    justifyContent: 'space-between',
+    marginBottom: 12,
+    width: '100%',
   },
   painSlider: {
-    flex: 1,
-    height: 40,
+    width: '100%',
+    height: 8,
   },
   painValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    minWidth: 30,
-    textAlign: 'right',
+    fontSize: 24,
+    fontWeight: '700',
   },
   chartContainer: {
     borderRadius: 12,

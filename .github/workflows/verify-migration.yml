@@ -1,0 +1,30 @@
+name: Verify Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      migration_number:
+        description: 'Migration number to verify'
+        required: true
+        type: string
+
+permissions:
+  contents: read  # Minimal permissions - read-only
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Verify Migration
+        env:
+          # Use masked secrets - never commit these values
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/verify-migration-011.js
+        # Secrets are automatically masked in logs
+

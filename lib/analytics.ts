@@ -51,8 +51,22 @@ export type AnalyticsEvent =
   // Carousel
   | 'carousel_view'
   | 'carousel_slide_view'
+  | 'welcome_carousel_next'
   | 'cta_start_click'
-  | 'legal_open';
+  | 'legal_open'
+  // Authentication
+  | 'oauth_login_started'
+  | 'oauth_login_complete'
+  | 'oauth_login_failed'
+  | 'auth_guard_evaluation'
+  | 'user_sync_started'
+  | 'user_sync_complete'
+  | 'user_sync_failed'
+  | 'sign_out_started'
+  | 'sign_out_complete'
+  | 'account_deletion_started'
+  | 'account_deletion_complete'
+  | 'account_deletion_failed';
 
 /**
  * Propriedades tipadas para eventos de analytics

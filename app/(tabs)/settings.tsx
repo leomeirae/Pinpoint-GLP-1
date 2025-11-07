@@ -197,15 +197,15 @@ export default function SettingsScreen() {
   };
 
   const handleSupport = () => {
-    Linking.openURL('mailto:support@mounjarotracker.app?subject=Suporte Mounjaro Tracker');
+    Linking.openURL('mailto:support@pinpointglp1.app?subject=Suporte Pinpoint GLP-1');
   };
 
   const handlePrivacyPolicy = () => {
-    Linking.openURL('https://mounjarotracker.app/privacy');
+    Linking.openURL('https://pinpointglp1.app/privacy');
   };
 
   const handleTerms = () => {
-    Linking.openURL('https://mounjarotracker.app/terms');
+    Linking.openURL('https://pinpointglp1.app/terms');
   };
 
   // V0 Design: Settings items
@@ -289,7 +289,7 @@ export default function SettingsScreen() {
       icon: 'information-circle',
       label: 'Sobre este App',
       color: colors.textSecondary || '#6b7280',
-      onPress: () => Alert.alert('Mounjaro Tracker', 'Versão 1.0.0'),
+      onPress: () => Alert.alert('Pinpoint GLP-1', 'Versão 1.0.0'),
     },
     {
       icon: 'help-circle',

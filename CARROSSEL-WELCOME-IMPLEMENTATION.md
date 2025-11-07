@@ -2,7 +2,7 @@
 
 ## Resumo da Implementação
 
-Foi implementado um carrossel horizontal profissional na tela Welcome do Mounjaro Tracker, substituindo a imagem estática por um sistema completo de slides com navegação suave e feedback visual.
+Foi implementado um carrossel horizontal profissional na tela Welcome do Pinpoint GLP-1, substituindo a imagem estática por um sistema completo de slides com navegação suave e feedback visual.
 
 ## Arquivos Modificados
 
@@ -57,7 +57,7 @@ const CAROUSEL_SLIDES = [
     id: '1',
     image: require('imagem_1 (1).png'),
     title: 'Aproveite ao máximo seu medicamento GLP-1',
-    subtitle: 'Mounjaro Tracker foi projetado para ajudar você...'
+    subtitle: 'Pinpoint GLP-1 foi projetado para ajudar você...'
   },
   {
     id: '2',

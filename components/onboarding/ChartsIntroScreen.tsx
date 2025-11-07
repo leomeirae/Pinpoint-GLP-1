@@ -48,7 +48,7 @@ export function ChartsIntroScreen({ onNext, onBack }: ChartsIntroScreenProps) {
 
   return (
     <OnboardingScreenBase
-      title="Mounjaro Tracker pode ajudar você a entender sua jornada com Mounjaro® através de ferramentas educativas"
+      title="Pinpoint GLP-1 pode ajudar você a entender sua jornada com Mounjaro® através de ferramentas educativas"
       subtitle="Sinta-se mais confiante aprendendo mais sobre como esses medicamentos funcionam."
       onNext={onNext}
       onBack={onBack}
@@ -142,7 +142,7 @@ export function ChartsIntroScreen({ onNext, onBack }: ChartsIntroScreenProps) {
 
         {/* Caption - V0 Design */}
         <Text style={[styles.caption, { color: colors.textSecondary }]}>
-          Mounjaro Tracker usa resultados de ensaios clínicos publicados pela FDA para mapear os
+          Pinpoint GLP-1 usa resultados de ensaios clínicos publicados pela FDA para mapear os
           níveis estimados de medicação ao longo do tempo
         </Text>
       </View>

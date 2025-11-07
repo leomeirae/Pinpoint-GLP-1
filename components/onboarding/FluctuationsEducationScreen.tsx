@@ -31,7 +31,7 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
   return (
     <OnboardingScreenBase
       title="Supere seus dias mais difíceis."
-      subtitle="A jornada com GLP-1 pode ter altos e baixos. O Mounjaro Tracker vai ajudar você a entender as flutuações e como equilibrar os efeitos colaterais com o progresso."
+      subtitle="A jornada com GLP-1 pode ter altos e baixos. O Pinpoint GLP-1 vai ajudar você a entender as flutuações e como equilibrar os efeitos colaterais com o progresso."
       onNext={onNext}
       onBack={onBack}
       progress={65}
@@ -49,7 +49,7 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
                   ))}
             </View>
             </View>
-              <Text style={[styles.logoText, { color: colors.text }]}>Mounjaro Tracker</Text>
+              <Text style={[styles.logoText, { color: colors.text }]}>Pinpoint GLP-1</Text>
             </View>
             </View>
 
@@ -107,7 +107,7 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
           </View>
 
           <Text style={[styles.chartCaption, { color: colors.textSecondary }]}>
-            O Mounjaro Tracker estima níveis com base em médias, não em medições. Trabalhe com seu
+            O Pinpoint GLP-1 estima níveis com base em médias, não em medições. Trabalhe com seu
             médico para gerenciar os níveis de dosagem para seu corpo.
           </Text>
         </View>

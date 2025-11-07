@@ -27,7 +27,7 @@ const slides = [
     image: require('../../assets/imagens_carrossel_tela_inicial/imagem_1 (1).png'),
     title: 'Aproveite ao máximo seu medicamento GLP-1',
     subtitle:
-      'Mounjaro Tracker foi projetado para ajudar você a entender e acompanhar suas aplicações semanais.',
+      'Pinpoint GLP-1 foi projetado para ajudar você a entender e acompanhar suas aplicações semanais.',
     accessibilityLabel: 'Aproveite ao máximo seu medicamento GLP-1',
   },
   {
@@ -89,12 +89,12 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
 
   const handleOpenTerms = () => {
     trackEvent('legal_open', { which: 'terms' });
-    Linking.openURL('https://mounjarotracker.app/terms');
+    Linking.openURL('https://pinpointglp1.app/terms');
   };
 
   const handleOpenPrivacy = () => {
     trackEvent('legal_open', { which: 'privacy' });
-    Linking.openURL('https://mounjarotracker.app/privacy');
+    Linking.openURL('https://pinpointglp1.app/privacy');
   };
 
   const currentSlide = slides[currentIndex];

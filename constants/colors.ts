@@ -1,4 +1,4 @@
-// Colors and themes for Mounjaro Tracker
+// Colors and themes for Pinpoint GLP-1
 // Use useColors() hook for theme-aware colors
 
 export { SHOTSY_COLORS as COLORS, SHOTSY_THEMES, ACCENT_COLORS } from './ShotsyThemes';

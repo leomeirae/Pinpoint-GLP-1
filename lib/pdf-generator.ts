@@ -84,7 +84,7 @@ function createHTMLReport(data: PDFReportData): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório Médico - Mounjaro Tracker</title>
+  <title>Relatório Médico - Pinpoint GLP-1</title>
   <style>
     * {
       margin: 0;
@@ -312,7 +312,7 @@ function createHTMLReport(data: PDFReportData): string {
 <body>
   <div class="header">
     <h1>📊 Relatório Médico</h1>
-    <p>Mounjaro Tracker - Acompanhamento de Peso e Medicação</p>
+    <p>Pinpoint GLP-1 - Acompanhamento de Peso e Medicação</p>
     <p style="margin-top: 10px;">Gerado em: ${today}</p>
   </div>
 
@@ -455,7 +455,7 @@ function createHTMLReport(data: PDFReportData): string {
   }
 
   <div class="footer">
-    <p>Este relatório foi gerado automaticamente pelo aplicativo Mounjaro Tracker.</p>
+    <p>Este relatório foi gerado automaticamente pelo aplicativo Pinpoint GLP-1.</p>
     <p>Para mais informações, consulte seu médico.</p>
   </div>
 </body>

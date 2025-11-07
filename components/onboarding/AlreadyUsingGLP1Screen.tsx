@@ -41,7 +41,7 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
             <View style={[styles.dot, styles.dotInactive, { backgroundColor: colors.background }]} />
           </View>
         </View>
-        <Text style={[styles.logoText, { color: colors.primary }]}>MOUNJARO TRACKER</Text>
+        <Text style={[styles.logoText, { color: colors.primary }]}>PINPOINT GLP-1</Text>
       </View>
 
       {/* Radio Options - V0 Design */}

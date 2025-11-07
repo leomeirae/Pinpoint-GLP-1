@@ -61,7 +61,7 @@ export function SuccessScreen({ onNext }: SuccessScreenProps) {
           <Text style={[styles.successTitle, { color: colors.text }]}>Você consegue!</Text>
 
           <Text style={[styles.successText, { color: colors.textSecondary }]}>
-            Parabéns por assumir o controle da sua saúde com medicamentos GLP-1! O Mounjaro Tracker foi projetado para
+            Parabéns por assumir o controle da sua saúde com medicamentos GLP-1! O Pinpoint GLP-1 foi projetado para
             facilitar o entendimento e o acompanhamento do seu progresso semanal.
           </Text>
 

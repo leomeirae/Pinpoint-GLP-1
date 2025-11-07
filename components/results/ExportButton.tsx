@@ -97,7 +97,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ weights, application
     // Generate text report
     let report = `========================================\n`;
     report += `    RELATÓRIO DE PROGRESSO\n`;
-    report += `    Mounjaro Tracker\n`;
+    report += `    Pinpoint GLP-1\n`;
     report += `========================================\n\n`;
     report += `Data do Relatório: ${new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
@@ -131,7 +131,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ weights, application
     });
 
     report += `\n========================================\n`;
-    report += `Gerado pelo Mounjaro Tracker\n`;
+    report += `Gerado pelo Pinpoint GLP-1\n`;
     report += `========================================\n`;
 
     return report;

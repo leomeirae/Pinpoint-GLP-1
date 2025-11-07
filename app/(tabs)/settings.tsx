@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Linking, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useShotsyColors';
@@ -7,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useProfile } from '@/hooks/useProfile';
 import { useSettings } from '@/hooks/useSettings';
 import { useUser, clearUserCache } from '@/hooks/useUser';
+import { clearSyncState } from '@/hooks/useUserSync';
 import { PremiumGate } from '@/components/premium/PremiumGate';
 import * as Haptics from 'expo-haptics';
 import { createLogger } from '@/lib/logger';
@@ -52,11 +54,29 @@ export default function SettingsScreen() {
             logger.info('Starting sign out process');
             trackEvent('sign_out_started');
 
-            // 1. Clear user cache first
+            // 1. Clear AsyncStorage first (onboarding progress, theme, etc.)
+            try {
+              await AsyncStorage.multiRemove([
+                '@mounjaro:onboarding_progress',
+                '@mounjaro_tracker:theme_mode',
+                '@mounjaro_tracker:selected_theme',
+                '@mounjaro_tracker:accent_color',
+                '@mounjaro:feature_flags',
+              ]);
+              logger.info('AsyncStorage cleared');
+            } catch (storageError) {
+              logger.warn('AsyncStorage clear failed (non-critical)', storageError);
+            }
+
+            // 2. Clear user cache
             clearUserCache();
             logger.info('User cache cleared');
 
-            // 2. Clear Supabase session (if exists)
+            // 3. Clear sync state
+            clearSyncState();
+            logger.info('Sync state cleared');
+
+            // 4. Clear Supabase session (if exists)
             try {
               await supabase.auth.signOut();
               logger.info('Supabase session cleared');
@@ -65,15 +85,15 @@ export default function SettingsScreen() {
               logger.debug('Supabase signOut skipped (not using Supabase auth)');
             }
 
-            // 3. Call Clerk's signOut
+            // 5. Call Clerk's signOut
             await signOut();
             logger.info('Sign out successful from Clerk');
             trackEvent('sign_out_complete');
 
-            // 4. Wait a moment to ensure all sessions are cleared
+            // 6. Wait a moment to ensure all sessions are cleared
             await new Promise((resolve) => setTimeout(resolve, 800));
 
-            // 5. Use replace to prevent back navigation to authenticated screens
+            // 7. Use replace to prevent back navigation to authenticated screens
             logger.info('Redirecting to welcome screen (carousel)');
             router.replace('/(auth)/welcome');
 
@@ -172,18 +192,30 @@ export default function SettingsScreen() {
         logger.info('User data deleted from Supabase (all related data deleted via CASCADE)');
       }
 
-      // Step 2: Clear user cache
+      // Step 2: Clear all local storage
+      try {
+        await AsyncStorage.clear();
+        logger.info('All AsyncStorage cleared');
+      } catch (storageError) {
+        logger.warn('AsyncStorage clear failed (non-critical)', storageError);
+      }
+
+      // Step 3: Clear user cache
       clearUserCache();
       logger.info('User cache cleared');
 
-      // Step 3: Sign out from Clerk (this also clears session)
+      // Step 4: Clear sync state
+      clearSyncState();
+      logger.info('Sync state cleared');
+
+      // Step 5: Sign out from Clerk (this also clears session)
       await signOut();
       logger.info('User signed out from Clerk');
 
-      // Step 4: Wait a moment for cleanup
+      // Step 6: Wait a moment for cleanup
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Step 5: Redirect to welcome screen
+      // Step 7: Redirect to welcome screen
       logger.info('Redirecting to welcome screen');
       trackEvent('account_deletion_complete', {
         user_id: user?.id,

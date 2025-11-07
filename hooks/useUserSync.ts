@@ -11,10 +11,20 @@ const syncState = {
   syncedUserIds: new Set<string>(),
 };
 
+// Export function to clear sync state (useful for logout)
+export function clearSyncState() {
+  syncState.syncedUserIds.clear();
+  syncState.inProgress = false;
+  logger.info('Sync state cleared');
+}
+
+export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error';
+
 export function useUserSync() {
   const { isSignedIn, userId } = useAuth();
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(true);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
   const [error, setError] = useState<string | null>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const retryCountRef = useRef(0);
@@ -23,12 +33,14 @@ export function useUserSync() {
   useEffect(() => {
     if (!isSignedIn || !userId) {
       setIsLoading(false);
+      setSyncStatus('idle');
       return;
     }
 
     // Se já sincronizou este usuário nesta sessão, não fazer nada
     if (hasSyncedRef.current || syncState.syncedUserIds.has(userId)) {
       setIsLoading(false);
+      setSyncStatus('synced');
       return;
     }
 
@@ -57,10 +69,12 @@ export function useUserSync() {
       if (syncState.inProgress) {
         logger.debug('Sync already in progress, skipping');
         setIsLoading(false);
+        setSyncStatus('syncing');
         return;
       }
 
       syncState.inProgress = true;
+      setSyncStatus('syncing');
 
       try {
         setIsLoading(true);
@@ -174,10 +188,12 @@ export function useUserSync() {
         // Marcar como sincronizado
         syncState.syncedUserIds.add(userId);
         hasSyncedRef.current = true;
+        setSyncStatus('synced');
       } catch (err) {
         logger.error('Error syncing user', err);
         const errorMessage = err instanceof Error ? err.message : 'Failed to sync user';
         setError(errorMessage);
+        setSyncStatus('error');
       } finally {
         syncState.inProgress = false;
         setIsLoading(false);
@@ -195,5 +211,5 @@ export function useUserSync() {
     };
   }, [isSignedIn, userId, user]);
 
-  return { isLoading, error };
+  return { isLoading, syncStatus, error };
 }

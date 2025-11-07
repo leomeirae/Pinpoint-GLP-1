@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/clerk';
 import { useRouter } from 'expo-router';
 import { useColors } from '@/constants/colors';
 import { useUser } from '@/hooks/useUser';
+import { useUserSync } from '@/hooks/useUserSync';
 import { createLogger } from '@/lib/logger';
 import { trackEvent } from '@/lib/analytics';
 
@@ -16,6 +17,7 @@ export default function IndexScreen() {
   const colors = useColors();
   const { isSignedIn, isLoaded } = useAuth();
   const { user, loading: userLoading } = useUser();
+  const { syncStatus } = useUserSync();
   const router = useRouter();
   const hasRedirectedRef = useRef(false);
   const [waitTime, setWaitTime] = useState(0);
@@ -40,6 +42,13 @@ export default function IndexScreen() {
       setTimeout(() => {
         hasRedirectedRef.current = false;
       }, 500);
+      return;
+    }
+
+    // ✅ CRITICAL FIX: Wait for user sync to complete before routing
+    // This prevents race condition where routing decision happens before user is created in Supabase
+    if (syncStatus === 'syncing') {
+      logger.debug('User sync in progress, waiting...', { syncStatus });
       return;
     }
 
@@ -144,7 +153,7 @@ export default function IndexScreen() {
     return () => {
       clearTimeout(timer);
     };
-  }, [isSignedIn, isLoaded, userLoading, user, waitTime]);
+  }, [isSignedIn, isLoaded, userLoading, user, waitTime, syncStatus]);
 
   const styles = getStyles(colors);
 

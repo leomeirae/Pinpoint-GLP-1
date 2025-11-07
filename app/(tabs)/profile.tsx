@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth, useUser as useClerkUser } from '@/lib/clerk';
 import { useUser, clearUserCache } from '@/hooks/useUser';
+import { clearSyncState } from '@/hooks/useUserSync';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'expo-router';
 import { useColors } from '@/constants/colors';
@@ -28,11 +30,29 @@ export default function ProfileScreen() {
           try {
             logger.info('Starting sign out process');
 
-            // 1. Clear user cache first
+            // 1. Clear AsyncStorage first (onboarding progress, theme, etc.)
+            try {
+              await AsyncStorage.multiRemove([
+                '@mounjaro:onboarding_progress',
+                '@mounjaro_tracker:theme_mode',
+                '@mounjaro_tracker:selected_theme',
+                '@mounjaro_tracker:accent_color',
+                '@mounjaro:feature_flags',
+              ]);
+              logger.info('AsyncStorage cleared');
+            } catch (storageError) {
+              logger.warn('AsyncStorage clear failed (non-critical)', storageError);
+            }
+
+            // 2. Clear user cache
             clearUserCache();
             logger.info('User cache cleared');
 
-            // 2. Clear Supabase session
+            // 3. Clear sync state
+            clearSyncState();
+            logger.info('Sync state cleared');
+
+            // 4. Clear Supabase session
             try {
               await supabase.auth.signOut();
               logger.info('Supabase session cleared');
@@ -41,14 +61,14 @@ export default function ProfileScreen() {
               logger.debug('Supabase signOut skipped (not using Supabase auth)');
             }
 
-            // 3. Sign out from Clerk
+            // 5. Sign out from Clerk
             await signOut();
             logger.info('Clerk sign out successful');
 
-            // 4. Wait to ensure all sessions are cleared
+            // 6. Wait to ensure all sessions are cleared
             await new Promise((resolve) => setTimeout(resolve, 800));
 
-            // 5. Redirect to welcome (carrossel)
+            // 7. Redirect to welcome (carrossel)
             logger.info('Redirecting to welcome screen (carousel)');
             router.replace('/(auth)/welcome');
             logger.debug('Logout redirect completed');

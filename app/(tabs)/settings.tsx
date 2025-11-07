@@ -25,6 +25,16 @@ interface SettingsItem {
   premium?: boolean;
 }
 
+/**
+ * Render the app's Settings screen with sections for preferences, data, app info, and account actions.
+ *
+ * The component displays configurable items (theme, notifications, medications, etc.), provides handlers
+ * for signing out and permanently deleting the user's account (including local and remote cleanup),
+ * and exposes links to support, privacy, and terms. It also synchronizes the notifications toggle with
+ * the persisted settings and shows in-progress state for destructive actions.
+ *
+ * @returns A React element representing the Settings screen UI and its interactive behavior.
+ */
 export default function SettingsScreen() {
   const colors = useColors();
   const { signOut } = useAuth();

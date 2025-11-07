@@ -13,6 +13,13 @@ const logger = createLogger('IndexScreen');
 // Aumentado de 8s para 10s para acomodar sincronização do Supabase
 const MAX_WAIT_TIME = 10;
 
+/**
+ * Presents a loading screen while evaluating authentication, user data, and sync status, then navigates to the appropriate route (welcome, onboarding flow, or dashboard).
+ *
+ * The component blocks user interaction while it determines routing based on Clerk auth state, the Supabase-backed user record, and user sync status; it will wait briefly for sync/user creation, assume onboarding when user data is missing after a timeout, and emit analytics events for routing decisions.
+ *
+ * @returns A React element that displays a centered loading indicator and, after a short wait, conditionally shows a loading message while routing is resolved.
+ */
 export default function IndexScreen() {
   const colors = useColors();
   const { isSignedIn, isLoaded } = useAuth();

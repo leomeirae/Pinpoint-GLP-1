@@ -19,6 +19,13 @@ import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('Verify-email');
 
+/**
+ * Render the email verification screen and manage verification and resend flows.
+ *
+ * Handles user input of the verification code, attempts email verification, activates the created session on success, and navigates to the app root so higher-level routing can determine the next screen. Also provides a resend-code action and displays validation or server errors to the user.
+ *
+ * @returns The Verify Email screen as a React element.
+ */
 export default function VerifyEmailScreen() {
   const colors = useColors();
   const { signUp, setActive, isLoaded } = useSignUp();

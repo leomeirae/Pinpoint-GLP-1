@@ -34,12 +34,28 @@ interface User {
 const userCache: Record<string, { user: User | null; timestamp: number }> = {};
 const CACHE_DURATION = 2000; // 2 segundos
 
-// Function to clear cache (useful for logout)
+/**
+ * Clear the in-memory user cache used by the useUser hook.
+ *
+ * Removes all entries from the module-global cache and logs an informational message.
+ */
 export function clearUserCache() {
   Object.keys(userCache).forEach((key) => delete userCache[key]);
   logger.info('User cache cleared');
 }
 
+/**
+ * Provides the current authenticated user's record, a loading indicator, and a manual refetch function.
+ *
+ * Reads the current `userId` from the auth provider, fetches the corresponding user row from Supabase,
+ * and maintains a short in-memory cache and retry logic when the user is not yet present in the database.
+ * Successful fetches update both local state and the module cache; if no `userId` is available the hook clears state.
+ *
+ * @returns An object with:
+ *  - `user`: the fetched `User` object or `null` if not found,
+ *  - `loading`: `true` while a fetch is active, `false` otherwise,
+ *  - `refetch`: a function to manually trigger fetching the user again
+ */
 export function useUser() {
   const { userId } = useAuth();
   const [user, setUser] = useState<User | null>(null);

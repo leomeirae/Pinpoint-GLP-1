@@ -32,6 +32,12 @@ export interface OnboardingData {
   weight_loss_rate?: string;
 }
 
+/**
+ * Hook that exposes onboarding persistence functionality for the authenticated user.
+ *
+ * Persists onboarding fields (physical data, medication, initial/target weights) to Supabase, creates appropriate weight and medication records when provided, and tracks onboarding completion or errors.
+ *
+ * @returns An object containing `saveOnboardingData`, a function that persists the provided onboarding data for the current user; on success it returns an object with `{ success: true }`.
 export function useOnboarding() {
   const { userId } = useAuth();
 

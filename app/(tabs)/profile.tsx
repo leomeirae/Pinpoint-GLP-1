@@ -12,6 +12,13 @@ import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('Profile');
 
+/**
+ * Render the user's profile and settings screen, including account information, theme controls, secondary actions, and a sign-out action.
+ *
+ * Renders avatar, name, email, account metadata (partial ID and join date), theme selection controls (light/dark/system), navigation to notification settings and support, and a sign-out button that initiates a multi-step sign-out flow.
+ *
+ * @returns A React element representing the Profile screen UI.
+ */
 export default function ProfileScreen() {
   const { signOut } = useAuth();
   const { user: clerkUser } = useClerkUser();

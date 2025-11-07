@@ -11,7 +11,11 @@ const syncState = {
   syncedUserIds: new Set<string>(),
 };
 
-// Export function to clear sync state (useful for logout)
+/**
+ * Resets the module's in-memory user synchronization state so no users are considered synced and no sync is marked in progress.
+ *
+ * Clears the tracked synced user IDs and resets the in-progress flag. Also emits an informational log entry; typically called on logout or when resetting sync state for tests. 
+ */
 export function clearSyncState() {
   syncState.syncedUserIds.clear();
   syncState.inProgress = false;
@@ -20,6 +24,16 @@ export function clearSyncState() {
 
 export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error';
 
+/**
+ * Synchronizes the currently authenticated Clerk user into the Supabase `users` table for the current session.
+ *
+ * The hook ensures a single sync runs at a time, avoids re-syncing users already synced in this session, and exposes the sync progress and any error encountered.
+ *
+ * @returns An object with:
+ *  - `isLoading`: `true` while a sync is in progress, `false` otherwise.
+ *  - `syncStatus`: current synchronization state (`'idle' | 'syncing' | 'synced' | 'error'`).
+ *  - `error`: an error message when a sync failure occurs, or `null` when there is no error.
+ */
 export function useUserSync() {
   const { isSignedIn, userId } = useAuth();
   const { user } = useUser();

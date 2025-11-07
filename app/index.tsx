@@ -52,6 +52,21 @@ export default function IndexScreen() {
       return;
     }
 
+    // Handle sync errors - if sync failed, assume new user needs onboarding
+    // This prevents infinite loading state if Supabase sync encounters errors
+    if (syncStatus === 'error') {
+      logger.warn('User sync failed, redirecting to onboarding as fallback', {
+        syncStatus,
+        waitTime
+      });
+      hasRedirectedRef.current = true;
+      router.replace('/(auth)/onboarding-flow');
+      setTimeout(() => {
+        hasRedirectedRef.current = false;
+      }, 500);
+      return;
+    }
+
     // Incrementar contador de espera
     if (userLoading) {
       const interval = setInterval(() => {

@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Linking, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useShotsyColors';
 import { Ionicons } from '@expo/vector-icons';
 import { useProfile } from '@/hooks/useProfile';
 import { useSettings } from '@/hooks/useSettings';
-import { useUser, clearUserCache } from '@/hooks/useUser';
-import { clearSyncState } from '@/hooks/useUserSync';
+import { useUser } from '@/hooks/useUser';
 import { PremiumGate } from '@/components/premium/PremiumGate';
 import * as Haptics from 'expo-haptics';
 import { createLogger } from '@/lib/logger';
-import { supabase } from '@/lib/supabase';
+import { performSignOut, performAccountDeletion } from '@/lib/auth';
 import { trackEvent } from '@/lib/analytics';
 
 const logger = createLogger('Settings');
@@ -51,62 +49,9 @@ export default function SettingsScreen() {
         style: 'destructive',
         onPress: async () => {
           try {
-            logger.info('Starting sign out process');
-            trackEvent('sign_out_started');
-
-            // 1. Clear AsyncStorage first (onboarding progress, theme, etc.)
-            try {
-              await AsyncStorage.multiRemove([
-                '@mounjaro:onboarding_progress',
-                '@mounjaro_tracker:theme_mode',
-                '@mounjaro_tracker:selected_theme',
-                '@mounjaro_tracker:accent_color',
-                '@mounjaro:feature_flags',
-              ]);
-              logger.info('AsyncStorage cleared');
-            } catch (storageError) {
-              logger.warn('AsyncStorage clear failed (non-critical)', storageError);
-            }
-
-            // 2. Clear user cache
-            clearUserCache();
-            logger.info('User cache cleared');
-
-            // 3. Clear sync state
-            clearSyncState();
-            logger.info('Sync state cleared');
-
-            // 4. Clear Supabase session (if exists)
-            try {
-              await supabase.auth.signOut();
-              logger.info('Supabase session cleared');
-            } catch (supabaseError) {
-              // Not critical if fails (we use Clerk auth)
-              logger.debug('Supabase signOut skipped (not using Supabase auth)');
-            }
-
-            // 5. Call Clerk's signOut
-            await signOut();
-            logger.info('Sign out successful from Clerk');
-            trackEvent('sign_out_complete');
-
-            // 6. Wait a moment to ensure all sessions are cleared
-            await new Promise((resolve) => setTimeout(resolve, 800));
-
-            // 7. Use replace to prevent back navigation to authenticated screens
-            logger.info('Redirecting to welcome screen (carousel)');
-            router.replace('/(auth)/welcome');
-
-            // Verify redirect after a delay
-            setTimeout(() => {
-              logger.debug('Logout redirect completed');
-            }, 1000);
+            await performSignOut(signOut, router);
           } catch (error) {
-            logger.error('Error during logout', error as Error);
-            trackEvent('sign_out_error', {
-              error_message: error instanceof Error ? error.message : 'Unknown error',
-            });
-
+            logger.error('Error during sign out', error as Error);
             // Try fallback navigation
             try {
               logger.debug('Attempting fallback redirect with push');
@@ -156,7 +101,7 @@ export default function SettingsScreen() {
                 {
                   text: 'Sim, Excluir',
                   style: 'destructive',
-                  onPress: () => performAccountDeletion(),
+                  onPress: () => handleAccountDeletionConfirmed(),
                 },
               ]
             );
@@ -166,61 +111,15 @@ export default function SettingsScreen() {
     );
   };
 
-  const performAccountDeletion = async () => {
+  const handleAccountDeletionConfirmed = async () => {
+    if (!user?.id) {
+      Alert.alert('Erro', 'Usuário não encontrado');
+      return;
+    }
+
     try {
       setDeletingAccount(true);
-      logger.info('Starting account deletion process', { userId: user?.id });
-      trackEvent('account_deletion_started', {
-        user_id: user?.id,
-      });
-
-      // Step 1: Delete user record from Supabase (CASCADE will delete all related data)
-      // This will automatically delete from related tables:
-      // - weight_logs, medication_applications, side_effects
-      // - daily_nutrition, daily_streaks, achievements
-      // - scheduled_notifications, subscriptions, settings, medications
-      if (user?.id) {
-        const { error: dbError } = await supabase
-          .from('users')
-          .delete()
-          .eq('id', user.id);
-
-        if (dbError) {
-          logger.error('Error deleting from Supabase', dbError);
-          throw new Error(`Erro ao deletar dados: ${dbError.message}`);
-        }
-        logger.info('User data deleted from Supabase (all related data deleted via CASCADE)');
-      }
-
-      // Step 2: Clear all local storage
-      try {
-        await AsyncStorage.clear();
-        logger.info('All AsyncStorage cleared');
-      } catch (storageError) {
-        logger.warn('AsyncStorage clear failed (non-critical)', storageError);
-      }
-
-      // Step 3: Clear user cache
-      clearUserCache();
-      logger.info('User cache cleared');
-
-      // Step 4: Clear sync state
-      clearSyncState();
-      logger.info('Sync state cleared');
-
-      // Step 5: Sign out from Clerk (this also clears session)
-      await signOut();
-      logger.info('User signed out from Clerk');
-
-      // Step 6: Wait a moment for cleanup
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Step 7: Redirect to welcome screen
-      logger.info('Redirecting to welcome screen');
-      trackEvent('account_deletion_complete', {
-        user_id: user?.id,
-      });
-      router.replace('/(auth)/welcome');
+      await performAccountDeletion(user.id, signOut, router);
 
       Alert.alert('Sucesso', 'Sua conta foi excluída com sucesso.', [
         {
@@ -231,11 +130,6 @@ export default function SettingsScreen() {
         },
       ]);
     } catch (error) {
-      logger.error('Error during account deletion', error as Error);
-      trackEvent('account_deletion_failed', {
-        user_id: user?.id,
-        error: error instanceof Error ? error.message : 'unknown error',
-      });
       setDeletingAccount(false);
 
       const errorMessage =

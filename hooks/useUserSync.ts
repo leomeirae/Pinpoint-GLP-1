@@ -20,6 +20,11 @@ export function clearSyncState() {
 
 export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error';
 
+// Maximum number of retries before giving up
+const MAX_SYNC_RETRIES = 5;
+// Maximum time to wait for Clerk user data (in milliseconds)
+const MAX_CLERK_WAIT_TIME = 2500; // 5 retries * 500ms
+
 export function useUserSync() {
   const { isSignedIn, userId } = useAuth();
   const { user } = useUser();
@@ -87,9 +92,11 @@ export function useUserSync() {
         });
 
         // Se user ainda não estiver disponível, tentar novamente depois
-        if (!user && retryCountRef.current < 5) {
+        if (!user && retryCountRef.current < MAX_SYNC_RETRIES) {
           logger.debug('Clerk user not ready yet, waiting', {
             retryCount: retryCountRef.current,
+            maxRetries: MAX_SYNC_RETRIES,
+            nextRetryIn: '500ms',
           });
           retryCountRef.current++;
           syncState.inProgress = false; // Liberar para retry
@@ -103,7 +110,11 @@ export function useUserSync() {
 
         // Se ainda não tem user após todas as tentativas, criar com dados mínimos
         if (!user) {
-          logger.warn('Clerk user still not available after retries, creating with minimal data');
+          logger.warn('Clerk user still not available after max retries, creating with minimal data', {
+            retryCount: retryCountRef.current,
+            maxRetries: MAX_SYNC_RETRIES,
+            totalWaitTime: `${MAX_CLERK_WAIT_TIME}ms`,
+          });
         }
 
         // Check if user exists in Supabase

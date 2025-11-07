@@ -1,13 +1,11 @@
 import { View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth, useUser as useClerkUser } from '@/lib/clerk';
-import { useUser, clearUserCache } from '@/hooks/useUser';
-import { clearSyncState } from '@/hooks/useUserSync';
+import { useUser } from '@/hooks/useUser';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'expo-router';
 import { useColors } from '@/constants/colors';
 import { useTheme } from '@/lib/theme-context';
-import { supabase } from '@/lib/supabase';
+import { performSignOut } from '@/lib/auth';
 import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('Profile');
@@ -28,50 +26,7 @@ export default function ProfileScreen() {
         style: 'destructive',
         onPress: async () => {
           try {
-            logger.info('Starting sign out process');
-
-            // 1. Clear AsyncStorage first (onboarding progress, theme, etc.)
-            try {
-              await AsyncStorage.multiRemove([
-                '@mounjaro:onboarding_progress',
-                '@mounjaro_tracker:theme_mode',
-                '@mounjaro_tracker:selected_theme',
-                '@mounjaro_tracker:accent_color',
-                '@mounjaro:feature_flags',
-              ]);
-              logger.info('AsyncStorage cleared');
-            } catch (storageError) {
-              logger.warn('AsyncStorage clear failed (non-critical)', storageError);
-            }
-
-            // 2. Clear user cache
-            clearUserCache();
-            logger.info('User cache cleared');
-
-            // 3. Clear sync state
-            clearSyncState();
-            logger.info('Sync state cleared');
-
-            // 4. Clear Supabase session
-            try {
-              await supabase.auth.signOut();
-              logger.info('Supabase session cleared');
-            } catch (supabaseError) {
-              // Not critical if fails (we use Clerk auth)
-              logger.debug('Supabase signOut skipped (not using Supabase auth)');
-            }
-
-            // 5. Sign out from Clerk
-            await signOut();
-            logger.info('Clerk sign out successful');
-
-            // 6. Wait to ensure all sessions are cleared
-            await new Promise((resolve) => setTimeout(resolve, 800));
-
-            // 7. Redirect to welcome (carrossel)
-            logger.info('Redirecting to welcome screen (carousel)');
-            router.replace('/(auth)/welcome');
-            logger.debug('Logout redirect completed');
+            await performSignOut(signOut, router);
           } catch (error) {
             logger.error('Error signing out', error as Error);
             Alert.alert('Erro', 'Não foi possível sair da conta. Por favor, tente novamente.');

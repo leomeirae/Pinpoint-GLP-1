@@ -73,9 +73,9 @@ export default function VerifyEmailScreen() {
         // Aguardar um pouco para garantir que o usuário foi criado no Supabase
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // Verificar se o onboarding foi completado
-        // Se não foi, redirecionar para onboarding
-        router.replace('/(auth)/onboarding-flow');
+        // Redirecionar para index.tsx que vai decidir baseado no status de onboarding
+        // Isso permite que usuários retornando pulem o onboarding
+        router.replace('/');
       } else {
         setError(`Verificação incompleta. Status: ${result.status}`);
       }

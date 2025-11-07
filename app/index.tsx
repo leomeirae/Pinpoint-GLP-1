@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/clerk';
 import { useRouter } from 'expo-router';
 import { useColors } from '@/constants/colors';
 import { useUser } from '@/hooks/useUser';
+import { useUserSync } from '@/hooks/useUserSync';
 import { createLogger } from '@/lib/logger';
 import { trackEvent } from '@/lib/analytics';
 
@@ -16,6 +17,7 @@ export default function IndexScreen() {
   const colors = useColors();
   const { isSignedIn, isLoaded } = useAuth();
   const { user, loading: userLoading } = useUser();
+  const { isLoading: syncLoading } = useUserSync();
   const router = useRouter();
   const hasRedirectedRef = useRef(false);
   const [waitTime, setWaitTime] = useState(0);
@@ -33,6 +35,12 @@ export default function IndexScreen() {
       setTimeout(() => {
         hasRedirectedRef.current = false;
       }, 500);
+      return;
+    }
+
+    // NOVO: Aguardar sync completar antes de verificar user
+    if (syncLoading) {
+      logger.debug('Waiting for user sync to complete...');
       return;
     }
 
@@ -112,7 +120,7 @@ export default function IndexScreen() {
     return () => {
       clearTimeout(timer);
     };
-  }, [isSignedIn, isLoaded, userLoading, user, waitTime]);
+  }, [isSignedIn, isLoaded, syncLoading, userLoading, user, waitTime]);
 
   const styles = getStyles(colors);
 

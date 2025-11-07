@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Linking, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useShotsyColors';
@@ -52,15 +53,25 @@ export default function SettingsScreen() {
             logger.info('Starting sign out process');
             trackEvent('sign_out_started');
 
-            // Call Clerk's signOut
+            // 1. Clear AsyncStorage FIRST (before sign out)
+            logger.info('Clearing local storage');
+            await AsyncStorage.multiRemove([
+              '@mounjaro:onboarding_progress',
+              '@mounjaro_tracker:theme_mode',
+              '@mounjaro_tracker:selected_theme',
+              '@mounjaro_tracker:accent_color',
+              '@mounjaro:feature_flags'
+            ]);
+
+            // 2. Call Clerk's signOut
             await signOut();
             logger.info('Sign out successful from Clerk');
             trackEvent('sign_out_complete');
 
-            // Wait a moment to ensure session is cleared
+            // 3. Wait a moment to ensure session is cleared
             await new Promise((resolve) => setTimeout(resolve, 500));
 
-            // Use replace to prevent back navigation
+            // 4. Use replace to prevent back navigation
             logger.info('Redirecting to welcome screen');
             router.replace('/(auth)/welcome');
 

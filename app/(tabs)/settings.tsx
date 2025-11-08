@@ -3,20 +3,42 @@ import { View, StyleSheet, ScrollView, Alert, Linking, TouchableOpacity, Text, A
 import { useAuth } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useShotsyColors';
-import { Ionicons } from '@expo/vector-icons';
 import { useProfile } from '@/hooks/useProfile';
 import { useSettings } from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
 import { PremiumGate } from '@/components/premium/PremiumGate';
+import { ShotsyCircularProgressV2 } from '@/components/ui/ShotsyCircularProgressV2';
+import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import * as Haptics from 'expo-haptics';
 import { createLogger } from '@/lib/logger';
 import { performSignOut, performAccountDeletion } from '@/lib/auth';
 import { trackEvent } from '@/lib/analytics';
+import {
+  CreditCard,
+  Ruler,
+  Target,
+  CalendarDots,
+  Palette,
+  GridFour,
+  Pill,
+  BellRinging,
+  Heart,
+  Database,
+  CloudArrowUp,
+  Info,
+  Question,
+  Megaphone,
+  Star,
+  SignOut,
+  Warning,
+  List,
+  Gear,
+} from 'phosphor-react-native';
 
 const logger = createLogger('Settings');
 
 interface SettingsItem {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   color: string;
   onPress: () => void;
@@ -158,103 +180,106 @@ export default function SettingsScreen() {
     Linking.openURL('https://pinpointglp1.app/terms');
   };
 
-  // V0 Design: Settings items
+  // Get current theme name (simplified - you can make this dynamic based on actual theme)
+  const currentTheme = settings?.theme || 'Auto';
+
+  // Shotsy Design: Settings items with Phosphor icons
   const settingsItems: SettingsItem[] = [
     {
-      icon: 'card',
+      icon: <CreditCard size={20} color={colors.accentPurple || '#a855f7'} weight="bold" />,
       label: 'Sua Assinatura',
       color: colors.accentPurple || '#a855f7',
       onPress: () => router.push('/(tabs)/premium'),
       premium: true,
     },
     {
-      icon: 'scale',
+      icon: <Ruler size={20} color={colors.accentBlue || '#3b82f6'} weight="bold" />,
       label: 'Unidades de Medida',
       color: colors.accentBlue || '#3b82f6',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
-      icon: 'fitness',
+      icon: <Target size={20} color={colors.accentGreen || '#22c55e'} weight="bold" />,
       label: 'Altura & Peso Meta',
       color: colors.accentGreen || '#22c55e',
       onPress: () => router.push('/(tabs)/profile'),
     },
     {
-      icon: 'calendar',
+      icon: <CalendarDots size={20} color={colors.accentOrange || '#f97316'} weight="bold" />,
       label: 'Dias Entre Injeções',
       color: colors.accentOrange || '#f97316',
       onPress: () => router.push('/(tabs)/profile'),
     },
     {
-      icon: 'color-palette',
+      icon: <Palette size={20} color={colors.accentPink || '#ec4899'} weight="bold" />,
       label: 'Personalizar',
       color: colors.accentPink || '#ec4899',
       onPress: () => router.push('/(tabs)/theme'),
     },
     {
-      icon: 'grid',
+      icon: <GridFour size={20} color={colors.accentYellow || '#eab308'} weight="bold" />,
       label: 'Widgets',
       color: colors.accentYellow || '#eab308',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
-      icon: 'medical',
+      icon: <Pill size={20} color={colors.primary || '#06b6d4'} weight="bold" />,
       label: 'Medicamentos',
       color: colors.primary || '#06b6d4',
       onPress: () => router.push('/(tabs)/medications'),
     },
     {
-      icon: 'notifications',
+      icon: <BellRinging size={20} color={colors.accentRed || '#ef4444'} weight="bold" />,
       label: 'Notificações',
       color: colors.accentRed || '#ef4444',
       onPress: () => router.push('/(tabs)/notification-settings'),
     },
   ];
 
-  // V0 Design: Data items
+  // Shotsy Design: Data items
   const dataItems: SettingsItem[] = [
     {
-      icon: 'heart',
+      icon: <Heart size={20} color={colors.accentRed || '#ef4444'} weight="bold" />,
       label: 'Dados do Apple Saúde',
       color: colors.accentRed || '#ef4444',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
-      icon: 'server',
+      icon: <Database size={20} color={colors.accentBlue || '#3b82f6'} weight="bold" />,
       label: 'Gerenciar Meus Dados',
       color: colors.accentBlue || '#3b82f6',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
-      icon: 'refresh',
+      icon: <CloudArrowUp size={20} color={colors.primary || '#06b6d4'} weight="bold" />,
       label: 'Status do iCloud',
       color: colors.primary || '#06b6d4',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
   ];
 
-  // V0 Design: Info items
+  // Shotsy Design: Info items
   const infoItems: SettingsItem[] = [
     {
-      icon: 'information-circle',
+      icon: <Info size={20} color={colors.textSecondary || '#6b7280'} weight="bold" />,
       label: 'Sobre este App',
       color: colors.textSecondary || '#6b7280',
       onPress: () => Alert.alert('Pinpoint GLP-1', 'Versão 1.0.0'),
     },
     {
-      icon: 'help-circle',
+      icon: <Question size={20} color={colors.textSecondary || '#6b7280'} weight="bold" />,
       label: 'Perguntas Frequentes',
       color: colors.textSecondary || '#6b7280',
       onPress: () => router.push('/(tabs)/faq'),
     },
     {
-      icon: 'megaphone',
+      icon: <Megaphone size={20} color={colors.textSecondary || '#6b7280'} weight="bold" />,
       label: 'O que há de novo',
       color: colors.textSecondary || '#6b7280',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
-      icon: 'star',
+      icon: <Star size={20} color={colors.textSecondary || '#6b7280'} weight="bold" />,
       label: 'Avalie este App',
       color: colors.textSecondary || '#6b7280',
       onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
@@ -266,16 +291,17 @@ export default function SettingsScreen() {
       <TouchableOpacity
         style={[
           styles.settingsItem,
-          { borderBottomColor: colors.border },
           isLast && styles.lastItem,
         ]}
         onPress={item.onPress}
       >
         <View style={styles.settingsItemContent}>
-          <Ionicons name={item.icon as any} size={20} color={item.color} />
+          {item.icon}
           <Text style={[styles.settingsItemLabel, { color: colors.text }]}>{item.label}</Text>
         </View>
-        <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+        <View style={styles.chevronContainer}>
+          <Text style={[styles.chevron, { color: colors.textMuted }]}>›</Text>
+        </View>
       </TouchableOpacity>
     );
 
@@ -292,67 +318,151 @@ export default function SettingsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header - V0 Design */}
+      {/* Header - Shotsy Style */}
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Ajustes</Text>
+        <TouchableOpacity style={styles.menuButton}>
+          <List size={24} color={colors.text} weight="regular" />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Settings</Text>
+        <TouchableOpacity style={styles.gearButton}>
+          <Gear size={24} color={colors.text} weight="regular" />
+        </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
-        {/* Settings Section - V0 Design */}
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
-          {settingsItems.map((item, index) =>
-            renderSettingsItem(item, index, index === settingsItems.length - 1)
-          )}
-        </View>
-
-        {/* Data Section - V0 Design */}
-        <View style={[styles.section, { backgroundColor: colors.card, marginTop: 16 }]}>
-          {dataItems.map((item, index) =>
-            renderSettingsItem(item, index, index === dataItems.length - 1)
-          )}
-        </View>
-
-        {/* Info Section - V0 Design */}
-        <View style={[styles.section, { backgroundColor: colors.card, marginTop: 16 }]}>
-          {infoItems.map((item, index) =>
-            renderSettingsItem(item, index, index === infoItems.length - 1)
-          )}
-        </View>
-
-        {/* Account Section - V0 Design */}
-        <View style={[styles.section, { backgroundColor: colors.card, marginTop: 16 }]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* Theme Preview Card - NEW! */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Current Theme</Text>
           <TouchableOpacity
-            style={[styles.settingsItem, { borderBottomColor: colors.border }]}
-            onPress={handleSignOut}
+            style={[
+              styles.themePreviewCard,
+              { backgroundColor: colors.card },
+              ShotsyDesignTokens.shadows.card,
+            ]}
+            onPress={() => router.push('/(tabs)/theme')}
           >
-            <View style={styles.settingsItemContent}>
-              <Ionicons name="log-out" size={20} color={colors.accentRed || '#ef4444'} />
-              <Text style={[styles.settingsItemLabel, { color: colors.accentRed || '#ef4444' }]}>
-                Sair da Conta
-              </Text>
+            <View style={styles.themePreviewContent}>
+              <ShotsyCircularProgressV2
+                progress={0.75}
+                size="small"
+                state="normal"
+                centerText=""
+              />
+              <View style={styles.themeInfo}>
+                <Text style={[styles.themeLabel, { color: colors.textSecondary }]}>Active Theme</Text>
+                <Text style={[styles.themeName, { color: colors.text }]}>{currentTheme}</Text>
+                <Text style={[styles.themeDescription, { color: colors.textMuted }]}>
+                  Tap to customize colors
+                </Text>
+              </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+            <View style={styles.chevronContainer}>
+              <Text style={[styles.chevron, { color: colors.textMuted }]}>›</Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.settingsItem, styles.lastItem]}
-            onPress={handleDeleteAccount}
-            disabled={deletingAccount}
+        </View>
+
+        {/* Settings Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Settings</Text>
+          <View
+            style={[
+              styles.settingsCard,
+              { backgroundColor: colors.card },
+              ShotsyDesignTokens.shadows.card,
+            ]}
           >
-            <View style={styles.settingsItemContent}>
-              {deletingAccount ? (
-                <ActivityIndicator color={colors.accentRed || '#ef4444'} />
-              ) : (
-                <Ionicons name="warning" size={20} color={colors.accentRed || '#ef4444'} />
+            {settingsItems.map((item, index) =>
+              renderSettingsItem(item, index, index === settingsItems.length - 1)
+            )}
+          </View>
+        </View>
+
+        {/* Data Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Data & Privacy</Text>
+          <View
+            style={[
+              styles.settingsCard,
+              { backgroundColor: colors.card },
+              ShotsyDesignTokens.shadows.card,
+            ]}
+          >
+            {dataItems.map((item, index) =>
+              renderSettingsItem(item, index, index === dataItems.length - 1)
+            )}
+          </View>
+        </View>
+
+        {/* Info Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Information</Text>
+          <View
+            style={[
+              styles.settingsCard,
+              { backgroundColor: colors.card },
+              ShotsyDesignTokens.shadows.card,
+            ]}
+          >
+            {infoItems.map((item, index) =>
+              renderSettingsItem(item, index, index === infoItems.length - 1)
+            )}
+          </View>
+        </View>
+
+        {/* Account Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Account</Text>
+          <View
+            style={[
+              styles.settingsCard,
+              { backgroundColor: colors.card },
+              ShotsyDesignTokens.shadows.card,
+            ]}
+          >
+            <TouchableOpacity
+              style={styles.settingsItem}
+              onPress={handleSignOut}
+            >
+              <View style={styles.settingsItemContent}>
+                <SignOut size={20} color={colors.accentRed || '#ef4444'} weight="bold" />
+                <Text style={[styles.settingsItemLabel, { color: colors.accentRed || '#ef4444' }]}>
+                  Sair da Conta
+                </Text>
+              </View>
+              <View style={styles.chevronContainer}>
+                <Text style={[styles.chevron, { color: colors.textMuted }]}>›</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.settingsItem, styles.lastItem]}
+              onPress={handleDeleteAccount}
+              disabled={deletingAccount}
+            >
+              <View style={styles.settingsItemContent}>
+                {deletingAccount ? (
+                  <ActivityIndicator color={colors.accentRed || '#ef4444'} />
+                ) : (
+                  <Warning size={20} color={colors.accentRed || '#ef4444'} weight="bold" />
+                )}
+                <Text style={[styles.settingsItemLabel, { color: colors.accentRed || '#ef4444' }]}>
+                  {deletingAccount ? 'Excluindo...' : 'Excluir Conta'}
+                </Text>
+              </View>
+              {!deletingAccount && (
+                <View style={styles.chevronContainer}>
+                  <Text style={[styles.chevron, { color: colors.textMuted }]}>›</Text>
+                </View>
               )}
-              <Text style={[styles.settingsItemLabel, { color: colors.accentRed || '#ef4444' }]}>
-                {deletingAccount ? 'Excluindo...' : 'Excluir Conta'}
-              </Text>
-            </View>
-            {!deletingAccount && <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View style={styles.bottomPadding} />
+        <View style={styles.bottomSpacer} />
       </ScrollView>
     </View>
   );
@@ -363,31 +473,80 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 16,
-    paddingTop: 60,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: 60,
+    paddingBottom: ShotsyDesignTokens.spacing.md,
+    borderBottomWidth: 1,
+  },
+  menuButton: {
+    padding: ShotsyDesignTokens.spacing.sm,
+  },
+  gearButton: {
+    padding: ShotsyDesignTokens.spacing.sm,
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+    ...ShotsyDesignTokens.typography.h3,
   },
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    padding: ShotsyDesignTokens.spacing.lg,
+    paddingBottom: 100,
+  },
   section: {
-    borderRadius: 0,
-    marginHorizontal: 0,
-    marginTop: 16,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+  },
+  sectionTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+
+  // Theme Preview Card - NEW!
+  themePreviewCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  themePreviewContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: ShotsyDesignTokens.spacing.lg,
+    flex: 1,
+  },
+  themeInfo: {
+    flex: 1,
+  },
+  themeLabel: {
+    ...ShotsyDesignTokens.typography.caption,
+    marginBottom: 2,
+  },
+  themeName: {
+    ...ShotsyDesignTokens.typography.h3,
+    marginBottom: 2,
+  },
+  themeDescription: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+
+  // Settings Card
+  settingsCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    overflow: 'hidden',
   },
   settingsItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingVertical: ShotsyDesignTokens.spacing.lg,
     borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
   },
   lastItem: {
     borderBottomWidth: 0,
@@ -395,14 +554,23 @@ const styles = StyleSheet.create({
   settingsItemContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: ShotsyDesignTokens.spacing.md,
     flex: 1,
   },
   settingsItemLabel: {
-    fontSize: 16,
+    ...ShotsyDesignTokens.typography.body,
     fontWeight: '500',
   },
-  bottomPadding: {
-    height: 32,
+  chevronContainer: {
+    width: 20,
+    alignItems: 'center',
+  },
+  chevron: {
+    fontSize: 24,
+    fontWeight: '300',
+  },
+
+  bottomSpacer: {
+    height: ShotsyDesignTokens.spacing.xxl,
   },
 });

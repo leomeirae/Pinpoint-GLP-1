@@ -9,14 +9,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useColors } from '@/hooks/useShotsyColors';
 import { ShotCard, Shot } from '@/components/shots/ShotCard';
 import { useApplications } from '@/hooks/useApplications';
 import { useProfile } from '@/hooks/useProfile';
 import { calculateNextShotDate, getCurrentEstimatedLevel, MedicationApplication } from '@/lib/pharmacokinetics';
 import { createLogger } from '@/lib/logger';
-import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
+import { ShotsyCircularProgressV2 } from '@/components/ui/ShotsyCircularProgressV2';
+import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
+import { getDosageColor } from '@/lib/dosageColors';
+import { Syringe, Pill, ChartBar, Plus, List } from 'phosphor-react-native';
 
 const logger = createLogger('Injections');
 
@@ -141,141 +143,166 @@ export default function ShotsScreen() {
     );
   }
 
-    return (
+  return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header - V0 Design */}
-      <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Injeções</Text>
+      {/* Header - Shotsy Style */}
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
+        <TouchableOpacity style={styles.menuButton}>
+          <List size={24} color={colors.text} weight="regular" />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Injections</Text>
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/add-application')}
+          style={styles.addButton}
+        >
+          <Plus size={20} color={colors.primary} weight="bold" />
+          <Text style={[styles.addButtonText, { color: colors.primary }]}>Add shot</Text>
+        </TouchableOpacity>
       </View>
 
-        <ScrollView
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
         style={styles.scrollView}
-        >
-        <View style={styles.content}>
-          {/* Title - V0 Design */}
-          <Text style={[styles.title, { color: colors.text }]}>Histórico de Injeções</Text>
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Stats Grid - Shotsy Style */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Quick Stats</Text>
 
-          {/* Stats Grid - V0 Design */}
           <View style={styles.statsGrid}>
             {/* Injeções tomadas */}
-            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+            <View
+              style={[
+                styles.statCard,
+                { backgroundColor: colors.card },
+                ShotsyDesignTokens.shadows.card,
+              ]}
+            >
               <View style={styles.statHeader}>
-                <Text style={styles.statIcon}>💉</Text>
+                <Syringe size={20} color={colors.primary} weight="bold" />
                 <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
-                  Injeções tomadas
+                  Total Shots
                 </Text>
               </View>
               <Text style={[styles.statValue, { color: colors.text }]}>{totalShots}</Text>
             </View>
 
             {/* Última dose */}
-            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+            <View
+              style={[
+                styles.statCard,
+                { backgroundColor: colors.card },
+                ShotsyDesignTokens.shadows.card,
+              ]}
+            >
               <View style={styles.statHeader}>
-                <Text style={styles.statIcon}>💊</Text>
-                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Última dose</Text>
+                <Pill size={20} color={lastDose > 0 ? getDosageColor(lastDose) : colors.textMuted} weight="bold" />
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Last Dose</Text>
               </View>
               {lastDose > 0 ? (
-                <Text style={[styles.statValue, { color: colors.text }]}>{lastDose}mg</Text>
+                <Text
+                  style={[
+                    styles.statValue,
+                    { color: getDosageColor(lastDose) },
+                  ]}
+                >
+                  {lastDose}mg
+                </Text>
               ) : (
                 <Text style={[styles.statPlaceholder, { color: colors.textMuted }]}>—</Text>
               )}
             </View>
 
             {/* Nível Est. */}
-            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
+            <View
+              style={[
+                styles.statCard,
+                { backgroundColor: colors.card },
+                ShotsyDesignTokens.shadows.card,
+              ]}
+            >
               <View style={styles.statHeader}>
-                <Text style={styles.statIcon}>📊</Text>
-                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Nível Est.</Text>
+                <ChartBar size={20} color={colors.success} weight="bold" />
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Est. Level</Text>
               </View>
               {estimatedLevel > 0 ? (
                 <Text style={[styles.statValue, { color: colors.text }]}>
-                  {estimatedLevel.toFixed(2)}mg
+                  {estimatedLevel.toFixed(1)}mg
                 </Text>
               ) : (
                 <Text style={[styles.statPlaceholder, { color: colors.textMuted }]}>—</Text>
               )}
             </View>
           </View>
+        </View>
 
-          {/* Next Injection Section - V0 Design */}
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Próxima Injeção</Text>
+        {/* Next Injection Section - Shotsy Style */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Next Injection</Text>
 
           <View
             style={[
               styles.nextInjectionCard,
-              { backgroundColor: colors.card, borderColor: colors.border },
+              { backgroundColor: colors.card },
+              ShotsyDesignTokens.shadows.card,
             ]}
           >
-            {/* Circular Progress - V0 Design */}
+            {/* Circular Progress - V2 Component */}
             <View style={styles.progressContainer}>
-              <Svg width="192" height="192" viewBox="0 0 200 200">
-                <Defs>
-                  <LinearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <Stop offset="0%" stopColor="#EF4444" />
-                    <Stop offset="25%" stopColor="#F97316" />
-                    <Stop offset="50%" stopColor="#EAB308" />
-                    <Stop offset="75%" stopColor="#22C55E" />
-                    <Stop offset="100%" stopColor="#06B6D4" />
-                  </LinearGradient>
-                </Defs>
-                {/* Background circle */}
-                <Circle
-                  cx="100"
-                  cy="100"
-                  r="80"
-                  fill="none"
-                  stroke={colors.border}
-                  strokeWidth="12"
-                />
-                {/* Progress circle */}
-                {nextInjectionData.percentage > 0 && (
-                  <Circle
-                    cx="100"
-                    cy="100"
-                    r="80"
-                    fill="none"
-                    stroke="url(#progressGradient)"
-                    strokeWidth="12"
-                    strokeDasharray={`${2 * Math.PI * 80 * (nextInjectionData.percentage / 100)} ${2 * Math.PI * 80}`}
-                    strokeLinecap="round"
-                    transform={`rotate(-90 100 100)`}
-                  />
-                )}
-              </Svg>
-              {/* Center text */}
-              <View style={styles.progressTextContainer}>
-                <Text style={[styles.progressMessage, { color: colors.text }]}>
-                  {nextInjectionData.message}
-                </Text>
-                <Text style={[styles.progressSubtitle, { color: colors.textSecondary }]}>
-                  {nextInjectionData.subtitle}
-                </Text>
-              </View>
+              <ShotsyCircularProgressV2
+                progress={nextInjectionData.percentage / 100}
+                size="large"
+                state={
+                  nextInjectionData.percentage >= 80
+                    ? 'success'
+                    : nextInjectionData.percentage >= 50
+                      ? 'warning'
+                      : 'normal'
+                }
+                centerText={nextInjectionData.message}
+                centerLabel={nextInjectionData.subtitle}
+              />
             </View>
           </View>
+        </View>
 
-          {/* Add Shot Section - V0 Design */}
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Add Shot</Text>
-          <TouchableOpacity
-            style={[styles.addButton, { backgroundColor: colors.primary }]}
-            onPress={() => router.push('/(tabs)/add-application')}
-          >
-            <Ionicons name="add" size={20} color="#FFFFFF" />
-            <Text style={styles.addButtonText}>Adicionar Injeção</Text>
-          </TouchableOpacity>
-
-          {/* Shots List */}
-          {shots.length > 0 && (
+        {/* Shots List - Timeline Visual */}
+        {shots.length > 0 && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Shot History</Text>
             <View style={styles.listContainer}>
               {shots.map((shot) => (
                 <ShotCard key={shot.id} shot={shot} onDelete={handleDelete} />
               ))}
             </View>
-          )}
           </View>
-        </ScrollView>
-      </View>
+        )}
+
+        {/* Empty State */}
+        {shots.length === 0 && (
+          <View style={styles.emptyState}>
+            <Syringe size={64} color={colors.textMuted} weight="thin" />
+            <Text style={[styles.emptyStateTitle, { color: colors.text }]}>
+              No Injections Yet
+            </Text>
+            <Text style={[styles.emptyStateSubtitle, { color: colors.textSecondary }]}>
+              Start tracking your GLP-1 journey by adding your first injection.
+            </Text>
+            <TouchableOpacity
+              style={[styles.emptyStateButton, { backgroundColor: colors.primary }]}
+              onPress={() => router.push('/(tabs)/add-application')}
+            >
+              <Plus size={20} color="#FFFFFF" weight="bold" />
+              <Text style={styles.emptyStateButtonText}>Add First Injection</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Bottom spacing */}
+        <View style={styles.bottomSpacer} />
+      </ScrollView>
+    </View>
   );
 }
 
@@ -284,114 +311,131 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: 60,
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     borderBottomWidth: 1,
   },
+  menuButton: {
+    padding: ShotsyDesignTokens.spacing.sm,
+  },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 24,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 32,
-  },
-  statCard: {
-    flex: 1,
-    borderRadius: 16,
-    padding: 16,
-  },
-  statHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
-  },
-  statIcon: {
-    fontSize: 16,
-  },
-  statLabel: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  statValue: {
-    fontSize: 30,
-    fontWeight: '700',
-  },
-  statPlaceholder: {
-    fontSize: 20,
-    fontWeight: '400',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 16,
-  },
-  nextInjectionCard: {
-    borderRadius: 24,
-    borderWidth: 2,
-    padding: 32,
-    marginBottom: 24,
-  },
-  progressContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  progressTextContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 192,
-    height: 192,
-  },
-  progressMessage: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  progressSubtitle: {
-    fontSize: 14,
-    textAlign: 'center',
-    paddingHorizontal: 16,
+    ...ShotsyDesignTokens.typography.h3,
   },
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 24,
-    borderRadius: 16,
-    marginBottom: 24,
+    gap: 4,
+    paddingHorizontal: ShotsyDesignTokens.spacing.sm,
+    paddingVertical: 4,
   },
   addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
+    ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
   },
-  listContainer: {
-    gap: 12,
+  scrollView: {
+    flex: 1,
   },
+  scrollContent: {
+    padding: ShotsyDesignTokens.spacing.lg,
+    paddingBottom: 100,
+  },
+  section: {
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+  },
+  sectionTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+
+  // Stats Grid
+  statsGrid: {
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
+  },
+  statCard: {
+    flex: 1,
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  statHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: ShotsyDesignTokens.spacing.xs,
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
+  statLabel: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  statValue: {
+    ...ShotsyDesignTokens.typography.h2,
+  },
+  statPlaceholder: {
+    ...ShotsyDesignTokens.typography.h3,
+    fontWeight: '400',
+  },
+
+  // Next Injection Card
+  nextInjectionCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    padding: ShotsyDesignTokens.spacing.xl,
+    alignItems: 'center',
+  },
+  progressContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Shots List
+  listContainer: {
+    gap: ShotsyDesignTokens.spacing.md,
+  },
+
+  // Empty State
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: ShotsyDesignTokens.spacing.xxxxl,
+    gap: ShotsyDesignTokens.spacing.lg,
+  },
+  emptyStateTitle: {
+    ...ShotsyDesignTokens.typography.h2,
+    textAlign: 'center',
+  },
+  emptyStateSubtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    textAlign: 'center',
+    maxWidth: 280,
+  },
+  emptyStateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: ShotsyDesignTokens.spacing.sm,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+    paddingVertical: ShotsyDesignTokens.spacing.lg,
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginTop: ShotsyDesignTokens.spacing.md,
+  },
+  emptyStateButtonText: {
+    color: '#FFFFFF',
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+  },
+
+  // Loading
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   loadingText: {
-    marginTop: 16,
-    fontSize: 16,
+    marginTop: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.typography.body,
+  },
+
+  bottomSpacer: {
+    height: ShotsyDesignTokens.spacing.xxl,
   },
 });

@@ -1,16 +1,19 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { ScrollView, View, StyleSheet, RefreshControl, Text, TouchableOpacity } from 'react-native';
 import { useColors } from '@/hooks/useShotsyColors';
-import { EstimatedLevelsChart } from '@/components/dashboard/EstimatedLevelsChart';
+import { EstimatedLevelsChartV2 } from '@/components/dashboard/EstimatedLevelsChartV2';
 import { NextShotWidget } from '@/components/dashboard/NextShotWidget';
-import { ShotsyButton } from '@/components/ui/shotsy-button';
+import { ShotsyCircularProgressV2, ProgressValue } from '@/components/ui/ShotsyCircularProgressV2';
 import { router } from 'expo-router';
 import { useApplications } from '@/hooks/useApplications';
 import { useWeights } from '@/hooks/useWeights';
 import { useProfile } from '@/hooks/useProfile';
 import { calculateNextShotDate, getCurrentEstimatedLevel, MedicationApplication } from '@/lib/pharmacokinetics';
 import { createLogger } from '@/lib/logger';
-import { Ionicons } from '@expo/vector-icons';
+import { List, Plus } from 'phosphor-react-native';
+import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
+import { getDosageColor } from '@/lib/dosageColors';
+import { FadeInView, ScalePress } from '@/components/animations';
 
 const logger = createLogger('Dashboard');
 
@@ -37,6 +40,22 @@ export default function DashboardScreen() {
 
   // Get frequency from profile (default to weekly)
   const frequency = profile?.frequency || 'weekly';
+
+  // Calculate adherence rate (exemplo: shots realizadas vs esperadas no mês)
+  const adherenceRate = useMemo(() => {
+    if (applications.length === 0) return 0;
+
+    // Conta shots dos últimos 30 dias
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const recentShots = applications.filter(app => new Date(app.date) >= thirtyDaysAgo).length;
+
+    // Calcula shots esperadas (assumindo weekly = 4 shots/mês)
+    const expectedShots = frequency === 'weekly' ? 4 : frequency === 'biweekly' ? 2 : 30;
+
+    return Math.min(recentShots / expectedShots, 1);
+  }, [applications, frequency]);
 
   // Calculate next shot date using pharmacokinetics library
   const nextShotDate = useMemo(() => {
@@ -92,16 +111,16 @@ export default function DashboardScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header - V0 Design */}
+      {/* Header - Shotsy Style */}
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
         <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={24} color={colors.primary} />
+          <List size={24} color={colors.text} weight="regular" />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Resumo</Text>
-        <TouchableOpacity onPress={handleAddShot} style={styles.addButton}>
-          <Ionicons name="add" size={20} color={colors.primary} />
-          <Text style={[styles.addButtonText, { color: colors.primary }]}>Injeção</Text>
-        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Summary</Text>
+        <ScalePress onPress={handleAddShot} style={styles.addButton} hapticType="medium">
+          <Plus size={20} color={colors.primary} weight="bold" />
+          <Text style={[styles.addButtonText, { color: colors.primary }]}>Add shot</Text>
+        </ScalePress>
       </View>
 
       <ScrollView
@@ -117,88 +136,115 @@ export default function DashboardScreen() {
           />
         }
       >
-        {/* Injection History - V0 Design */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Histórico de Injeções</Text>
-            <TouchableOpacity onPress={() => router.push('/(tabs)/injections')}>
-              <Text style={[styles.seeAllButton, { color: colors.primary }]}>
-                Ver tudo <Text style={styles.seeAllArrow}>›</Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
+        {/* Progress Ring Section - New! */}
+        {totalShots > 0 && (
+          <FadeInView duration={800} delay={100} style={styles.section}>
+            <View style={styles.progressSection}>
+              <ShotsyCircularProgressV2
+                progress={adherenceRate}
+                size="large"
+                state={adherenceRate >= 0.8 ? 'success' : adherenceRate >= 0.5 ? 'warning' : 'normal'}
+                centerText={`${Math.round(adherenceRate * 100)}%`}
+                centerLabel="Adherence"
+              />
 
-          {/* Stats Grid - V0 Design */}
-          <View style={styles.statsGrid}>
-            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
-              <View style={styles.statHeader}>
-                <Text style={styles.statIcon}>💉</Text>
-                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Injeções tomadas</Text>
+              <View style={styles.progressStats}>
+                <View style={styles.progressStatItem}>
+                  <Text style={[styles.progressStatLabel, { color: colors.textSecondary }]}>
+                    Total Shots
+                  </Text>
+                  <Text style={[styles.progressStatValue, { color: colors.text }]}>
+                    {totalShots}
+                  </Text>
+                </View>
+
+                <View style={[styles.divider, { backgroundColor: colors.border }]} />
+
+                <View style={styles.progressStatItem}>
+                  <Text style={[styles.progressStatLabel, { color: colors.textSecondary }]}>
+                    Last Dose
+                  </Text>
+                  <Text
+                    style={[
+                      styles.progressStatValue,
+                      { color: lastDose ? getDosageColor(lastDose) : colors.textMuted },
+                    ]}
+                  >
+                    {lastDose ? `${lastDose}mg` : '—'}
+                  </Text>
+                </View>
+
+                <View style={[styles.divider, { backgroundColor: colors.border }]} />
+
+                <View style={styles.progressStatItem}>
+                  <Text style={[styles.progressStatLabel, { color: colors.textSecondary }]}>
+                    Est. Level
+                  </Text>
+                  <Text style={[styles.progressStatValue, { color: colors.primary }]}>
+                    {estimatedLevel !== null ? `${estimatedLevel.toFixed(1)}mg` : '—'}
+                  </Text>
+                </View>
               </View>
-              <Text style={[styles.statValue, { color: colors.text }]}>{totalShots}</Text>
             </View>
+          </FadeInView>
+        )}
 
-            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
-              <View style={styles.statHeader}>
-                <Text style={styles.statIcon}>💊</Text>
-                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Última dose</Text>
+        {/* Stats Cards - Shotsy Style */}
+        {totalShots === 0 && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Quick Stats</Text>
+            <View style={styles.statsGrid}>
+              <View
+                style={[
+                  styles.statCard,
+                  { backgroundColor: colors.card },
+                  ShotsyDesignTokens.shadows.card,
+                ]}
+              >
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Total Shots</Text>
+                <Text style={[styles.statValue, { color: colors.text }]}>0</Text>
               </View>
-              <Text style={[styles.statValue, { color: colors.text }]}>
-                {lastDose ? (
-                  <>
-                    {lastDose}
-                    <Text style={[styles.statUnit, { color: colors.textSecondary }]}>mg</Text>
-                  </>
-                ) : (
-                  <Text style={[styles.statValueEmpty, { color: colors.textMuted }]}>—</Text>
-                )}
-              </Text>
-            </View>
 
-            <View style={[styles.statCard, { backgroundColor: colors.backgroundSecondary }]}>
-              <View style={styles.statHeader}>
-                <Text style={styles.statIcon}>📊</Text>
-                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Nível Est.</Text>
+              <View
+                style={[
+                  styles.statCard,
+                  { backgroundColor: colors.card },
+                  ShotsyDesignTokens.shadows.card,
+                ]}
+              >
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Last Dose</Text>
+                <Text style={[styles.statValue, { color: colors.textMuted }]}>—</Text>
               </View>
-              <Text style={[styles.statValue, { color: colors.text }]}>
-                {estimatedLevel !== null ? (
-                  <>
-                    {estimatedLevel.toFixed(1)}
-                    <Text style={[styles.statUnit, { color: colors.textSecondary }]}>mg</Text>
-                  </>
-                ) : (
-                  <Text style={[styles.statValueEmpty, { color: colors.textMuted }]}>—</Text>
-                )}
-              </Text>
+
+              <View
+                style={[
+                  styles.statCard,
+                  { backgroundColor: colors.card },
+                  ShotsyDesignTokens.shadows.card,
+                ]}
+              >
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Est. Level</Text>
+                <Text style={[styles.statValue, { color: colors.textMuted }]}>—</Text>
+              </View>
             </View>
           </View>
-        </View>
+        )}
 
-        {/* Estimated Medication Levels - V0 Design */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <View style={styles.sectionTitleRow}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>
-                Níveis Estimados de Medicação
-              </Text>
-              <Ionicons name="information-circle-outline" size={20} color={colors.textMuted} />
-            </View>
-          </View>
+        {/* Estimated Medication Levels - V2 Chart */}
+        <FadeInView duration={800} delay={200} style={styles.section}>
+          <EstimatedLevelsChartV2 />
+        </FadeInView>
 
-          {/* Chart - V0 Design */}
-          <EstimatedLevelsChart />
-        </View>
-
-        {/* Next Injection - V0 Design */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Próxima Injeção</Text>
+        {/* Next Injection */}
+        <FadeInView duration={800} delay={300} style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Next Injection</Text>
           <NextShotWidget
             totalShots={totalShots}
             nextShotDate={nextShotDate}
             lastShotDate={lastShotDate}
             frequency={frequency}
           />
-        </View>
+        </FadeInView>
 
         {/* Bottom spacing for safe area */}
         <View style={styles.bottomSpacer} />
@@ -215,97 +261,88 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: 12,
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     borderBottomWidth: 1,
   },
   menuButton: {
-    padding: 8,
+    padding: ShotsyDesignTokens.spacing.sm,
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+    ...ShotsyDesignTokens.typography.h3,
   },
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingHorizontal: 8,
+    paddingHorizontal: ShotsyDesignTokens.spacing.sm,
     paddingVertical: 4,
   },
   addButtonText: {
-    fontSize: 16,
+    ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
+    padding: ShotsyDesignTokens.spacing.lg,
     paddingBottom: 80,
   },
   section: {
-    marginBottom: 24,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  sectionTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 12,
+    ...ShotsyDesignTokens.typography.h3,
+    marginBottom: ShotsyDesignTokens.spacing.md,
   },
-  seeAllButton: {
-    fontSize: 14,
-    fontWeight: '600',
+
+  // Progress Ring Section
+  progressSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: ShotsyDesignTokens.spacing.xl,
   },
-  seeAllArrow: {
-    fontSize: 16,
+  progressStats: {
+    flex: 1,
+    gap: ShotsyDesignTokens.spacing.lg,
   },
+  progressStatItem: {
+    alignItems: 'center',
+  },
+  progressStatLabel: {
+    ...ShotsyDesignTokens.typography.caption,
+    marginBottom: 4,
+  },
+  progressStatValue: {
+    ...ShotsyDesignTokens.typography.h4,
+  },
+  divider: {
+    height: 1,
+    opacity: 0.3,
+  },
+
+  // Stats Grid (empty state)
   statsGrid: {
     flexDirection: 'row',
-    gap: 12,
+    gap: ShotsyDesignTokens.spacing.md,
   },
   statCard: {
     flex: 1,
-    borderRadius: 16,
-    padding: 12,
-  },
-  statHeader: {
-    flexDirection: 'row',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
     alignItems: 'center',
-    gap: 4,
-    marginBottom: 8,
-  },
-  statIcon: {
-    fontSize: 16,
   },
   statLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+    ...ShotsyDesignTokens.typography.caption,
+    marginBottom: 4,
   },
   statValue: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...ShotsyDesignTokens.typography.h2,
   },
-  statValueEmpty: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  statUnit: {
-    fontSize: 14,
-    fontWeight: '400',
-  },
+
   bottomSpacer: {
-    height: 24,
+    height: ShotsyDesignTokens.spacing.xxl,
   },
 });

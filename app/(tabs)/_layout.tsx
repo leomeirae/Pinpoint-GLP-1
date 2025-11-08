@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { Tabs, useRouter } from 'expo-router';
-import { View, ActivityIndicator, Text } from 'react-native';
-import { ClipboardText, Syringe, ChartLineUp, Calendar, GearSix } from 'phosphor-react-native';
+import { View, ActivityIndicator } from 'react-native';
+import { ClipboardText, Syringe, ChartLineUp, Calendar, GearSix, Sparkle } from 'phosphor-react-native';
 import { useColors } from '@/hooks/useShotsyColors';
 import { useAuth } from '@/lib/clerk';
 import { createLogger } from '@/lib/logger';
+import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 
 const logger = createLogger('_layout');
 
@@ -71,7 +72,11 @@ export default function Layout() {
         options={{
           title: 'Resumo',
           tabBarIcon: ({ color, focused }) => (
-            <ClipboardText size={28} color={color} weight={focused ? 'fill' : 'regular'} />
+            <ClipboardText
+              size={ShotsyDesignTokens.iconSize.xl}
+              color={color}
+              weight={focused ? 'bold' : 'thin'}
+            />
           ),
         }}
       />
@@ -80,7 +85,11 @@ export default function Layout() {
         options={{
           title: 'Injeções',
           tabBarIcon: ({ color, focused }) => (
-            <Syringe size={28} color={color} weight={focused ? 'fill' : 'regular'} />
+            <Syringe
+              size={ShotsyDesignTokens.iconSize.xl}
+              color={color}
+              weight={focused ? 'bold' : 'thin'}
+            />
           ),
         }}
       />
@@ -89,7 +98,11 @@ export default function Layout() {
         options={{
           title: 'Resultados',
           tabBarIcon: ({ color, focused }) => (
-            <ChartLineUp size={28} color={color} weight={focused ? 'fill' : 'regular'} />
+            <ChartLineUp
+              size={ShotsyDesignTokens.iconSize.xl}
+              color={color}
+              weight={focused ? 'bold' : 'thin'}
+            />
           ),
         }}
       />
@@ -98,7 +111,11 @@ export default function Layout() {
         options={{
           title: 'Calendário',
           tabBarIcon: ({ color, focused }) => (
-            <Calendar size={28} color={color} weight={focused ? 'fill' : 'regular'} />
+            <Calendar
+              size={ShotsyDesignTokens.iconSize.xl}
+              color={color}
+              weight={focused ? 'bold' : 'thin'}
+            />
           ),
         }}
       />
@@ -107,16 +124,11 @@ export default function Layout() {
         options={{
           title: 'IA',
           tabBarIcon: ({ color, focused }) => (
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: focused ? '700' : '600',
-                color: color,
-                letterSpacing: 0.5,
-              }}
-            >
-              IA
-            </Text>
+            <Sparkle
+              size={ShotsyDesignTokens.iconSize.xl}
+              color={color}
+              weight={focused ? 'bold' : 'thin'}
+            />
           ),
         }}
       />
@@ -125,7 +137,11 @@ export default function Layout() {
         options={{
           title: 'Ajustes',
           tabBarIcon: ({ color, focused }) => (
-            <GearSix size={28} color={color} weight={focused ? 'fill' : 'regular'} />
+            <GearSix
+              size={ShotsyDesignTokens.iconSize.xl}
+              color={color}
+              weight={focused ? 'bold' : 'thin'}
+            />
           ),
         }}
       />

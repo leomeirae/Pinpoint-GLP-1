@@ -58,6 +58,8 @@
 - **Sincronização:** Retry automático com exponential backoff
 - **Estados visuais:** Indicadores de "sincronizando..." / "falhou" / "sincronizado"
 - **Resolução de conflitos:** Last-write-wins baseado em timestamps UTC
+  - Casos de borda: eventos simultâneos (dose/peso/compra) em múltiplos dispositivos → timestamp UTC define vencedor
+  - Exemplo: Aplicação registrada às 19:00:15 no dispositivo A e 19:00:20 no B → registro de B prevalece (mais recente)
 - **Cache:** Dados críticos (medicação, preferências) sempre disponíveis offline
 
 ### Checklist de Cópia Clínica - Glossário Aprovado
@@ -314,7 +316,7 @@ Refatorar o onboarding atual (23 telas) para um fluxo essencial de 5 telas core,
 
 **Princípios:**
 - **PT-BR formal:** Tom profissional, sem gírias ou informalidade excessiva
-- **Sem emojis no código:** Emojis apenas em notificações e UI quando apropriado
+- **Sem emojis:** Proibido em todo o app (código, UI, notificações) - tom clínico e neutro sempre
 - **Linguagem clara:** Evitar jargões médicos sem explicação
 - **Foco em dados, não marketing:** "Registre sua aplicação" (não "Dê um passo na sua jornada!")
 

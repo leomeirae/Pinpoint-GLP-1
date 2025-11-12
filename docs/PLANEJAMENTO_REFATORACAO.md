@@ -60,6 +60,21 @@
 - **Resolução de conflitos:** Last-write-wins baseado em timestamps UTC
 - **Cache:** Dados críticos (medicação, preferências) sempre disponíveis offline
 
+### Checklist de Cópia Clínica - Glossário Aprovado
+
+| Termo Preferido | Evitar | Contexto |
+|----------------|--------|----------|
+| Medicamento GLP-1 | "Remédio", "Droga" | Sempre |
+| Semaglutida / Tirzepatida / Retatrutida | Marcas sem genérico | Priorizar nome genérico |
+| Aplicação | "Injeção" (quando soar agressivo) | Registro da dose |
+| Perda de peso | "Emagrecimento", "Definição" | Linguagem neutra, clínica |
+| "Consulte seu médico" | "Fale com especialista" | Disclaimers |
+
+**Reforço:**
+- **Sem emojis:** Proibido em TODO o app (código, UI, notificações, push notifications)
+- **Tom clínico:** Neutro, profissional, baseado em dados
+- **Priorizar genérico:** Sempre que possível, usar nome genérico + marca entre parênteses
+
 ---
 
 ## Visão Geral das Fases
@@ -386,6 +401,24 @@ components/onboarding/
 ```
 
 ### Tarefas Detalhadas
+
+#### 0. Pré-requisito: Gate de Design (Bloqueante)
+**Saída obrigatória antes de iniciar C1:**
+- [ ] Congelar design tokens no Stitch/Figma:
+  - Cores (primárias, secundárias, feedback, dark mode)
+  - Tipografia (famílias, tamanhos, pesos, line-heights)
+  - Espaçamentos (4, 8, 12, 16, 24, 32, 48, 64)
+  - Raios de borda (0, 4, 8, 12, 16, 999)
+  - Sombras (elevação 1-5)
+- [ ] Prancha de componentes base aprovados:
+  - Botões (primary, secondary, tertiary, ghost)
+  - Inputs (text, picker, checkbox)
+  - Cards e containers
+  - Ícones (Phosphor, set mínimo necessário)
+- [ ] Documentação de tokens exportada (JSON ou constants file)
+- [ ] Aprovação formal de design lead ou stakeholder
+
+**Rationale:** Evitar retrabalho nas 5 telas do onboarding devido a mudanças de design durante implementação.
 
 #### 1. Setup e Planejamento (2h)
 - [ ] Criar feature flag `FF_ONBOARDING_5_CORE` (default: false)
@@ -762,6 +795,34 @@ Implementar sistema de controle financeiro para rastrear compras de medicamentos
 - Não existe implementação atual
 - Precisa criar tudo do zero (schema, rotas, componentes)
 
+### Feature Flag
+
+**Feature flag:** `FF_FINANCE_MVP` (default: `false`)
+
+**Comportamento:**
+- Quando `FF_FINANCE_MVP === false`:
+  - Aba "Custos" oculta da navegação
+  - Rotas `/finance/*` retornam 404 ou redirecionam para dashboard
+  - Card de Quick Actions não mostra ação "+Compra"
+  - Nenhuma referência visual ao módulo financeiro
+- Quando `FF_FINANCE_MVP === true`:
+  - Aba "Custos" visível na navegação (ícone: `CurrencyCircleDollar`)
+  - Rotas `/finance/*` acessíveis
+  - Card de Quick Actions inclui "+Compra"
+  - Funcionalidade completa habilitada
+
+**Rollout:**
+1. Testar internamente com flag ativada (equipe + beta testers)
+2. Habilitar para 10% dos usuários (A/B test)
+3. Monitorar métricas por 1 semana (adoção, crashes, feedback)
+4. Expandir para 50%, depois 100% se sucesso
+5. Remover flag após estabilização (converter para feature permanente)
+
+**Critério de aceite para rollout completo:**
+- Zero crashes relacionados ao módulo financeiro
+- Taxa de adoção ≥ 35% até D14 (entre usuários com flag ativa)
+- NPS ≥ 7 (ou equivalente de satisfação)
+
 ### Nova Implementação
 
 **Schema de dados (rico, para escalar sem retrabalho):**
@@ -1005,6 +1066,35 @@ Implementar funcionalidades para rastrear pausas no tratamento (com desligamento
 - Não existe implementação
 - Precisa criar schema, rotas, componentes
 
+### Feature Flag
+
+**Feature flag:** `FF_PAUSES_ALCOHOL` (default: `false`)
+
+**Comportamento:**
+- Quando `FF_PAUSES_ALCOHOL === false`:
+  - Rotas `/treatment/pause` e `/habits/alcohol` ocultas
+  - Card de Quick Actions não mostra ações "⏸️ Pausar" e "🍷 Álcool"
+  - Nenhum overlay de álcool em gráficos
+  - Schemas de DB criados mas features não expostas ao usuário
+- Quando `FF_PAUSES_ALCOHOL === true`:
+  - Rotas acessíveis
+  - Quick Actions exibem pausas e álcool
+  - Overlays de álcool visíveis em gráficos de peso/medicação
+  - Funcionalidade completa habilitada
+
+**Rollout:**
+1. Testar internamente com flag ativada (equipe + beta testers)
+2. Habilitar para 25% dos usuários (A/B test)
+3. Monitorar métricas por 1 semana (adoção, usabilidade, privacidade)
+4. Expandir para 100% se sucesso
+5. Remover flag após estabilização
+
+**Critério de aceite para rollout completo:**
+- Zero crashes relacionados a pausas/álcool
+- Taxa de uso de pausas ≥ 15% (entre usuários com flag ativa)
+- Taxa de logging de álcool ≥ 20% (entre usuários ativos)
+- Nenhum reporte de preocupação com privacidade
+
 ### Nova Implementação
 
 **Schema de dados:**
@@ -1136,6 +1226,7 @@ Garantir que **nenhum evento de analytics** seja disparado sem consentimento exp
 
 **Requisitos CRÍTICOS:**
 - **NUNCA enviar eventos de rede sem `analyticsOptIn === true`** (bloqueio absoluto)
+- **Estado padrão:** `analyticsOptIn = false` para qualquer usuário novo ou convidado (fail-safe)
 - Opt-in solicitado em `Compliance.tsx` (onboarding)
 - Se opt-in = false: **nenhum evento enviado para rede** (nem analytics, nem servidores externos)
 - Se opt-in = true: eventos normais + tipados enviados para analytics
@@ -1196,7 +1287,38 @@ Garantir que **nenhum evento de analytics** seja disparado sem consentimento exp
   ```
 - [ ] Atualizar `trackEvent()` para aceitar tipo genérico
 
-#### 5. Testes e Validação (1h)
+#### 5. Testes Unitários Obrigatórios (1h)
+**Requisito crítico:** Estes testes DEVEM passar antes de merge. Bloqueiam CI/CD se falharem.
+
+- [ ] **Teste: Estado padrão é false**
+  - Nome: `analyticsOptIn defaults to false for new users`
+  - Cenário: Criar usuário novo ou modo convidado
+  - Expectativa: `getAnalyticsOptIn()` retorna `false`
+  - Rationale: Fail-safe - opt-in nunca deve ser true sem consentimento explícito
+
+- [ ] **Teste: trackEvent bloqueia quando opt-in = false**
+  - Nome: `trackEvent blocks network calls when analyticsOptIn is false`
+  - Cenário: Chamar `trackEvent()` com `analyticsOptIn = false`
+  - Expectativa:
+    - Nenhuma chamada de rede é feita (spy no network client)
+    - Log local é criado apenas (console/AsyncStorage)
+  - Rationale: Compliance LGPD - eventos NUNCA devem vazar sem consentimento
+
+- [ ] **Teste: trackEvent permite quando opt-in = true**
+  - Nome: `trackEvent sends to network when analyticsOptIn is true`
+  - Cenário: Chamar `trackEvent()` com `analyticsOptIn = true`
+  - Expectativa: Evento enviado para analytics provider (spy confirma chamada)
+  - Rationale: Validar que opt-in funciona corretamente
+
+- [ ] **Teste: Modo convidado não envia para rede**
+  - Nome: `guest mode events stay local even with analyticsOptIn flag`
+  - Cenário: `isGuest = true`, chamar `trackEvent()`
+  - Expectativa: Evento marcado com `isGuest: true` fica apenas local (não envia para rede)
+  - Rationale: Convidados não têm conta, não devem ter eventos em servidor
+
+- [ ] Configurar CI/CD para falhar build se qualquer teste acima falhar
+
+#### 6. Testes e Validação Manual (1h)
 - [ ] Testar opt-in = false: nenhum evento disparado
 - [ ] Testar opt-in = true: eventos normais
 - [ ] Testar mudança em configurações

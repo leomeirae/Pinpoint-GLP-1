@@ -39,7 +39,8 @@
 - **Áreas de toque:** ≥ 44×44 pixels
 - **SafeArea:** Sempre usar `SafeAreaView` ou `useSafeAreaInsets`
 - **Dark Mode:** Respeitar preferências do sistema
-- **Ícones:** `phosphor-react-native` (sem emojis no código, apenas na UI quando apropriado)
+- **Ícones:** `phosphor-react-native` exclusivamente
+- **Sem emojis:** Proibido uso de emojis em TODO o app (código, UI, notificações). Tom clínico e neutro sempre.
 
 ### Analytics & Privacidade
 - **Analytics:** Opt-in obrigatório antes de rastrear
@@ -268,14 +269,16 @@ Refatorar o onboarding atual (23 telas) para um fluxo essencial de 5 telas core,
 
 #### Deferred Sign-Up (Modo Convidado)
 
-**Objetivo:** Permitir que usuários explorem o app sem criar conta, pedindo cadastro apenas após demonstrar valor.
+**Objetivo:** Permitir que usuários explorem o app sem criar conta, pedindo cadastro apenas após demonstrar valor real.
 
 **Implementação:**
 - Usuário pode completar onboarding (C1) e configurar lembretes (C2) sem login
 - Dados armazenados localmente em AsyncStorage com flag `isGuestMode: true`
-- Solicitar conta em 2 momentos estratégicos:
-  1. **Após onboarding completo:** Modal suave "Criar conta para sincronizar entre dispositivos" (pode pular)
+- **SEM LIMITES RÍGIDOS:** Não impor "7 dias" ou "5 registros" - deixar usuário explorar livremente
+- Solicitar conta em momentos de alto valor:
+  1. **Ao final do onboarding:** Modal suave "Criar conta para backup automático" (pode pular)
   2. **Ao registrar primeira compra (C4):** Obrigatório para persistir dados financeiros sensíveis
+  3. **Ao ativar "Backup e sincronização":** Se usuário explicitamente pedir sync entre dispositivos
 - **Migração de dados:** Ao criar conta, migrar todos os dados locais para Supabase:
   - Medicação e doses
   - Lembretes configurados
@@ -287,9 +290,10 @@ Refatorar o onboarding atual (23 telas) para um fluxo essencial de 5 telas core,
   - Erro: Retry com opção de contatar suporte
 
 **Regras:**
-- Modo convidado limitado a 7 dias ou 5 registros (o que vier primeiro)
-- Analytics: eventos de modo convidado marcados com `isGuest: true`
+- Modo convidado SEM limites de tempo ou registros
+- Analytics: eventos de modo convidado **APENAS em logs locais** (não enviados para rede sem opt-in)
 - Notificações funcionam normalmente (locais, sem push remoto)
+- Dados locais persistem indefinidamente até usuário limpar cache ou desinstalar app
 
 #### Copy Clínica e Linguagem
 
@@ -303,6 +307,61 @@ Refatorar o onboarding atual (23 telas) para um fluxo essencial de 5 telas core,
 - Lista de doses muda dinamicamente conforme medicamento selecionado
 - Validação: impedir doses inválidas para o medicamento escolhido
 - Exemplo visual: Se Mounjaro → mostrar apenas [2.5, 5, 7.5, 10, 12.5, 15 mg]
+
+#### Remote Config para Doses e Medicamentos
+
+**Objetivo:** Permitir atualização de listas de medicamentos e doses sem necessidade de release de app.
+
+**Implementação:**
+- Usar Firebase Remote Config ou Supabase Table como fonte de verdade
+- Schema de configuração:
+  ```typescript
+  interface MedicationConfig {
+    id: string;
+    name: string; // "Mounjaro", "Ozempic", etc.
+    genericName: string; // "Tirzepatida", "Semaglutida"
+    availableDoses: number[]; // [2.5, 5, 7.5, 10, 12.5, 15]
+    unit: 'mg' | 'mL';
+    frequency: 'weekly' | 'daily';
+    featured: boolean; // destaque no onboarding
+    enabled: boolean; // ativo/inativo
+    updatedAt: string;
+  }
+  ```
+- Fallback local: arquivo `constants/medications.ts` com configuração padrão
+- Cache: AsyncStorage com TTL de 24h
+- Sincronização: ao abrir app, tentar buscar config atualizada (silenciosamente)
+
+**Tabela Supabase (alternativa a Firebase):**
+```sql
+create table medication_configs (
+  id text primary key,
+  name text not null,
+  generic_name text not null,
+  available_doses numeric[] not null,
+  unit text not null default 'mg',
+  frequency text not null default 'weekly',
+  featured boolean default false,
+  enabled boolean default true,
+  updated_at timestamptz default now()
+);
+
+-- Popular com dados iniciais
+insert into medication_configs (id, name, generic_name, available_doses, featured) values
+('mounjaro', 'Mounjaro', 'Tirzepatida', ARRAY[2.5, 5, 7.5, 10, 12.5, 15], true),
+('retatrutida', 'Retatrutida', 'Retatrutida', ARRAY[2, 4, 6, 8, 10, 12], true),
+('ozempic', 'Ozempic', 'Semaglutida', ARRAY[0.25, 0.5, 1, 2], false);
+
+-- RLS: leitura pública, escrita apenas admin
+alter table medication_configs enable row level security;
+create policy "public_read" on medication_configs for select using (true);
+```
+
+**Benefícios:**
+- Adicionar novos medicamentos sem app update
+- Ajustar doses rapidamente (ex: nova dosagem aprovada pela ANVISA)
+- Desabilitar medicamentos descontinuados
+- A/B testing de ordem de apresentação
 
 ### Estrutura de Arquivos
 
@@ -467,6 +526,36 @@ Implementar sistema de notificações semanais confiável para lembretes de apli
 **Catch-up Automático:**
 - Se usuário registrar aplicação fora da janela → sugerir ajustar janela
 - Se usuário perder 2+ janelas consecutivas → notificação empática: "Notamos que você perdeu algumas aplicações. Quer ajustar o horário?"
+
+**Streak e Janela de Aplicação:**
+- **Regra crítica:** Streak **NÃO** quebra se aplicação ocorrer dentro da janela configurada
+- Exemplo: Janela 19:00-23:00, aplicação às 22:30 → streak mantido
+- Apenas quebra se: (1) aplicação fora da janela OU (2) nenhuma aplicação na semana
+- Implementar lógica de validação em `lib/streaks.ts`:
+  ```typescript
+  function isWithinWindow(
+    applicationTime: Date,
+    windowStart: string, // "19:00"
+    windowEnd: string    // "23:00"
+  ): boolean
+  ```
+
+**Matriz de Testes para Timezone/DST:**
+
+| Cenário | Timezone | DST | Ação | Esperado |
+|---------|----------|-----|------|----------|
+| **BR Normal** | America/Sao_Paulo | Não | Agendar 19:00 sex | Notif dispara 19:00 local |
+| **BR com DST** | America/Sao_Paulo | Sim | Agendar 19:00 sex | Notif dispara 19:00 local (ajustado) |
+| **Mudança para DST** | America/Sao_Paulo | Transição | App recalcula no D+1 | Notif ajustada automaticamente |
+| **Viagem SP→NY** | America/Sao_Paulo → America/New_York | Não | Usuário viaja | Notif dispara no horário NY (listener detecta mudança) |
+| **Viagem NY→SP** | America/New_York → America/Sao_Paulo | Não | Usuário volta | Notif volta para horário SP |
+| **Viagem SP→Tokyo** | America/Sao_Paulo → Asia/Tokyo | Não | Usuário viaja | Notif ajustada para 19:00 Tokyo |
+
+**Implementação de testes:**
+- Criar suite de testes unitários para cada cenário
+- Mockar `Intl.DateTimeFormat().resolvedOptions().timeZone`
+- Validar que notificações são reagendadas corretamente
+- Testar manualmente em dispositivos físicos (iOS/Android) mudando timezone
 
 ### Tarefas Detalhadas
 
@@ -696,12 +785,14 @@ create table purchases (
   currency text not null default 'BRL',
   total_price_cents int not null,        -- preço total em centavos
   unit_price_cents int generated always as (total_price_cents/nullif(quantity,0)) stored,
+  price_source text,                     -- 'farmacia', 'e-commerce', 'clinica', 'outro'
+  purchase_notes text,                   -- observações sobre preço/negociação
 
   -- Metadata
   purchase_date timestamptz not null,
   location text,                         -- farmácia, clínica, etc.
   receipt_url text,                      -- URL do recibo (Supabase Storage)
-  notes text,
+  notes text,                            -- notas gerais
 
   created_at timestamptz default now(),
   updated_at timestamptz default now()
@@ -721,12 +812,33 @@ create index on purchases(user_id, medication);
 alter table users add column if not exists finance_opt_in boolean default false;
 ```
 
-**Storage de Recibos (Supabase Storage):**
-- Bucket: `receipts` (privado, RLS habilitado)
-- Path: `{user_id}/{purchase_id}/{filename}.{ext}`
-- RLS policy: apenas o dono do recibo pode ler/escrever
-- Tamanho máximo: 5MB por arquivo
-- Formatos aceitos: JPG, PNG, PDF
+**Storage de Recibos (Supabase Storage) - Privacidade e Segurança:**
+- **Bucket:** `receipts` (privado, RLS habilitado, criptografia em repouso pelo provedor)
+- **Path:** `{user_id}/{purchase_id}/{filename}.{ext}`
+- **RLS policy:** apenas o dono do recibo pode ler/escrever
+  ```sql
+  create policy "users_own_receipts_select" on storage.objects for select
+    using (bucket_id = 'receipts' and (storage.foldername(name))[1] = auth.uid()::text);
+  create policy "users_own_receipts_insert" on storage.objects for insert
+    with check (bucket_id = 'receipts' and (storage.foldername(name))[1] = auth.uid()::text);
+  create policy "users_own_receipts_delete" on storage.objects for delete
+    using (bucket_id = 'receipts' and (storage.foldername(name))[1] = auth.uid()::text);
+  ```
+- **Tamanho máximo:** 5MB por arquivo
+- **Formatos aceitos (whitelist MIME):**
+  - `image/jpeg`, `image/png` (imagens)
+  - `application/pdf` (PDF)
+- **Segurança no upload:**
+  - Validar MIME type no client e server-side
+  - Expurgo de metadados EXIF (se possível via lib `expo-image-manipulator` ou similar)
+  - Sanitização de filename (remover caracteres especiais, limitar tamanho)
+  - Scan de vírus (opcional, se budget permitir - ex: ClamAV ou serviço cloud)
+- **Criptografia:**
+  - Em repouso: Supabase Storage usa criptografia AES-256 por padrão
+  - Em trânsito: HTTPS/TLS 1.3
+- **Retenção:**
+  - Recibos persistem enquanto conta ativa
+  - Deletados permanentemente ao apagar conta (cascade)
 
 **Cálculos e Exibição:**
 - **Total gasto:** Soma de `total_price_cents` de todas as compras → sempre exibir
@@ -738,11 +850,44 @@ alter table users add column if not exists finance_opt_in boolean default false;
   - Aviso contextual: "Indicador econômico, não clínico. Não reflete eficácia do tratamento."
   - Tooltip: "Este valor mostra quanto você gastou por kg perdido, mas lembre-se: cada corpo responde diferente ao tratamento."
   - Se não atender critérios: ocultar métrica (não mostrar "R$ 0/kg" ou "N/A")
+- **SEM BENCHMARKS EXTERNOS NO MVP:**
+  - Não comparar com preços médios de mercado
+  - Não comparar com custos de outros usuários
+  - Não mostrar "Você está pagando X% acima/abaixo da média"
+  - Foco: dados individuais do usuário apenas
+  - Motivo: Privacidade, complexidade de agregação, variabilidade de mercado
 
 **Formatação BRL:**
 - Sempre usar formato: R$ 1.234,56 (ponto para milhares, vírgula para centavos)
 - Helper function: `formatCurrency(cents: number): string`
 - Exemplo: `formatCurrency(123456)` → "R$ 1.234,56"
+
+**Tela "Consentimentos & Preferências" (para opt-in R$/kg):**
+- Criar `app/(tabs)/settings/consent-preferences.tsx`
+- Seções:
+  1. **Analytics:** Toggle para opt-in/opt-out
+  2. **Notificações:** Gerenciar lembretes
+  3. **Métrica R$/kg:** Toggle + explicação detalhada
+     - Título: "Mostrar custo por kg perdido"
+     - Descrição: "Indicador econômico. Não reflete eficácia clínica do tratamento. Cada pessoa responde diferente."
+     - Checkbox: "Entendo que este é apenas um indicador financeiro"
+  4. **Compartilhamento de relatório:** (futuro) Permitir exportar/compartilhar dados
+- **Histórico de consentimentos:**
+  - Tabela `consent_history`:
+    ```sql
+    create table consent_history (
+      id uuid primary key default uuid_generate_v4(),
+      user_id uuid references auth.users(id) not null,
+      consent_type text not null, -- 'analytics', 'finance_r_per_kg', 'notifications'
+      action text not null, -- 'granted', 'revoked'
+      consent_version text not null, -- '1.0.0', '1.1.0', etc.
+      created_at timestamptz default now()
+    );
+    alter table consent_history enable row level security;
+    create policy "own-access" on consent_history for all using (auth.uid()=user_id);
+    create index on consent_history(user_id, created_at desc);
+    ```
+  - Exibir histórico na tela: "Você concedeu analytics em 12/11/2025 às 14:30"
 
 ### Tarefas Detalhadas
 
@@ -990,12 +1135,20 @@ Garantir que **nenhum evento de analytics** seja disparado sem consentimento exp
 ### Nova Implementação
 
 **Requisitos CRÍTICOS:**
-- **NUNCA enviar eventos sem `analyticsOptIn === true`** (bloqueio absoluto)
+- **NUNCA enviar eventos de rede sem `analyticsOptIn === true`** (bloqueio absoluto)
 - Opt-in solicitado em `Compliance.tsx` (onboarding)
-- Se opt-in = false: **nenhum evento** é disparado
-- Se opt-in = true: eventos normais + tipados
+- Se opt-in = false: **nenhum evento enviado para rede** (nem analytics, nem servidores externos)
+- Se opt-in = true: eventos normais + tipados enviados para analytics
 - Permitir opt-out em configurações a qualquer momento
-- Eventos em modo convidado marcados com `isGuest: true`
+- **Modo convidado (`isGuest: true`):**
+  - Eventos marcados com `isGuest: true` **APENAS em logs locais** (console, AsyncStorage)
+  - **NÃO enviar eventos de rede** mesmo com flag `isGuest`
+  - Ao criar conta e aceitar opt-in: enviar eventos históricos acumulados (opcional)
+- **Política de retenção:**
+  - Dados de analytics retidos por **13 meses** (conformidade LGPD/GDPR)
+  - Após 13 meses: deletar automaticamente eventos antigos
+  - Ao apagar conta: **deleção total e imediata** de todos os eventos do usuário
+  - Implementar job de limpeza mensal (cron ou Supabase Function)
 
 ### Tarefas Detalhadas
 

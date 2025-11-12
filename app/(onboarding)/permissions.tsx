@@ -6,13 +6,14 @@ import * as Notifications from 'expo-notifications';
 import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import { useOnboardingContext } from '@/hooks/OnboardingContext';
+import { scheduleWeeklyMedicationReminder } from '@/lib/notifications';
 import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('PermissionsScreen');
 
 export default function PermissionsScreen() {
   const colors = useColors();
-  const { markStepCompleted } = useOnboardingContext();
+  const { data, markStepCompleted } = useOnboardingContext();
 
   const [permissionStatus, setPermissionStatus] = useState<'idle' | 'granted' | 'denied'>('idle');
   const [isRequesting, setIsRequesting] = useState(false);
@@ -35,6 +36,22 @@ export default function PermissionsScreen() {
       if (finalStatus === 'granted') {
         setPermissionStatus('granted');
         logger.info('Notification permissions granted');
+
+        // C2: Schedule weekly medication reminder if user selected day and time
+        if (data.preferredDay !== null && data.preferredTime) {
+          const identifier = await scheduleWeeklyMedicationReminder(
+            data.preferredDay,
+            data.preferredTime
+          );
+
+          if (identifier) {
+            logger.info('Weekly medication reminder scheduled', {
+              day: data.preferredDay,
+              time: data.preferredTime,
+              identifier,
+            });
+          }
+        }
       } else {
         setPermissionStatus('denied');
         logger.warn('Notification permissions denied');

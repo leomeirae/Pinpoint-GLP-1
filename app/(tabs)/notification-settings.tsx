@@ -113,6 +113,16 @@ export default function NotificationSettingsScreen() {
           />
         </View>
 
+        {/* C2: Link to edit reminder schedule */}
+        {appReminders && enabled && (
+          <Pressable
+            style={styles.editReminderButton}
+            onPress={() => router.push('/(tabs)/edit-reminder')}
+          >
+            <Text style={styles.editReminderText}>Editar horário do lembrete</Text>
+          </Pressable>
+        )}
+
         <View style={styles.settingRow}>
           <View style={styles.settingInfo}>
             <Text style={styles.settingLabel}>Conquistas</Text>
@@ -285,5 +295,19 @@ const getStyles = (colors: any) =>
     },
     actions: {
       padding: 24,
+    },
+    editReminderButton: {
+      marginTop: 12,
+      padding: 12,
+      backgroundColor: colors.card,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    editReminderText: {
+      fontSize: 14,
+      color: colors.primary,
+      fontWeight: '600',
+      textAlign: 'center',
     },
   });

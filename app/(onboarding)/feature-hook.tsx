@@ -20,6 +20,7 @@ import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import { useOnboardingContext } from '@/hooks/OnboardingContext';
 import { useOnboarding } from '@/hooks/useOnboarding';
+import { setAnalyticsOptIn } from '@/lib/analytics';
 import { createLogger } from '@/lib/logger';
 
 const logger = createLogger('FeatureHookScreen');
@@ -85,6 +86,10 @@ export default function FeatureHookScreen() {
     try {
       // Save onboarding data to AsyncStorage
       await saveToStorage();
+
+      // Save analytics opt-in to analytics library (C6)
+      await setAnalyticsOptIn(data.analyticsOptIn);
+      logger.info('Analytics opt-in saved', { analyticsOptIn: data.analyticsOptIn });
 
       // Save onboarding data to Supabase
       logger.info('Saving onboarding data to Supabase', { data });

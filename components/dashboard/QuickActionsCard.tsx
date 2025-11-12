@@ -44,7 +44,7 @@ export function QuickActionsCard() {
       icon: CurrencyCircleDollar,
       color: colors.accentPurple || '#8B5CF6',
       route: '/(tabs)/finance/add-purchase',
-      available: false, // C4 - Future feature
+      available: true, // C4 - Financeiro MVP
     },
     {
       id: 'pause-treatment',

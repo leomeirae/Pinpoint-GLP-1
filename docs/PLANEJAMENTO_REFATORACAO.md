@@ -1256,7 +1256,30 @@ Garantir que todas as implementações atendam aos requisitos de qualidade, aces
     - [ ] Feedback visual em ações (loading, success, error)
     - [ ] Transições suaves
 
-#### 2. Testes Manuais (4h)
+#### 2. Testes Automatizados (3h)
+- [ ] **Testes de Acessibilidade (Lint):**
+  - Configurar `eslint-plugin-jsx-a11y`
+  - Validar contraste de cores automaticamente
+  - Verificar `accessibilityLabel` em todos os elementos interativos
+  - CI/CD: falhar build se violações de a11y
+- [ ] **Testes E2E Críticos (Detox ou similar):**
+  - Onboarding completo (5 telas)
+  - Registrar dose semanal
+  - Configurar lembrete
+  - Adicionar compra (modo autenticado)
+  - Fluxo modo convidado → criar conta → migração de dados
+- [ ] **Testes Unitários:**
+  - `lib/streaks.ts`: validar lógica de janela de aplicação
+  - `lib/notifications.ts`: validar timezone/DST (6 cenários da matriz)
+  - `lib/finance.ts`: validar cálculos (R$/sem, R$/kg com opt-in)
+  - `lib/analytics.ts`: validar bloqueio sem opt-in
+- [ ] **Testes de SafeArea + Dark Mode:**
+  - Screenshot tests (iOS/Android)
+  - Validar todas as telas novas (C1-C6) em dark mode
+  - Verificar notch/dynamic island (iPhone 14+)
+  - Verificar barra de navegação (Android gesture navigation)
+
+#### 3. Testes Manuais (4h)
 - [ ] Fluxo completo iOS:
   - [ ] Onboarding 1→5
   - [ ] Adicionar aplicação
@@ -1302,6 +1325,166 @@ Garantir que todas as implementações atendam aos requisitos de qualidade, aces
 ### Riscos
 - **Médio:** Bugs não detectados em testes manuais
 - **Mitigação:** Testar em múltiplos dispositivos, considerar beta testing
+
+---
+
+## Consentimentos & Preferências (Seção Transversal)
+
+### Objetivo
+Centralizar todos os consentimentos e preferências do usuário em uma tela única, com histórico auditável.
+
+### Localização
+`app/(tabs)/settings/consent-preferences.tsx`
+
+### Implementação
+
+**Tela única com 4 seções:**
+
+1. **Analytics (Opt-in):**
+   - Toggle: "Compartilhar dados de uso anônimos"
+   - Descrição: "Ajuda a melhorar o app. Nenhum dado pessoal é compartilhado."
+   - Status atual: Ativado desde [data]
+
+2. **Notificações:**
+   - Toggle: "Lembretes semanais"
+   - Configuração: Dia e horário (link para edit-reminder)
+   - Status: Ativo/Inativo
+
+3. **Métrica R$/kg (Opt-in):**
+   - Toggle: "Mostrar custo por kg perdido"
+   - Descrição detalhada: "Indicador econômico. Não reflete eficácia clínica. Cada pessoa responde diferente ao tratamento."
+   - Checkbox adicional: "Entendo que este é apenas um indicador financeiro"
+   - Aviso: Requer mínimo de 2 pesagens
+
+4. **Compartilhamento de Relatório (Futuro):**
+   - Toggle: "Permitir exportar e compartilhar relatórios"
+   - Status: Em breve
+
+**Histórico de Consentimentos:**
+- Seção expandível ao final da tela
+- Lista cronológica reversa (mais recentes primeiro)
+- Formato:
+  ```
+  Analytics - Concedido em 12/11/2025 às 14:30 (v1.0.0)
+  Analytics - Revogado em 10/11/2025 às 09:15 (v1.0.0)
+  R$/kg - Concedido em 12/11/2025 às 14:35 (v1.0.0)
+  ```
+- Implementação: tabela `consent_history` (já definida em C4)
+
+**Schema (consolidado):**
+```sql
+create table consent_history (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references auth.users(id) not null,
+  consent_type text not null, -- 'analytics', 'finance_r_per_kg', 'notifications', 'report_sharing'
+  action text not null, -- 'granted', 'revoked'
+  consent_version text not null, -- '1.0.0', '1.1.0'
+  metadata jsonb, -- dados adicionais (ex: device, ip para auditoria)
+  created_at timestamptz default now()
+);
+
+alter table consent_history enable row level security;
+create policy "own-select" on consent_history for select using (auth.uid()=user_id);
+create policy "own-insert" on consent_history for insert with check (auth.uid()=user_id);
+create index on consent_history(user_id, created_at desc);
+create index on consent_history(user_id, consent_type);
+```
+
+**Hook:**
+```typescript
+// hooks/useConsent.ts
+export function useConsent() {
+  const grantConsent = async (type: ConsentType, version: string) => {
+    // Atualizar users table + inserir em consent_history
+  };
+
+  const revokeConsent = async (type: ConsentType, version: string) => {
+    // Atualizar users table + inserir em consent_history
+  };
+
+  const getConsentHistory = async () => {
+    // Buscar histórico do usuário
+  };
+}
+```
+
+**Navegação:**
+- Link em Settings principal: "Consentimentos & Privacidade"
+- Deep-link: `/(tabs)/settings/consent-preferences`
+
+---
+
+## Experimentos (A/B Testing)
+
+### Objetivo
+Preparar infraestrutura para testes A/B, começando com onboarding após C1 estabilizado.
+
+### Princípios
+- **Apenas com opt-in de analytics:** Usuários sem opt-in não participam de experimentos
+- **Ético:** Não testar funcionalidades críticas (ex: lembretes de medicação)
+- **Transparente:** Usuário pode saber que está em experimento (se perguntar)
+
+### Experimento Inicial: Onboarding Reforçado
+
+**Hipótese:** Uma microtela de reforço entre Schedule (C1-4) e Permissions (C1-5) aumenta ativação de lembretes.
+
+**Variantes:**
+- **Controle (A):** 5 telas originais (Welcome → Compliance → MedicationDose → Schedule → Permissions)
+- **Teste (B):** 5 telas + 1 microtela de reforço
+  - Nova tela: `ScheduleReinforcementScreen.tsx` (entre Schedule e Permissions)
+  - Conteúdo: "Ótimo! Seu lembrete está configurado para [dia] às [hora]. Agora vamos garantir que você nunca perca a dose."
+  - CTA: "Ativar Notificações"
+  - Duração: 3-5 segundos
+
+**Condições de Teste:**
+- Iniciar APENAS após C1 estabilizado (zero crashes, taxa de conclusão ≥80%)
+- Segmentação: 50/50 split aleatório
+- Apenas usuários com `analyticsOptIn === true`
+- Duração: 2 semanas ou 1000 usuários/variante (o que vier primeiro)
+
+**Métricas Primárias:**
+1. Taxa de conclusão do onboarding (A vs B)
+2. Taxa de ativação de lembretes (A vs B)
+
+**Métricas Secundárias:**
+- Tempo médio no onboarding
+- Taxa de abandono por tela
+- Retenção D7 (com lembrete ativo)
+
+**Implementação:**
+- Usar Firebase Remote Config ou feature flag customizada
+- Atribuir variante no início do onboarding (persistir em AsyncStorage)
+- Rastrear eventos:
+  ```typescript
+  {
+    event: 'experiment_assigned',
+    properties: {
+      experiment_name: 'onboarding_reinforcement_v1',
+      variant: 'control' | 'test',
+      user_id: string
+    }
+  }
+
+  {
+    event: 'experiment_completed',
+    properties: {
+      experiment_name: 'onboarding_reinforcement_v1',
+      variant: 'control' | 'test',
+      outcome: 'completed' | 'abandoned',
+      notifications_enabled: boolean
+    }
+  }
+  ```
+
+**Análise:**
+- Chi-squared test para significância estatística (p < 0.05)
+- Confidence interval: 95%
+- Mínimo 500 usuários/variante para poder estatístico
+
+**Rollout:**
+- Se B vence: implementar microtela permanentemente
+- Se A vence: manter 5 telas originais
+- Se empate: teste inconclusivo, considerar novo experimento
 
 ---
 
@@ -1430,13 +1613,26 @@ Medir sucesso de cada fase com métricas quantitativas.
 | Fase | KPI Principal | Meta | Medição |
 |------|---------------|------|---------|
 | **C1 - Onboarding** | Taxa de conclusão do onboarding | ≥ 80% | `onboarding_completed` / `onboarding_started` |
+| **C1 - Onboarding** | **Ativação de lembretes** | **≥ 85%** | **Usuários com lembrete agendado / total que concluem C1** |
 | **C2 - Notificações** | Aderência semanal | ≥ 70% | Usuários que registram dose na janela / total com lembrete ativo |
+| **C2 - Notificações** | **Taxa de falha em lembretes** | **< 1%/semana** | **Lembretes não disparados ou não entregues / total agendado** |
 | **C3 - Coachmarks** | Taxa de conclusão do tour | ≥ 80% | `coachmark_tour_completed` / `coachmark_tour_started` |
 | **C4 - Financeiro** | Adoção até D14 | ≥ 35% | Usuários com 1+ compra registrada até D14 |
 | **C4 - Financeiro** | Tempo até 1ª compra | < 5 dias | Mediana de dias entre signup e primeira compra |
 | **C5 - Pausas** | Uso de pausas | ≥ 15% | Usuários com ≥1 pausa registrada |
 | **C5 - Álcool** | Logging de álcool | ≥ 20% | % de dias com álcool marcado (entre usuários ativos) |
 | **C6 - Analytics** | Opt-in de analytics | ≥ 60% | Usuários que aceitam opt-in no onboarding |
+
+**Notas sobre KPIs de Lembretes:**
+- **Ativação de lembretes (≥85%):** Métrica crítica de engajamento. Se <85%, revisar UX do Permissions step.
+- **Falha em lembretes (<1%/semana):** Métrica de confiabilidade técnica. Inclui:
+  - Lembretes não agendados corretamente (erro de código)
+  - Lembretes agendados mas não disparados (bug iOS/Android)
+  - Lembretes disparados mas não entregues (permissões revogadas, app force-quit)
+- **Monitoramento:**
+  - Log de sucesso: `reminder_scheduled`, `reminder_fired`, `reminder_delivered`
+  - Log de falha: `reminder_failed` com `reason` (ex: 'permission_denied', 'schedule_error', 'system_killed')
+  - Dashboard: gráfico de taxa de falha semanal por plataforma (iOS vs Android)
 
 ### Métricas Secundárias
 

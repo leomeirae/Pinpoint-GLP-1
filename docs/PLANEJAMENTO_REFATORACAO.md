@@ -52,6 +52,13 @@
 - **Testes:** Validação manual iOS/Android para cada PR
 - **Linters:** ESLint + Prettier devem passar antes do merge
 
+### Offline-First
+- **Persistência local:** Fila de operações pendentes (dose, peso, compra) em AsyncStorage
+- **Sincronização:** Retry automático com exponential backoff
+- **Estados visuais:** Indicadores de "sincronizando..." / "falhou" / "sincronizado"
+- **Resolução de conflitos:** Last-write-wins baseado em timestamps UTC
+- **Cache:** Dados críticos (medicação, preferências) sempre disponíveis offline
+
 ---
 
 ## Visão Geral das Fases
@@ -59,15 +66,20 @@
 | Fase | Prioridade | Esforço | Dependências | Branch |
 |------|-----------|---------|--------------|--------|
 | C0 | P0 | 4h | Nenhuma | `cleanup/remove-nutrition-ai` |
-| C1 | P1 | 16h | C0 | `refactor/onboarding-5-core` |
-| C2 | P1 | 6h | C1 | `feature/weekly-reminders` |
+| C1 | P1 | 20h | C0 | `refactor/onboarding-5-core` |
+| C2 | P1 | 7h | C1 | `feature/weekly-reminders` |
 | C3 | P1 | 8h | C1, C2 | `feature/coachmarks-home` |
-| C4 | P1 | 20h | C1 | `feature/finance-mvp` |
+| C4 | P1 | 25h | C1 | `feature/finance-mvp` |
 | C5 | P1 | 12h | C1, C2 | `feature/pauses-alcohol` |
 | C6 | P1 | 6h | C1 | `feature/analytics-optin` |
 | C7 | P0/P1 | 8h | Todos | `release/qa-compliance` |
 
-**Total estimado:** ~80h (2 semanas full-time ou 4 semanas part-time)
+**Total estimado:** ~90h (2-3 semanas full-time ou 4-5 semanas part-time)
+
+**Ajustes de esforço:**
+- **C1:** 16h → 20h (validações, estados de erro, deferred sign-up)
+- **C2:** 6h → 7h (edge cases de timezone/DST, janela de aplicação, catch-up)
+- **C4:** 20h → 25h (schema rico, storage de recibos, formatação BRL, opt-in R$/kg)
 
 ---
 
@@ -254,6 +266,44 @@ Refatorar o onboarding atual (23 telas) para um fluxo essencial de 5 telas core,
   - Não altera o progresso do onboarding
   - Apenas informa que as features existem
 
+#### Deferred Sign-Up (Modo Convidado)
+
+**Objetivo:** Permitir que usuários explorem o app sem criar conta, pedindo cadastro apenas após demonstrar valor.
+
+**Implementação:**
+- Usuário pode completar onboarding (C1) e configurar lembretes (C2) sem login
+- Dados armazenados localmente em AsyncStorage com flag `isGuestMode: true`
+- Solicitar conta em 2 momentos estratégicos:
+  1. **Após onboarding completo:** Modal suave "Criar conta para sincronizar entre dispositivos" (pode pular)
+  2. **Ao registrar primeira compra (C4):** Obrigatório para persistir dados financeiros sensíveis
+- **Migração de dados:** Ao criar conta, migrar todos os dados locais para Supabase:
+  - Medicação e doses
+  - Lembretes configurados
+  - Aplicações registradas (se houver)
+  - Pesos registrados (se houver)
+- **UX de migração:**
+  - Loading: "Sincronizando seus dados..."
+  - Sucesso: "Tudo pronto! Seus dados estão seguros."
+  - Erro: Retry com opção de contatar suporte
+
+**Regras:**
+- Modo convidado limitado a 7 dias ou 5 registros (o que vier primeiro)
+- Analytics: eventos de modo convidado marcados com `isGuest: true`
+- Notificações funcionam normalmente (locais, sem push remoto)
+
+#### Copy Clínica e Linguagem
+
+**Princípios:**
+- **PT-BR formal:** Tom profissional, sem gírias ou informalidade excessiva
+- **Sem emojis no código:** Emojis apenas em notificações e UI quando apropriado
+- **Linguagem clara:** Evitar jargões médicos sem explicação
+- **Foco em dados, não marketing:** "Registre sua aplicação" (não "Dê um passo na sua jornada!")
+
+**Doses condicionadas:**
+- Lista de doses muda dinamicamente conforme medicamento selecionado
+- Validação: impedir doses inválidas para o medicamento escolhido
+- Exemplo visual: Se Mounjaro → mostrar apenas [2.5, 5, 7.5, 10, 12.5, 15 mg]
+
 ### Estrutura de Arquivos
 
 ```
@@ -400,16 +450,34 @@ Implementar sistema de notificações semanais confiável para lembretes de apli
 - Notificação com deep-link para tela de aplicação
 - Cancelar/reprogramar ao editar horário
 
+**Janela de Aplicação (Application Window):**
+- Ao invés de horário fixo, implementar **janela de aplicação** (ex: 19:00-23:00)
+- Notificação inicial no início da janela (19:00)
+- Se usuário não registrar aplicação dentro da janela:
+  - **Catch-up suave:** Notificação de lembrete 2h depois (21:00): "Ainda não aplicou? É seguro aplicar até 23:00"
+  - **Fora da janela:** Se perder completamente, sugerir próximo ciclo semanal
+- Configuração da janela em `users` table: `reminder_window_start`, `reminder_window_end`
+
+**Timezone e DST:**
+- Usar timezone local do dispositivo (`Intl.DateTimeFormat().resolvedOptions().timeZone`)
+- Recalcular notificações após mudança de horário de verão (DST)
+- Listener de mudança de timezone (`AppState` + `expo-localization`)
+- Logs: registrar timezone usado em cada agendamento
+
+**Catch-up Automático:**
+- Se usuário registrar aplicação fora da janela → sugerir ajustar janela
+- Se usuário perder 2+ janelas consecutivas → notificação empática: "Notamos que você perdeu algumas aplicações. Quer ajustar o horário?"
+
 ### Tarefas Detalhadas
 
-#### 1. Atualizar lib/notifications.ts (3h)
-- [ ] Criar nova função `scheduleWeeklyReminder(weekday, hour, minute)`:
+#### 1. Atualizar lib/notifications.ts (4h - aumentado devido a janela + timezone)
+- [ ] Criar nova função `scheduleWeeklyReminderWithWindow(weekday, windowStart, windowEnd)`:
   ```typescript
-  export async function scheduleWeeklyReminder(
+  export async function scheduleWeeklyReminderWithWindow(
     weekday: number, // 0=dom, 1=seg, ..., 6=sab
-    hour: number,
-    minute: number
-  ): Promise<string | null>
+    windowStart: string, // "19:00"
+    windowEnd: string    // "23:00"
+  ): Promise<{ initial: string; catchup: string } | null>
   ```
 - [ ] Implementar lógica:
   - Cancelar notificações anteriores do tipo `medication_reminder`
@@ -520,6 +588,12 @@ Implementar sistema de coachmarks (onboarding in-app) para guiar usuários em fe
   - Spotlight circular no elemento alvo
   - Tooltip com seta apontando para o alvo
   - Botão "Entendi" / "Próximo"
+  - **Acessibilidade:**
+    - Botão "Pular tour" visível e acessível
+    - Foco automático no botão principal ao exibir
+    - Labels descritivas: `accessibilityLabel`, `accessibilityHint`
+    - VoiceOver/TalkBack: anunciar título e descrição do coachmark
+    - Navegação por gestos: swipe para próximo/anterior
 - [ ] Criar `components/coachmarks/Coachmark.tsx`:
   - Componente wrapper para elementos que terão coachmark
   - Props: `id`, `title`, `description`, `order`
@@ -601,21 +675,34 @@ Implementar sistema de controle financeiro para rastrear compras de medicamentos
 
 ### Nova Implementação
 
-**Schema de dados:**
+**Schema de dados (rico, para escalar sem retrabalho):**
 ```sql
 create table purchases (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid references auth.users(id) not null,
-  medication text not null,
-  brand text,
-  dosage text not null,
-  quantity int not null,                -- ex.: 4 canetas
-  total_price_cents int not null,       -- preço total em centavos
+
+  -- Medicação
+  medication text not null,              -- 'mounjaro', 'ozempic', etc.
+  brand text,                            -- marca comercial (opcional)
+  dosage numeric not null,               -- valor numérico (ex: 2.5, 5, 7.5)
+  unit text not null default 'mg',      -- unidade (mg, mL)
+
+  -- Embalagem
+  package_form text not null default 'pen',  -- 'pen', 'vial', 'syringe', 'box'
+  package_qty int not null check (package_qty >= 1), -- ex: 4 canetas por caixa
+  quantity int not null default 1,       -- nº de embalagens compradas (default: 1 caixa)
+
+  -- Preço
+  currency text not null default 'BRL',
+  total_price_cents int not null,        -- preço total em centavos
   unit_price_cents int generated always as (total_price_cents/nullif(quantity,0)) stored,
+
+  -- Metadata
   purchase_date timestamptz not null,
-  location text,
-  receipt_url text,
+  location text,                         -- farmácia, clínica, etc.
+  receipt_url text,                      -- URL do recibo (Supabase Storage)
   notes text,
+
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -628,12 +715,34 @@ create policy "own-update" on purchases for update using (auth.uid()=user_id);
 create policy "own-delete" on purchases for delete using (auth.uid()=user_id);
 
 create index on purchases(user_id, purchase_date desc);
+create index on purchases(user_id, medication);
+
+-- Tabela para opt-in de R$/kg (se não existir ainda)
+alter table users add column if not exists finance_opt_in boolean default false;
 ```
 
-**Cálculos:**
-- **Total gasto:** Soma de `total_price_cents` de todas as compras
-- **R$/semana:** Total gasto / número de semanas desde primeira compra
-- **R$/kg:** (Opcional, atrás de opt-in) Total gasto / total de kg perdidos
+**Storage de Recibos (Supabase Storage):**
+- Bucket: `receipts` (privado, RLS habilitado)
+- Path: `{user_id}/{purchase_id}/{filename}.{ext}`
+- RLS policy: apenas o dono do recibo pode ler/escrever
+- Tamanho máximo: 5MB por arquivo
+- Formatos aceitos: JPG, PNG, PDF
+
+**Cálculos e Exibição:**
+- **Total gasto:** Soma de `total_price_cents` de todas as compras → sempre exibir
+- **R$/semana:** Total gasto / nº de semanas desde primeira compra → sempre exibir
+- **Próxima compra prevista:** Baseado em média de dias entre compras → sempre exibir se houver 2+ compras
+- **R$/kg:** (Opcional, **atrás de opt-in**)
+  - Mostrar apenas se: `finance_opt_in = true` AND mínimo de 2 pesagens válidas
+  - Cálculo: Total gasto / (peso_inicial - peso_atual)
+  - Aviso contextual: "Indicador econômico, não clínico. Não reflete eficácia do tratamento."
+  - Tooltip: "Este valor mostra quanto você gastou por kg perdido, mas lembre-se: cada corpo responde diferente ao tratamento."
+  - Se não atender critérios: ocultar métrica (não mostrar "R$ 0/kg" ou "N/A")
+
+**Formatação BRL:**
+- Sempre usar formato: R$ 1.234,56 (ponto para milhares, vírgula para centavos)
+- Helper function: `formatCurrency(cents: number): string`
+- Exemplo: `formatCurrency(123456)` → "R$ 1.234,56"
 
 ### Tarefas Detalhadas
 
@@ -880,11 +989,13 @@ Garantir que **nenhum evento de analytics** seja disparado sem consentimento exp
 
 ### Nova Implementação
 
-**Requisitos:**
+**Requisitos CRÍTICOS:**
+- **NUNCA enviar eventos sem `analyticsOptIn === true`** (bloqueio absoluto)
 - Opt-in solicitado em `Compliance.tsx` (onboarding)
 - Se opt-in = false: **nenhum evento** é disparado
-- Se opt-in = true: eventos normais
-- Permitir opt-out em configurações
+- Se opt-in = true: eventos normais + tipados
+- Permitir opt-out em configurações a qualquer momento
+- Eventos em modo convidado marcados com `isGuest: true`
 
 ### Tarefas Detalhadas
 
@@ -972,16 +1083,20 @@ Garantir que todas as implementações atendam aos requisitos de qualidade, aces
     - [ ] CRUD de compras funcional
     - [ ] Pausas e álcool funcionais
   - **Compliance:**
-    - [ ] Sem frequência "diária" para GLP-1
-    - [ ] Doses condicionadas por medicamento
-    - [ ] Disclaimer clínico visível
-    - [ ] Consentimento LGPD com checkbox obrigatório
-    - [ ] Analytics só dispara com opt-in
+    - [ ] **Sem frequência "diária" para GLP-1** (checagem explícita em todo código)
+    - [ ] Doses condicionadas por medicamento (validação impeditiva)
+    - [ ] Disclaimer clínico visível em Compliance.tsx
+    - [ ] Consentimento LGPD com checkbox obrigatório (não avança sem aceitar)
+    - [ ] Analytics **NUNCA** dispara sem opt-in (teste: desligar opt-in e verificar console)
+    - [ ] **Marca/Copy clínica:** Priorizar nome genérico; marcas apenas como referência
+    - [ ] Sem "review" pedido no onboarding (App Store guidelines)
   - **Acessibilidade:**
-    - [ ] Contraste ≥ 4.5:1 (AA)
-    - [ ] Touch areas ≥ 44×44
-    - [ ] SafeArea em todas as telas
-    - [ ] Dark mode funcional
+    - [ ] Contraste ≥ 4.5:1 (AA) - validar com ferramenta (WebAIM, Stark)
+    - [ ] Touch areas ≥ 44×44 pixels (iOS HIG / Material Design)
+    - [ ] SafeArea em **todas** as telas novas (C1-C6)
+    - [ ] Dark mode funcional em **todas** as telas novas
+    - [ ] Foco/labels corretos (VoiceOver/TalkBack)
+    - [ ] Tour de coachmarks acessível (botão "Pular" funcional)
   - **UX:**
     - [ ] Sem "review" pedido no onboarding
     - [ ] Estados vazios claros
@@ -1034,6 +1149,172 @@ Garantir que todas as implementações atendam aos requisitos de qualidade, aces
 ### Riscos
 - **Médio:** Bugs não detectados em testes manuais
 - **Mitigação:** Testar em múltiplos dispositivos, considerar beta testing
+
+---
+
+## First-Week Playbook (Engajamento Inicial)
+
+### Objetivo
+Garantir engajamento e adoção de features críticas nos primeiros 7 dias, usando notificações estratégicas.
+
+### Sequência de Notificações
+
+**Implementação em:** `lib/notifications.ts` + `hooks/useFirstWeekPlaybook.ts`
+
+#### D+1: Confirmação de Agenda
+- **Timing:** 24h após completar onboarding
+- **Título:** "Confirme sua agenda"
+- **Corpo:** "Revise dia e horário do seu lembrete semanal (leva 15 segundos)"
+- **CTA:** Deep-link para `/(tabs)/settings/edit-reminder`
+- **Objetivo:** Garantir que lembrete está no melhor horário
+- **Métrica:** Taxa de abertura e taxa de edição
+
+#### D+3: Primeiro Registro de Peso
+- **Timing:** 3 dias após onboarding (se ainda não registrou peso)
+- **Título:** "Registre seu peso (15s)"
+- **Corpo:** "Comece a acompanhar seu progresso semanal"
+- **CTA:** Deep-link para `/(tabs)/add-weight`
+- **Objetivo:** Ativar feature de acompanhamento
+- **Métrica:** Taxa de conversão (registro de peso)
+
+#### D+6: Revisão de Compras/Estoque
+- **Timing:** 6 dias após onboarding
+- **Título:** "Revise compras/estoque"
+- **Corpo:** "Nunca fique sem medicação. Registre sua última compra."
+- **CTA:** Deep-link para `/(tabs)/finance/add-purchase`
+- **Objetivo:** Ativar feature financeira + prever próxima compra
+- **Métrica:** Taxa de adoção do financeiro
+
+### Métricas por Notificação
+
+**Rastreamento em analytics (com opt-in):**
+```typescript
+{
+  event: 'first_week_notification_sent',
+  properties: {
+    notification_type: 'd1_agenda' | 'd3_weight' | 'd6_finance',
+    user_days_since_signup: number,
+    user_id: string,
+    timestamp: string
+  }
+}
+
+{
+  event: 'first_week_notification_delivered',
+  properties: { /* idem */ }
+}
+
+{
+  event: 'first_week_notification_opened',
+  properties: { /* idem */ }
+}
+
+{
+  event: 'first_week_notification_action',
+  properties: {
+    /* idem */
+    action_completed: boolean, // true se registrou peso/compra/editou agenda
+    time_to_action_seconds: number
+  }
+}
+
+{
+  event: 'first_week_notification_optout',
+  properties: { /* idem */ }
+}
+```
+
+### Regras de Supressão
+- Se usuário já completou ação: NÃO enviar notificação
+  - Ex: Se registrou peso no D+1, não enviar notificação D+3
+- Se usuário desativou notificações: respeitar preferência
+- Se modo convidado: notificações locais apenas
+
+### Implementação
+
+**Nova tabela (opcional):**
+```sql
+create table first_week_playbook_status (
+  user_id uuid references auth.users(id) primary key,
+  d1_sent boolean default false,
+  d1_opened boolean default false,
+  d1_completed boolean default false,
+  d3_sent boolean default false,
+  d3_opened boolean default false,
+  d3_completed boolean default false,
+  d6_sent boolean default false,
+  d6_opened boolean default false,
+  d6_completed boolean default false,
+  created_at timestamptz default now()
+);
+```
+
+**Hook:**
+```typescript
+// hooks/useFirstWeekPlaybook.ts
+export function useFirstWeekPlaybook() {
+  const schedulePlaybook = async (signupDate: Date) => {
+    // Agendar notificações D+1, D+3, D+6
+  };
+
+  const markNotificationOpened = async (type: 'd1' | 'd3' | 'd6') => {
+    // Atualizar status
+  };
+
+  const markActionCompleted = async (type: 'd1' | 'd3' | 'd6') => {
+    // Atualizar status + cancelar notificação futura se aplicável
+  };
+}
+```
+
+---
+
+## KPIs por Fase
+
+### Objetivo
+Medir sucesso de cada fase com métricas quantitativas.
+
+| Fase | KPI Principal | Meta | Medição |
+|------|---------------|------|---------|
+| **C1 - Onboarding** | Taxa de conclusão do onboarding | ≥ 80% | `onboarding_completed` / `onboarding_started` |
+| **C2 - Notificações** | Aderência semanal | ≥ 70% | Usuários que registram dose na janela / total com lembrete ativo |
+| **C3 - Coachmarks** | Taxa de conclusão do tour | ≥ 80% | `coachmark_tour_completed` / `coachmark_tour_started` |
+| **C4 - Financeiro** | Adoção até D14 | ≥ 35% | Usuários com 1+ compra registrada até D14 |
+| **C4 - Financeiro** | Tempo até 1ª compra | < 5 dias | Mediana de dias entre signup e primeira compra |
+| **C5 - Pausas** | Uso de pausas | ≥ 15% | Usuários com ≥1 pausa registrada |
+| **C5 - Álcool** | Logging de álcool | ≥ 20% | % de dias com álcool marcado (entre usuários ativos) |
+| **C6 - Analytics** | Opt-in de analytics | ≥ 60% | Usuários que aceitam opt-in no onboarding |
+
+### Métricas Secundárias
+
+**Engajamento:**
+- DAU (Daily Active Users)
+- WAU (Weekly Active Users)
+- Retenção D7, D30
+- Tempo médio por sessão
+
+**Features:**
+- Registros médios por usuário/semana (dose, peso, compra)
+- Taxa de uso de deep-links (Quick Actions)
+- Taxa de edição de lembretes
+
+**Qualidade:**
+- Taxa de crashes (< 0.1%)
+- Tempo de carregamento de telas (< 2s)
+- Taxa de erro em operações críticas (< 1%)
+
+### Dashboards
+
+**Ferramentas sugeridas:**
+- Mixpanel / Amplitude para analytics de produto
+- Sentry para monitoring de erros
+- Firebase Performance para métricas de performance
+
+**Views principais:**
+- Funil de onboarding (5 etapas)
+- Cohort analysis (retenção por semana de signup)
+- Feature adoption (% usuários usando cada feature)
+- First-week playbook (métricas de notificações)
 
 ---
 

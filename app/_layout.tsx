@@ -6,6 +6,7 @@ import { ClerkProvider } from '@clerk/clerk-expo';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, useTheme } from '@/lib/theme-context';
+import { CoachmarkProvider } from '@/components/coachmarks/CoachmarkContext';
 import { useColors } from '@/constants/colors';
 import { tokenCache, validateClerkKey } from '@/lib/clerk';
 import { useUserSync } from '@/hooks/useUserSync';
@@ -65,7 +66,9 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ThemeProvider>
-        <RootStack />
+        <CoachmarkProvider>
+          <RootStack />
+        </CoachmarkProvider>
       </ThemeProvider>
     </ClerkProvider>
   );

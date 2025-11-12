@@ -3,6 +3,7 @@ import { ScrollView, View, StyleSheet, RefreshControl, Text, TouchableOpacity } 
 import { useColors } from '@/hooks/useShotsyColors';
 import { EstimatedLevelsChartV2 } from '@/components/dashboard/EstimatedLevelsChartV2';
 import { NextShotWidget } from '@/components/dashboard/NextShotWidget';
+import { QuickActionsCard } from '@/components/dashboard/QuickActionsCard';
 import { ShotsyCircularProgressV2, ProgressValue } from '@/components/ui/ShotsyCircularProgressV2';
 import { router } from 'expo-router';
 import { useApplications } from '@/hooks/useApplications';
@@ -244,6 +245,11 @@ export default function DashboardScreen() {
             lastShotDate={lastShotDate}
             frequency={frequency}
           />
+        </FadeInView>
+
+        {/* Quick Actions - C3 */}
+        <FadeInView duration={800} delay={400}>
+          <QuickActionsCard />
         </FadeInView>
 
         {/* Bottom spacing for safe area */}

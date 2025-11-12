@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
-import { ClipboardText, Syringe, ChartLineUp, Calendar, GearSix, Sparkle } from 'phosphor-react-native';
+import { ClipboardText, Syringe, ChartLineUp, Calendar, GearSix } from 'phosphor-react-native';
 import { useColors } from '@/hooks/useShotsyColors';
 import { useAuth } from '@/lib/clerk';
 import { createLogger } from '@/lib/logger';
@@ -120,19 +120,6 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="add-nutrition"
-        options={{
-          title: 'IA',
-          tabBarIcon: ({ color, focused }) => (
-            <Sparkle
-              size={ShotsyDesignTokens.iconSize.xl}
-              color={color}
-              weight={focused ? 'bold' : 'thin'}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="settings"
         options={{
           title: 'Ajustes',
@@ -155,7 +142,6 @@ export default function Layout() {
       <Tabs.Screen name="profile" options={{ href: null }} />
       <Tabs.Screen name="faq" options={{ href: null }} />
       <Tabs.Screen name="premium" options={{ href: null }} />
-      {/* Removido add-nutrition daqui pois agora está no tab bar */}
     </Tabs>
   );
 }

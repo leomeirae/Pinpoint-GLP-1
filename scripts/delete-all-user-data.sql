@@ -12,7 +12,6 @@
 DELETE FROM public.side_effects;
 DELETE FROM public.medication_applications;
 DELETE FROM public.weight_logs;
-DELETE FROM public.daily_nutrition;
 DELETE FROM public.daily_streaks;
 DELETE FROM public.achievements;
 DELETE FROM public.scheduled_notifications;
@@ -34,6 +33,5 @@ DELETE FROM public.users;
 -- SELECT COUNT(*) FROM public.weight_logs; -- Deve retornar 0
 -- SELECT COUNT(*) FROM public.side_effects; -- Deve retornar 0
 -- SELECT COUNT(*) FROM public.settings; -- Deve retornar 0
--- SELECT COUNT(*) FROM public.daily_nutrition; -- Deve retornar 0
 -- ========================================
 

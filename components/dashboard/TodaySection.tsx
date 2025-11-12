@@ -6,16 +6,12 @@ import { router } from 'expo-router';
 
 interface TodaySectionProps {
   todayWeight?: number;
-  todayCalories?: number;
-  todayProtein?: number;
   todaySideEffects?: string[];
   todayNotes?: string;
 }
 
 export function TodaySection({
   todayWeight,
-  todayCalories,
-  todayProtein,
   todaySideEffects,
   todayNotes,
 }: TodaySectionProps) {
@@ -23,14 +19,6 @@ export function TodaySection({
 
   const handleWeightPress = () => {
     router.push('/(tabs)/add-weight');
-  };
-
-  const handleCaloriesPress = () => {
-    router.push('/(tabs)/add-nutrition');
-  };
-
-  const handleProteinPress = () => {
-    router.push('/(tabs)/add-nutrition');
   };
 
   const handleSideEffectsPress = () => {
@@ -48,7 +36,7 @@ export function TodaySection({
     <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Hoje</Text>
 
-      {/* Grid de 4 cards pequenos em 2x2 */}
+      {/* Grid de 2 cards pequenos */}
       <View style={styles.grid}>
         {/* Card de Peso */}
         <TouchableOpacity
@@ -63,44 +51,6 @@ export function TodaySection({
               <Text style={[styles.cardValue, { color: colors.text }]}>
                 {todayWeight.toFixed(1)} kg
               </Text>
-            ) : (
-              <Text style={[styles.placeholder, { color: colors.textMuted }]}>
-                Toque para{'\n'}adicionar
-              </Text>
-            )}
-          </ShotsyCard>
-        </TouchableOpacity>
-
-        {/* Card de Calorias */}
-        <TouchableOpacity
-          style={styles.smallCardContainer}
-          onPress={handleCaloriesPress}
-          activeOpacity={0.7}
-        >
-          <ShotsyCard style={styles.card}>
-            <Text style={styles.emoji}>🍖</Text>
-            <Text style={[styles.cardLabel, { color: colors.textSecondary }]}>CALORIAS</Text>
-            {todayCalories ? (
-              <Text style={[styles.cardValue, { color: colors.text }]}>{todayCalories} kcal</Text>
-            ) : (
-              <Text style={[styles.placeholder, { color: colors.textMuted }]}>
-                Toque para{'\n'}adicionar
-              </Text>
-            )}
-          </ShotsyCard>
-        </TouchableOpacity>
-
-        {/* Card de Proteína */}
-        <TouchableOpacity
-          style={styles.smallCardContainer}
-          onPress={handleProteinPress}
-          activeOpacity={0.7}
-        >
-          <ShotsyCard style={styles.card}>
-            <Text style={styles.emoji}>🥩</Text>
-            <Text style={[styles.cardLabel, { color: colors.textSecondary }]}>PROTEÍNA</Text>
-            {todayProtein ? (
-              <Text style={[styles.cardValue, { color: colors.text }]}>{todayProtein}g</Text>
             ) : (
               <Text style={[styles.placeholder, { color: colors.textMuted }]}>
                 Toque para{'\n'}adicionar

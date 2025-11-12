@@ -15,7 +15,6 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 - 📈 **Gráficos de Progresso** - Acompanhamento de peso e níveis estimados de medicação
 - 📅 **Calendário** - Visualização temporal das aplicações e marcos
 - ⚙️ **Configurações Personalizáveis** - Temas, notificações e preferências
-- 🤖 **IA Nutricional** - Chat inteligente para análise nutricional diária
 - 🎨 **Temas Personalizados** - 8 temas visuais diferentes
 - 📱 **Onboarding Completo** - 23 telas de configuração inicial
 
@@ -28,7 +27,6 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 - **Autenticação:** Clerk
 - **Database:** Supabase
 - **Estilo:** StyleSheet nativo do React Native
-- **IA:** Google Gemini API
 - **Analytics:** Sistema próprio com tracking de eventos
 
 ---
@@ -64,7 +62,6 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 - Expo CLI
 - Conta Supabase
 - Conta Clerk
-- API Key do Google Gemini
 
 ### Instalação
 
@@ -88,7 +85,6 @@ npx expo start
 
 1. **Supabase:** Configure as tabelas usando os scripts em `supabase/migrations/`
 2. **Clerk:** Configure autenticação e webhooks
-3. **Gemini:** Adicione sua API key para funcionalidades de IA
 
 ---
 

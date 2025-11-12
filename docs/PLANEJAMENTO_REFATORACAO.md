@@ -1672,28 +1672,31 @@ Medir sucesso de cada fase com métricas quantitativas.
 ```mermaid
 graph TD
     C0[C0: Remoção IA Nutrição] --> C1[C1: Onboarding 5 Core]
-    C1 --> C2[C2: Notificações Semanais]
-    C1 --> C4[C4: Financeiro MVP]
     C1 --> C6[C6: Analytics Opt-in]
+    C6 --> C2[C2: Notificações Semanais]
     C2 --> C3[C3: Coachmarks + Quick Actions]
-    C2 --> C5[C5: Pausas e Álcool]
-    C3 --> C7[C7: QA & Compliance]
-    C4 --> C7
-    C5 --> C7
-    C6 --> C7
+    C3 --> C4[C4: Financeiro MVP]
+    C4 --> C5[C5: Pausas e Álcool]
+    C5 --> C7[C7: QA & Compliance]
 ```
 
 **Ordem sequencial:**
 1. **C0** (4h) - Remoção da IA de Nutrição
-2. **C1** (16h) - Onboarding Core (5 telas) + Hooks
-3. **C6** (6h) - Analytics Opt-in (integra com C1)
-4. **C2** (6h) - Notificações Semanais (integra com C1)
-5. **C4** (20h) - Financeiro MVP (independente, pode ser paralelo com C2/C3)
-6. **C3** (8h) - Coachmarks + Quick Actions (depende de C2)
-7. **C5** (12h) - Pausas e Álcool (depende de C2)
-8. **C7** (8h) - QA & Compliance (depende de todos)
+2. **C1** (20h) - Onboarding Core (5 telas) + Hooks + Deferred Sign-Up + Remote Config
+3. **C6** (6h) - Analytics Opt-in (garante opt-in antes de telemetria)
+4. **C2** (7h) - Notificações Semanais (janela de aplicação + timezone/DST)
+5. **C3** (8h) - Coachmarks + Quick Actions (educação via tooltips)
+6. **C4** (25h) - Financeiro MVP (schema rico + recibos + R$/kg opt-in)
+7. **C5** (12h) - Pausas e Álcool (rastreamento de padrões)
+8. **C7** (8h) - QA & Compliance (testes + acessibilidade + validação)
 
-**Duração total:** ~80h (2 semanas full-time ou 4 semanas part-time)
+**Duração total:** ~90h (2-3 semanas full-time ou 4-5 semanas part-time)
+
+**Rationale da ordem:**
+- **C6 antes de C2:** Garantir opt-in de analytics implementado ANTES de qualquer telemetria ser disparada (C2, C3, C4, C5)
+- **C2 antes de C3:** Consolidar sistema de lembretes antes de criar coachmarks que ensinam sobre eles
+- **C3 antes de C4:** Educação do usuário via coachmarks antes de introduzir feature complexa (Financeiro)
+- **C4 e C5 sequenciais:** Reduzir complexidade de merge, ambas features são independentes mas densas
 
 ---
 

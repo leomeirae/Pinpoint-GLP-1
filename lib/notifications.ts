@@ -311,3 +311,49 @@ export async function getNextScheduledNotification(type: string) {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   return scheduled.find((n) => n.content.data?.type === type);
 }
+
+/**
+ * Pause all medication reminders
+ * C5 - Treatment Pauses
+ * Cancels all medication reminders when treatment is paused
+ */
+export async function pauseReminders(): Promise<void> {
+  try {
+    logger.info('Pausing all medication reminders');
+
+    // Cancel all medication reminders
+    await cancelWeeklyMedicationReminder();
+
+    logger.info('All medication reminders paused successfully');
+  } catch (error) {
+    logger.error('Error pausing reminders', error as Error);
+    throw error;
+  }
+}
+
+/**
+ * Resume medication reminders
+ * C5 - Treatment Pauses
+ * Reschedules medication reminders when treatment is resumed
+ * Requires user's preferred day and time from profile/settings
+ *
+ * @param weekday - Preferred day of week (0-6, Sunday-Saturday)
+ * @param time - Preferred time in HH:mm format (24h)
+ */
+export async function resumeReminders(weekday: number, time: string): Promise<void> {
+  try {
+    logger.info('Resuming medication reminders', { weekday, time });
+
+    // Schedule weekly medication reminder
+    const identifier = await scheduleWeeklyMedicationReminder(weekday, time);
+
+    if (identifier) {
+      logger.info('Medication reminders resumed successfully', { identifier });
+    } else {
+      logger.warn('Failed to resume medication reminders');
+    }
+  } catch (error) {
+    logger.error('Error resuming reminders', error as Error);
+    throw error;
+  }
+}

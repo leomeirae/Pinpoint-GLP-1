@@ -52,7 +52,7 @@ export function QuickActionsCard() {
       icon: Pause,
       color: colors.accentOrange || '#f97316',
       route: '/(tabs)/treatment/pause',
-      available: false, // C5 - Future feature
+      available: true, // C5 - Pausas e Álcool
     },
     {
       id: 'log-alcohol',
@@ -60,7 +60,7 @@ export function QuickActionsCard() {
       icon: Martini,
       color: colors.accentRed || '#ef4444',
       route: '/(tabs)/habits/alcohol',
-      available: false, // C5 - Future feature
+      available: true, // C5 - Pausas e Álcool
     },
   ];
 

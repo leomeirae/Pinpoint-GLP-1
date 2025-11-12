@@ -19,7 +19,10 @@ import {
 import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import { useOnboardingContext } from '@/hooks/OnboardingContext';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { createLogger } from '@/lib/logger';
 
+const logger = createLogger('FeatureHookScreen');
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width - ShotsyDesignTokens.spacing.xl * 2;
 
@@ -63,9 +66,11 @@ const FEATURES: Feature[] = [
 
 export default function FeatureHookScreen() {
   const colors = useColors();
-  const { saveToStorage } = useOnboardingContext();
+  const { data, saveToStorage } = useOnboardingContext();
+  const { saveOnboardingData } = useOnboarding();
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleNext = () => {
     if (currentIndex < FEATURES.length - 1) {
@@ -74,11 +79,45 @@ export default function FeatureHookScreen() {
   };
 
   const handleFinish = async () => {
-    // Save onboarding data to storage
-    await saveToStorage();
+    if (isSaving) return; // Prevent double-tap
 
-    // Navigate to main app (tabs)
-    router.replace('/(tabs)/dashboard');
+    setIsSaving(true);
+    try {
+      // Save onboarding data to AsyncStorage
+      await saveToStorage();
+
+      // Save onboarding data to Supabase
+      logger.info('Saving onboarding data to Supabase', { data });
+      await saveOnboardingData({
+        // Medication data
+        medication: data.medication || undefined,
+        initial_dose: data.dosage || undefined,
+        frequency: data.frequency,
+
+        // Compliance data (C1)
+        consent_version: data.consentVersion,
+        consent_accepted_at: data.consentAcceptedAt || undefined,
+        analytics_opt_in: data.analyticsOptIn,
+
+        // Schedule preferences (C1)
+        preferred_day: data.preferredDay !== null ? data.preferredDay : undefined,
+        preferred_time: data.preferredTime || undefined,
+        reminder_window_start: data.reminderWindowStart || undefined,
+        reminder_window_end: data.reminderWindowEnd || undefined,
+      });
+
+      logger.info('Onboarding completed successfully');
+
+      // Navigate to main app (tabs)
+      router.replace('/(tabs)/dashboard');
+    } catch (error) {
+      logger.error('Failed to save onboarding data', error as Error);
+      // TODO: Show error message to user
+      // For now, still navigate to dashboard (graceful degradation)
+      router.replace('/(tabs)/dashboard');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const isLastFeature = currentIndex === FEATURES.length - 1;
@@ -133,13 +172,15 @@ export default function FeatureHookScreen() {
         <TouchableOpacity
           style={[styles.button, { backgroundColor: colors.primary }]}
           onPress={isLastFeature ? handleFinish : handleNext}
+          disabled={isSaving}
           accessibilityRole="button"
           accessibilityLabel={isLastFeature ? 'Começar a usar' : 'Próximo'}
+          accessibilityState={{ disabled: isSaving }}
         >
           <Text style={styles.buttonText}>
-            {isLastFeature ? 'Começar a usar' : 'Próximo'}
+            {isSaving ? 'Salvando...' : isLastFeature ? 'Começar a usar' : 'Próximo'}
           </Text>
-          {!isLastFeature && (
+          {!isLastFeature && !isSaving && (
             <ArrowRight size={20} color="#FFFFFF" weight="bold" />
           )}
         </TouchableOpacity>

@@ -13,11 +13,15 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 - 📊 **Dashboard Completo** - Visão geral do progresso e próximas aplicações
 - 💉 **Registro de Aplicações** - Controle de doses, locais e horários
 - 📈 **Gráficos de Progresso** - Acompanhamento de peso e níveis estimados de medicação
-- 📅 **Calendário** - Visualização temporal das aplicações e marcos
-- ⚙️ **Configurações Personalizáveis** - Temas, notificações e preferências
-- 🤖 **IA Nutricional** - Chat inteligente para análise nutricional diária
-- 🎨 **Temas Personalizados** - 8 temas visuais diferentes
-- 📱 **Onboarding Completo** - 23 telas de configuração inicial
+- 🎓 **Onboarding Simplificado** - 5 telas focadas (Boas-vindas, Compliance, Medicação, Agendamento, Permissões)
+- 🔔 **Lembretes Semanais** - Notificações configuráveis por dia e horário preferido
+- 💰 **Financeiro MVP** - Controle de gastos, R$/semana, previsão de compras (R$/kg opcional com opt-in)
+- ⏸️ **Pausas no Tratamento** - Sistema de pausas com desligamento automático de lembretes
+- 🍷 **Registro de Álcool** - Calendário discreto de consumo com privacidade garantida
+- 🎯 **Quick Actions** - 5 ações rápidas para funcionalidades mais usadas
+- 🎓 **Coachmarks** - Tour guiado contextual (exibe apenas 1x)
+- 🔒 **Privacidade LGPD** - Analytics opt-in obrigatório, fail-safe default (false)
+- 🌙 **Dark Mode** - Suporte completo em todas as telas
 
 ---
 
@@ -28,7 +32,6 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 - **Autenticação:** Clerk
 - **Database:** Supabase
 - **Estilo:** StyleSheet nativo do React Native
-- **IA:** Google Gemini API
 - **Analytics:** Sistema próprio com tracking de eventos
 
 ---
@@ -38,6 +41,8 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 ### Documentos Principais
 
 - **[DOCS-INDEX.md](./DOCS-INDEX.md)** - Índice completo da documentação
+- **[docs/PLANEJAMENTO_REFATORACAO.md](./docs/PLANEJAMENTO_REFATORACAO.md)** - Planejamento detalhado da refatoração (C0-C7)
+- **[docs/qa-checklist.md](./docs/qa-checklist.md)** - Checklist de QA e compliance
 - **[PARITY-ANALYSIS-SUMMARY.md](./PARITY-ANALYSIS-SUMMARY.md)** - Análise de paridade com Shotsy
 - **[IMPLEMENTATION-PHASES.md](./IMPLEMENTATION-PHASES.md)** - Fases de implementação
 - **[DATA-MODEL-MAP.md](./DATA-MODEL-MAP.md)** - Mapeamento do modelo de dados
@@ -64,7 +69,6 @@ O Pinpoint GLP-1 é um aplicativo React Native desenvolvido com Expo que ajuda u
 - Expo CLI
 - Conta Supabase
 - Conta Clerk
-- API Key do Google Gemini
 
 ### Instalação
 
@@ -88,7 +92,6 @@ npx expo start
 
 1. **Supabase:** Configure as tabelas usando os scripts em `supabase/migrations/`
 2. **Clerk:** Configure autenticação e webhooks
-3. **Gemini:** Adicione sua API key para funcionalidades de IA
 
 ---
 
@@ -131,28 +134,66 @@ pinpoint-glp-1/
 
 ## 🎯 Roadmap
 
-### ✅ Fase 1 - P0 (Concluída)
+### ✅ Fase de Refatoração (Concluída - Nov 2025)
 
-- [x] Onboarding completo (23 telas)
-- [x] Sistema de autenticação
-- [x] Dashboard principal
-- [x] Registro de aplicações
-- [x] Gráficos básicos
+**C0 - Preparação:**
+- [x] Limpeza de código legado
+- [x] Remoção de features não-utilizadas
 
-### 🚧 Fase 2 - P1 (Em Andamento)
+**C1 - Onboarding Core:**
+- [x] 5 telas simplificadas e focadas
+- [x] Compliance LGPD com disclaimers clínicos
+- [x] Seleção de medicação e dosagem
+- [x] Configuração de agendamento
+- [x] Permissões de notificação
+
+**C2 - Notificações Semanais:**
+- [x] Lembretes configuráveis (dia + horário)
+- [x] Tela de edição de lembretes
+- [x] Integração com onboarding
+
+**C3 - Coachmarks + Quick Actions:**
+- [x] Sistema de coachmarks contextuais (1x)
+- [x] 5 Quick Actions no dashboard
+- [x] Deep-links funcionais
+
+**C4 - Financeiro MVP:**
+- [x] CRUD de compras de medicamentos
+- [x] Cálculos: Total gasto, R$/semana, Próxima compra
+- [x] R$/kg opcional (atrás de opt-in)
+- [x] Formatação BRL correta
+
+**C5 - Pausas e Álcool:**
+- [x] Sistema de pausas com timeline
+- [x] Cancelamento/reagendamento de lembretes
+- [x] Registro diário de consumo de álcool
+- [x] Calendário visual de 30 dias
+
+**C6 - Analytics Opt-in:**
+- [x] Opt-in obrigatório (fail-safe: false)
+- [x] Tela de configurações de privacidade
+- [x] Bloqueio total sem consentimento
+
+**C7 - QA & Compliance:**
+- [x] Checklist de QA completo
+- [x] Documentação atualizada
+- [x] Validações de compliance LGPD
+
+### 🚧 Fase 2 - P1 (Próximos passos)
 
 - [ ] Paywall e assinaturas
 - [ ] FAQ integrado
-- [ ] Exportação de dados
-- [ ] Notificações push
-- [ ] Widgets iOS
+- [ ] Exportação de dados (PDF, CSV)
+- [ ] Widgets iOS/Android
+- [ ] Overlays de álcool em gráficos
 
 ### 📋 Fase 3 - P2 (Planejado)
 
 - [ ] Apple Health / Google Fit
 - [ ] Compartilhamento social
 - [ ] Relatórios avançados
-- [ ] Modo offline
+- [ ] Modo offline completo
+- [ ] A/B testing de onboarding
 
 ---
 
@@ -189,7 +230,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 
 ## 📋 Histórico
 
-- **2025-01-03:** Limpeza e organização do repositório
+- **2025-11:** Refatoração completa (C0-C7) - Onboarding simplificado, Financeiro, Pausas, Álcool, LGPD compliance
+- **2025-01:** Limpeza e organização do repositório
 - **2024-11:** Implementação do carrossel Shotsy
 - **2024-10:** Lançamento da versão P0
 
@@ -197,4 +239,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 
 ---
 
-_Última atualização: Janeiro 2025_
+_Última atualização: Novembro 2025_

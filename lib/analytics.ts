@@ -1,7 +1,9 @@
 // lib/analytics.ts
 // Sistema de Analytics para tracking de eventos
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logger } from './logger';
+import { supabase } from './supabase';
 
 // Tipos de eventos conforme TRACKING-EVENTS-SPEC.md
 export type AnalyticsEvent =
@@ -89,24 +91,136 @@ const ENABLE_ANALYTICS = true; // Mudar para false em dev se necessário
 
 const analyticsLogger = logger.createChild('Analytics');
 
-export function trackEvent(event: AnalyticsEvent, properties?: AnalyticsProperties): void {
+// AsyncStorage key for analytics opt-in
+const ANALYTICS_OPT_IN_KEY = '@pinpoint:analytics_opt_in';
+
+// In-memory cache for performance (avoid AsyncStorage reads on every event)
+let analyticsOptInCache: boolean | null = null;
+
+/**
+ * Get analytics opt-in status from AsyncStorage
+ * Uses in-memory cache for performance
+ * CRITICAL: Defaults to FALSE for fail-safe compliance (LGPD/GDPR)
+ */
+export async function getAnalyticsOptIn(): Promise<boolean> {
+  // Return cached value if available
+  if (analyticsOptInCache !== null) {
+    return analyticsOptInCache;
+  }
+
+  try {
+    const value = await AsyncStorage.getItem(ANALYTICS_OPT_IN_KEY);
+
+    // FAIL-SAFE: If no value is found, default to FALSE (opt-out)
+    if (value === null) {
+      analyticsOptInCache = false;
+      analyticsLogger.debug('Analytics opt-in not found, defaulting to FALSE (fail-safe)');
+      return false;
+    }
+
+    const optIn = value === 'true';
+    analyticsOptInCache = optIn;
+    analyticsLogger.debug('Analytics opt-in loaded from storage', { optIn });
+    return optIn;
+  } catch (error) {
+    analyticsLogger.error('Error reading analytics opt-in, defaulting to FALSE', error);
+    // FAIL-SAFE: On error, default to FALSE (opt-out)
+    analyticsOptInCache = false;
+    return false;
+  }
+}
+
+/**
+ * Set analytics opt-in status
+ * Saves to both AsyncStorage and Supabase
+ * Updates in-memory cache immediately
+ */
+export async function setAnalyticsOptIn(value: boolean): Promise<void> {
+  try {
+    // Update cache immediately
+    analyticsOptInCache = value;
+
+    // Save to AsyncStorage
+    await AsyncStorage.setItem(ANALYTICS_OPT_IN_KEY, value.toString());
+    analyticsLogger.info('Analytics opt-in saved to AsyncStorage', { value });
+
+    // Save to Supabase (best effort - don't fail if offline)
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        // Get user from users table
+        const { data: userData } = await supabase
+          .from('users')
+          .select('id')
+          .eq('clerk_id', user.id)
+          .maybeSingle();
+
+        if (userData) {
+          await supabase
+            .from('users')
+            .update({ analytics_opt_in: value })
+            .eq('id', userData.id);
+
+          analyticsLogger.info('Analytics opt-in saved to Supabase', { value });
+        }
+      }
+    } catch (supabaseError) {
+      // Log but don't throw - offline mode should still work
+      analyticsLogger.warn('Failed to save analytics opt-in to Supabase (offline?)', supabaseError);
+    }
+  } catch (error) {
+    analyticsLogger.error('Error saving analytics opt-in', error);
+    throw error;
+  }
+}
+
+/**
+ * Clear analytics opt-in cache
+ * Should be called on logout or account deletion
+ */
+export function clearAnalyticsOptInCache(): void {
+  analyticsOptInCache = null;
+  analyticsLogger.debug('Analytics opt-in cache cleared');
+}
+
+/**
+ * Track analytics event
+ * CRITICAL: Checks opt-in status before sending events
+ * - If opt-in = false: Only logs locally (console), NEVER sends to network
+ * - If opt-in = true: Sends to analytics provider (when implemented)
+ */
+export async function trackEvent(
+  event: AnalyticsEvent,
+  properties?: AnalyticsProperties
+): Promise<void> {
   if (!ENABLE_ANALYTICS) {
     return;
   }
 
   try {
-    const timestamp = new Date().toISOString();
+    // CRITICAL: Check opt-in status before sending ANY data
+    const optIn = await getAnalyticsOptIn();
 
-    // Em produção, enviar para serviço de analytics
-    // Por enquanto, apenas log para debug
-    analyticsLogger.debug(`Event: ${event}`, {
+    const timestamp = new Date().toISOString();
+    const eventData = {
+      event,
       timestamp,
       ...properties,
-    });
+    };
+
+    if (!optIn) {
+      // Opt-in = false: ONLY log locally, NEVER send to network
+      analyticsLogger.debug(`[OPT-OUT] Event blocked: ${event}`, eventData);
+      return;
+    }
+
+    // Opt-in = true: Send to analytics provider
+    analyticsLogger.debug(`[OPT-IN] Event: ${event}`, eventData);
 
     // TODO: Integrar com serviço de analytics
     // Exemplo:
-    // Segment.track(event, {
+    // await Segment.track(event, {
     //   timestamp,
     //   userId: getCurrentUserId(),
     //   ...properties,
@@ -116,8 +230,15 @@ export function trackEvent(event: AnalyticsEvent, properties?: AnalyticsProperti
   }
 }
 
-export function trackScreen(screenName: string, properties?: AnalyticsProperties): void {
-  trackEvent('screen_viewed', {
+/**
+ * Track screen view event
+ * Convenience wrapper around trackEvent for screen views
+ */
+export async function trackScreen(
+  screenName: string,
+  properties?: AnalyticsProperties
+): Promise<void> {
+  await trackEvent('screen_viewed', {
     screen_name: screenName,
     ...properties,
   });

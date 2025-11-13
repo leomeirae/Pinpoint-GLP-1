@@ -1,8 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, RefreshControl, Text, TouchableOpacity } from 'react-native';
 import { useColors } from '@/hooks/useShotsyColors';
 import { EstimatedLevelsChartV2 } from '@/components/dashboard/EstimatedLevelsChartV2';
 import { NextShotWidget } from '@/components/dashboard/NextShotWidget';
+import { QuickActionsCard } from '@/components/dashboard/QuickActionsCard';
 import { ShotsyCircularProgressV2, ProgressValue } from '@/components/ui/ShotsyCircularProgressV2';
 import { router } from 'expo-router';
 import { useApplications } from '@/hooks/useApplications';
@@ -14,6 +15,8 @@ import { List, Plus } from 'phosphor-react-native';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import { getDosageColor } from '@/lib/dosageColors';
 import { FadeInView, ScalePress } from '@/components/animations';
+import { CoachmarkOverlay } from '@/components/coachmarks/CoachmarkOverlay';
+import { useCoachmarks } from '@/components/coachmarks/CoachmarkContext';
 
 const logger = createLogger('Dashboard');
 
@@ -29,6 +32,9 @@ export default function DashboardScreen() {
   } = useApplications();
   const { weights, loading: weightsLoading } = useWeights();
   const { profile, loading: profileLoading } = useProfile();
+
+  // C3: Coachmarks system
+  const { startCoachmarkTour } = useCoachmarks();
 
   const isLoading = applicationsLoading || weightsLoading || profileLoading;
 
@@ -104,6 +110,26 @@ export default function DashboardScreen() {
       setRefreshing(false);
     }
   }, [refetchApplications]);
+
+  // C3: Trigger coachmark tour on first visit
+  useEffect(() => {
+    if (!isLoading) {
+      startCoachmarkTour([
+        {
+          id: 'add-shot-button',
+          title: 'Adicionar Aplicação',
+          description: 'Toque aqui para registrar rapidamente uma nova aplicação do seu medicamento',
+          order: 1,
+        },
+        {
+          id: 'quick-actions-card',
+          title: 'Ações Rápidas',
+          description: 'Acesse as funções mais usadas do app de forma rápida e prática',
+          order: 2,
+        },
+      ]);
+    }
+  }, [isLoading, startCoachmarkTour]);
 
   const handleAddShot = () => {
     router.push('/(tabs)/add-application');
@@ -246,9 +272,17 @@ export default function DashboardScreen() {
           />
         </FadeInView>
 
+        {/* Quick Actions - C3 */}
+        <FadeInView duration={800} delay={400}>
+          <QuickActionsCard />
+        </FadeInView>
+
         {/* Bottom spacing for safe area */}
         <View style={styles.bottomSpacer} />
       </ScrollView>
+
+      {/* C3: Coachmark overlay */}
+      <CoachmarkOverlay />
     </View>
   );
 }

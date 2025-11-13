@@ -25,6 +25,17 @@ export interface OnboardingData {
   start_date?: string; // ISO date string
   target_weight?: number;
 
+  // Compliance e consentimento (C1)
+  consent_version?: string; // '1.0.0'
+  consent_accepted_at?: string; // ISO timestamp
+  analytics_opt_in?: boolean; // LGPD compliance, default false
+
+  // Preferências de agendamento (C1)
+  preferred_day?: number; // 0-6 (Sunday-Saturday)
+  preferred_time?: string; // HH:mm format (24h)
+  reminder_window_start?: string; // HH:mm
+  reminder_window_end?: string; // HH:mm
+
   // Preferências (não persistidas no P0)
   motivation?: string;
   side_effects_concerns?: string[];
@@ -87,15 +98,47 @@ export function useOnboarding() {
     }
 
     try {
-      // 1. Atualizar tabela users com dados físicos
+      // 1. Atualizar tabela users com dados físicos e de onboarding
       const userUpdates: Partial<{
         height: number;
         start_weight: number;
         target_weight: number;
         onboarding_completed: boolean;
+        consent_version: string;
+        consent_accepted_at: string;
+        analytics_opt_in: boolean;
+        preferred_day: number;
+        preferred_time: string;
+        reminder_window_start: string;
+        reminder_window_end: string;
       }> = {
         onboarding_completed: true,
       };
+
+      // Adicionar campos de compliance (C1)
+      if (data.consent_version) {
+        userUpdates.consent_version = data.consent_version;
+      }
+      if (data.consent_accepted_at) {
+        userUpdates.consent_accepted_at = data.consent_accepted_at;
+      }
+      if (data.analytics_opt_in !== undefined) {
+        userUpdates.analytics_opt_in = data.analytics_opt_in;
+      }
+
+      // Adicionar campos de preferências de agendamento (C1)
+      if (data.preferred_day !== undefined) {
+        userUpdates.preferred_day = data.preferred_day;
+      }
+      if (data.preferred_time) {
+        userUpdates.preferred_time = data.preferred_time;
+      }
+      if (data.reminder_window_start) {
+        userUpdates.reminder_window_start = data.reminder_window_start;
+      }
+      if (data.reminder_window_end) {
+        userUpdates.reminder_window_end = data.reminder_window_end;
+      }
 
       // Converter altura para cm se necessário
       if (data.height) {

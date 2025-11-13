@@ -94,7 +94,7 @@ export async function scheduleWeightReminder(time: string, frequency: 'daily' | 
 
   const identifier = await Notifications.scheduleNotificationAsync({
     content: {
-      title: '⚖️ Hora de se pesar!',
+      title: 'Hora de se pesar!',
       body: 'Registre seu peso para acompanhar seu progresso',
       data: { type: 'weight_reminder', screen: '/(tabs)/add-weight' },
       categoryIdentifier: 'weight_reminder',
@@ -102,7 +102,144 @@ export async function scheduleWeightReminder(time: string, frequency: 'daily' | 
     trigger,
   });
 
+  logger.info('Weight reminder scheduled', { identifier, frequency, time });
   return identifier;
+}
+
+/**
+ * Schedule weekly medication reminder
+ * C2 - Weekly Reminders
+ * @param weekday - Day of week (0=Sunday, 1=Monday, ..., 6=Saturday)
+ * @param time - Time in HH:mm format (24h)
+ * @returns Notification identifier
+ */
+export async function scheduleWeeklyMedicationReminder(
+  weekday: number,
+  time: string
+): Promise<string | null> {
+  try {
+    // Validate inputs
+    if (weekday < 0 || weekday > 6) {
+      logger.error('Invalid weekday for medication reminder', { weekday });
+      return null;
+    }
+
+    // Cancel previous medication reminders
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    for (const notification of scheduled) {
+      if (notification.content.data?.type === 'medication_reminder') {
+        await Notifications.cancelScheduledNotificationAsync(notification.identifier);
+        logger.debug('Cancelled previous medication reminder', {
+          identifier: notification.identifier,
+        });
+      }
+    }
+
+    // Parse time
+    const [hours, minutes] = time.split(':').map(Number);
+    if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+      logger.error('Invalid time for medication reminder', { time });
+      return null;
+    }
+
+    // For iOS, set up notification category
+    if (Platform.OS === 'ios') {
+      await Notifications.setNotificationCategoryAsync('medication_reminder', [
+        {
+          identifier: 'register_now',
+          buttonTitle: 'Registrar Agora',
+          options: { opensAppToForeground: true },
+        },
+        {
+          identifier: 'later',
+          buttonTitle: 'Mais Tarde',
+          options: { opensAppToForeground: false },
+        },
+      ]);
+    }
+
+    // Schedule weekly notification
+    const identifier = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Hora de aplicar sua dose!',
+        body: 'Não esqueça de registrar sua aplicação semanal',
+        data: {
+          type: 'medication_reminder',
+          screen: '/(tabs)/add-application',
+        },
+        categoryIdentifier: 'medication_reminder',
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+        weekday,
+        hour: hours,
+        minute: minutes,
+        repeats: true,
+      },
+    });
+
+    logger.info('Weekly medication reminder scheduled', {
+      identifier,
+      weekday,
+      time,
+      nextTrigger: `Day ${weekday} at ${time}`,
+    });
+
+    return identifier;
+  } catch (error) {
+    logger.error('Error scheduling weekly medication reminder', error as Error);
+    return null;
+  }
+}
+
+/**
+ * Update weekly medication reminder
+ * Cancels existing reminder and schedules a new one
+ * C2 - Weekly Reminders
+ */
+export async function updateWeeklyMedicationReminder(
+  weekday: number,
+  time: string
+): Promise<string | null> {
+  logger.info('Updating weekly medication reminder', { weekday, time });
+  return await scheduleWeeklyMedicationReminder(weekday, time);
+}
+
+/**
+ * Cancel weekly medication reminder
+ * C2 - Weekly Reminders
+ */
+export async function cancelWeeklyMedicationReminder(): Promise<void> {
+  try {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    for (const notification of scheduled) {
+      if (notification.content.data?.type === 'medication_reminder') {
+        await Notifications.cancelScheduledNotificationAsync(notification.identifier);
+        logger.info('Cancelled medication reminder', {
+          identifier: notification.identifier,
+        });
+      }
+    }
+  } catch (error) {
+    logger.error('Error cancelling medication reminder', error as Error);
+  }
+}
+
+/**
+ * Get next scheduled medication reminder
+ * C2 - Weekly Reminders
+ */
+export async function getScheduledMedicationReminder(): Promise<Notifications.NotificationRequest | null> {
+  try {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    const medicationReminder = scheduled.find(
+      (n) => n.content.data?.type === 'medication_reminder'
+    );
+    return medicationReminder || null;
+  } catch (error) {
+    logger.error('Error getting scheduled medication reminder', error as Error);
+    return null;
+  }
 }
 
 // Agendar notificação de aplicação
@@ -173,4 +310,50 @@ export async function scheduleInactivityReminder(daysSinceLastLog: number) {
 export async function getNextScheduledNotification(type: string) {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   return scheduled.find((n) => n.content.data?.type === type);
+}
+
+/**
+ * Pause all medication reminders
+ * C5 - Treatment Pauses
+ * Cancels all medication reminders when treatment is paused
+ */
+export async function pauseReminders(): Promise<void> {
+  try {
+    logger.info('Pausing all medication reminders');
+
+    // Cancel all medication reminders
+    await cancelWeeklyMedicationReminder();
+
+    logger.info('All medication reminders paused successfully');
+  } catch (error) {
+    logger.error('Error pausing reminders', error as Error);
+    throw error;
+  }
+}
+
+/**
+ * Resume medication reminders
+ * C5 - Treatment Pauses
+ * Reschedules medication reminders when treatment is resumed
+ * Requires user's preferred day and time from profile/settings
+ *
+ * @param weekday - Preferred day of week (0-6, Sunday-Saturday)
+ * @param time - Preferred time in HH:mm format (24h)
+ */
+export async function resumeReminders(weekday: number, time: string): Promise<void> {
+  try {
+    logger.info('Resuming medication reminders', { weekday, time });
+
+    // Schedule weekly medication reminder
+    const identifier = await scheduleWeeklyMedicationReminder(weekday, time);
+
+    if (identifier) {
+      logger.info('Medication reminders resumed successfully', { identifier });
+    } else {
+      logger.warn('Failed to resume medication reminders');
+    }
+  } catch (error) {
+    logger.error('Error resuming reminders', error as Error);
+    throw error;
+  }
 }

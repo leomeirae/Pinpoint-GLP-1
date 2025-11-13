@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { clearUserCache } from '@/hooks/useUser';
 import { clearSyncState } from '@/hooks/useUserSync';
 import { createLogger } from '@/lib/logger';
-import { trackEvent } from '@/lib/analytics';
+import { trackEvent, clearAnalyticsOptInCache } from '@/lib/analytics';
 
 const logger = createLogger('AuthUtils');
 
@@ -18,6 +18,8 @@ const STORAGE_KEYS_TO_CLEAR = [
   '@mounjaro_tracker:selected_theme',
   '@mounjaro_tracker:accent_color',
   '@mounjaro:feature_flags',
+  '@pinpoint:analytics_opt_in', // C6: Analytics opt-in
+  '@pinpoint:onboarding_data', // C1: Onboarding data
 ] as const;
 
 /**
@@ -73,6 +75,10 @@ export async function performSignOut(
     // Step 3: Clear sync state to reset sync tracking
     clearSyncState();
     logger.info('Sync state cleared');
+
+    // Step 3.5: Clear analytics opt-in cache (C6)
+    clearAnalyticsOptInCache();
+    logger.info('Analytics opt-in cache cleared');
 
     // Step 4: Clear Supabase session (if exists)
     try {
@@ -154,7 +160,7 @@ export async function performAccountDeletion(
     // Step 1: Delete user record from Supabase
     // CASCADE will automatically delete all related data from:
     // - weight_logs, medication_applications, side_effects
-    // - daily_nutrition, daily_streaks, achievements
+    // - daily_streaks, achievements
     // - scheduled_notifications, subscriptions, settings, medications
     const { error: dbError } = await supabase.from('users').delete().eq('id', userId);
 
@@ -179,6 +185,10 @@ export async function performAccountDeletion(
     // Step 4: Clear sync state
     clearSyncState();
     logger.info('Sync state cleared');
+
+    // Step 4.5: Clear analytics opt-in cache (C6)
+    clearAnalyticsOptInCache();
+    logger.info('Analytics opt-in cache cleared');
 
     // Step 5: Sign out from Clerk (also clears session)
     await signOut();

@@ -47,7 +47,7 @@ export function useMedications() {
       throw new Error('User not found. Please wait for sync to complete.');
     }
 
-    logger.info('Adding medication for user:', user.id);
+    logger.info('Adding medication for user:', { userId: user.id });
 
     const { data, error } = await supabase
       .from('medications')

@@ -47,7 +47,7 @@ export function useSideEffects() {
       throw new Error('User not found. Please wait for sync to complete.');
     }
 
-    logger.info('Adding side effect for user:', user.id);
+    logger.info('Adding side effect for user:', { userId: user.id });
 
     const { data, error } = await supabase
       .from('side_effects')

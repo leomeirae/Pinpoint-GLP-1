@@ -39,6 +39,7 @@ export function CurrentWeightScreen({ onNext, onBack }: CurrentWeightScreenProps
       }, 100);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [weight]);
 
   const handleWeightChange = (value: number) => {

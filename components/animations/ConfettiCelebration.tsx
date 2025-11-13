@@ -135,6 +135,7 @@ export const ConfettiCelebration: React.FC<ConfettiCelebrationProps> = ({
       const timer = setTimeout(onComplete, 4000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, []);
 
   const confettiPieces = Array.from({ length: count }, (_, i) => ({

@@ -15,6 +15,9 @@ export interface UserProfile {
   medication?: string;
   current_dose?: number;
   frequency?: string;
+  finance_opt_in?: boolean; // C4: Finance feature opt-in
+  preferred_day?: string; // C5: Preferred day for treatment
+  preferred_time?: string; // C5: Preferred time for treatment
   created_at?: Date;
   updated_at?: Date;
 }

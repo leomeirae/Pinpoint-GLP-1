@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
-import { Pills, ArrowLeft, Check } from 'phosphor-react-native';
+import { Pill, ArrowLeft, Check } from 'phosphor-react-native';
 import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import { useOnboardingContext } from '@/hooks/OnboardingContext';
@@ -114,7 +114,7 @@ export default function MedicationDoseScreen() {
       >
         {/* Icon */}
         <View style={[styles.iconContainer, { backgroundColor: colors.primary + '15' }]}>
-          <Pills size={48} color={colors.primary} weight="thin" />
+          <Pill size={48} color={colors.primary} weight="thin" />
         </View>
 
         {/* Title */}
@@ -140,9 +140,7 @@ export default function MedicationDoseScreen() {
                   {
                     backgroundColor: colors.card,
                     borderColor:
-                      selectedMedication?.id === medication.id
-                        ? colors.primary
-                        : 'transparent',
+                      selectedMedication?.id === medication.id ? colors.primary : 'transparent',
                   },
                 ]}
                 onPress={() => handleMedicationSelect(medication)}
@@ -209,9 +207,7 @@ export default function MedicationDoseScreen() {
               <Text style={[styles.frequencyLabel, { color: colors.textSecondary }]}>
                 Frequência
               </Text>
-              <Text style={[styles.frequencyValue, { color: colors.text }]}>
-                Semanal
-              </Text>
+              <Text style={[styles.frequencyValue, { color: colors.text }]}>Semanal</Text>
               <Text style={[styles.frequencyNote, { color: colors.textMuted }]}>
                 Medicamentos GLP-1 são aplicados semanalmente
               </Text>
@@ -248,12 +244,7 @@ export default function MedicationDoseScreen() {
           accessibilityLabel="Continuar"
           accessibilityState={{ disabled: !canContinue }}
         >
-          <Text
-            style={[
-              styles.buttonText,
-              { color: canContinue ? '#FFFFFF' : colors.textMuted },
-            ]}
-          >
+          <Text style={[styles.buttonText, { color: canContinue ? '#FFFFFF' : colors.textMuted }]}>
             Continuar
           </Text>
         </TouchableOpacity>
@@ -263,76 +254,40 @@ export default function MedicationDoseScreen() {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    alignItems: 'center',
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
+  button: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    height: 56,
+    justifyContent: 'center',
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  buttonText: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+  },
+  checkIcon: {
+    alignItems: 'center',
+    borderRadius: 14,
+    height: 28,
+    justifyContent: 'center',
+    width: 28,
+  },
   container: {
     flex: 1,
   },
-  header: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingTop: ShotsyDesignTokens.spacing.lg,
-    paddingBottom: ShotsyDesignTokens.spacing.sm,
-  },
-  backButton: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
+  doseCard: {
     alignItems: 'center',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-  },
-  iconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: ShotsyDesignTokens.borderRadius.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h2,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  subtitle: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
-    lineHeight: 22,
-  },
-  gridContainer: {
-    gap: ShotsyDesignTokens.spacing.md,
-  },
-  medicationCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: ShotsyDesignTokens.spacing.lg,
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    borderWidth: 2,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  medicationContent: {
-    flex: 1,
-  },
-  medicationName: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  medicationGeneric: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  checkIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    height: 100,
     justifyContent: 'center',
-    alignItems: 'center',
+    width: 100,
+    ...ShotsyDesignTokens.shadows.card,
   },
   doseContainer: {
     gap: ShotsyDesignTokens.spacing.lg,
@@ -343,22 +298,27 @@ const styles = StyleSheet.create({
     gap: ShotsyDesignTokens.spacing.md,
     justifyContent: 'center',
   },
-  doseCard: {
-    width: 100,
-    height: 100,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
+  doseUnit: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontWeight: '600',
   },
   doseValue: {
     ...ShotsyDesignTokens.typography.h2,
     fontWeight: '700',
     marginBottom: 4,
   },
-  doseUnit: {
-    ...ShotsyDesignTokens.typography.caption,
-    fontWeight: '600',
+  dot: {
+    borderRadius: 4,
+    height: 8,
+    width: 8,
+  },
+  dotActive: {
+    width: 24,
+  },
+  footer: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+    paddingTop: ShotsyDesignTokens.spacing.md,
   },
   frequencyCard: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
@@ -369,19 +329,51 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.caption,
     marginBottom: 4,
   },
+  frequencyNote: {
+    ...ShotsyDesignTokens.typography.caption,
+    lineHeight: 18,
+  },
   frequencyValue: {
     ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
     marginBottom: ShotsyDesignTokens.spacing.sm,
   },
-  frequencyNote: {
-    ...ShotsyDesignTokens.typography.caption,
-    lineHeight: 18,
+  gridContainer: {
+    gap: ShotsyDesignTokens.spacing.md,
   },
-  footer: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-    paddingTop: ShotsyDesignTokens.spacing.md,
+  header: {
+    paddingBottom: ShotsyDesignTokens.spacing.sm,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: ShotsyDesignTokens.spacing.lg,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    height: 96,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    width: 96,
+  },
+  medicationCard: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  medicationContent: {
+    flex: 1,
+  },
+  medicationGeneric: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  medicationName: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+    marginBottom: 4,
   },
   progressContainer: {
     alignItems: 'center',
@@ -392,26 +384,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  dotActive: {
-    width: 24,
-  },
   progressText: {
     ...ShotsyDesignTokens.typography.caption,
   },
-  button: {
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
+  scrollContent: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
   },
-  buttonText: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
+  scrollView: {
+    flex: 1,
+  },
+  subtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    textAlign: 'center',
+  },
+  title: {
+    ...ShotsyDesignTokens.typography.h2,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    textAlign: 'center',
   },
 });

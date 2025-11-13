@@ -130,123 +130,123 @@ export function SideEffectsList({
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
+    actionButton: {
+      backgroundColor: colors.background,
+      borderRadius: 6,
+      padding: 6,
+    },
+    actionIcon: {
+      fontSize: 16,
+    },
+    actions: {
+      alignSelf: 'flex-start',
+      flexDirection: 'row',
+      gap: 4,
+    },
+    cardContent: {
+      flex: 1,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      gap: 12,
+      justifyContent: 'space-between',
+    },
     container: {
       marginBottom: 16,
     },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.text,
-    },
     count: {
+      backgroundColor: colors.card,
+      borderRadius: 12,
+      color: colors.primary,
       fontSize: 16,
       fontWeight: 'bold',
-      color: colors.primary,
-      backgroundColor: colors.card,
       paddingHorizontal: 12,
       paddingVertical: 4,
+    },
+    effectCard: {
+      backgroundColor: colors.card,
       borderRadius: 12,
+      marginBottom: 12,
+      padding: 16,
+    },
+    effectDate: {
+      color: colors.textMuted,
+      fontSize: 12,
+      marginBottom: 8,
+    },
+    effectHeader: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 8,
+    },
+    effectNotes: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      fontStyle: 'italic',
+    },
+    effectTitleRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      flex: 1,
+    },
+    effectType: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: 'bold',
     },
     emptyContainer: {
+      alignItems: 'center',
       backgroundColor: colors.card,
       borderRadius: 16,
-      padding: 32,
-      alignItems: 'center',
       marginBottom: 16,
+      padding: 32,
     },
     emptyIcon: {
       fontSize: 48,
       marginBottom: 12,
     },
-    emptyText: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: colors.text,
-      marginBottom: 8,
-    },
     emptySubtext: {
-      fontSize: 14,
       color: colors.textSecondary,
+      fontSize: 14,
       textAlign: 'center',
     },
-    effectCard: {
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 12,
-    },
-    cardHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      gap: 12,
-    },
-    cardContent: {
-      flex: 1,
-    },
-    actions: {
-      flexDirection: 'row',
-      gap: 4,
-      alignSelf: 'flex-start',
-    },
-    actionButton: {
-      padding: 6,
-      borderRadius: 6,
-      backgroundColor: colors.background,
-    },
-    actionIcon: {
+    emptyText: {
+      color: colors.text,
       fontSize: 16,
-    },
-    effectHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      fontWeight: '600',
       marginBottom: 8,
     },
-    effectTitleRow: {
-      flexDirection: 'row',
+    header: {
       alignItems: 'center',
-      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
     },
-    severityDot: {
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      marginRight: 8,
-    },
-    effectType: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: colors.text,
+    moreText: {
+      color: colors.textMuted,
+      fontSize: 14,
+      marginTop: 8,
+      textAlign: 'center',
     },
     severityBadge: {
+      borderRadius: 8,
       paddingHorizontal: 10,
       paddingVertical: 4,
-      borderRadius: 8,
+    },
+    severityDot: {
+      borderRadius: 6,
+      height: 12,
+      marginRight: 8,
+      width: 12,
     },
     severityText: {
       fontSize: 11,
       fontWeight: '600',
     },
-    effectDate: {
-      fontSize: 12,
-      color: colors.textMuted,
-      marginBottom: 8,
-    },
-    effectNotes: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      fontStyle: 'italic',
-    },
-    moreText: {
-      fontSize: 14,
-      color: colors.textMuted,
-      textAlign: 'center',
-      marginTop: 8,
+    title: {
+      color: colors.text,
+      fontSize: 18,
+      fontWeight: 'bold',
     },
   });

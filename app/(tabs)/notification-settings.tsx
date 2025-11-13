@@ -185,129 +185,129 @@ function RadioOption({
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background,
-    },
-    header: {
+    actions: {
       padding: 24,
-      alignItems: 'center',
+    },
+    container: {
+      backgroundColor: colors.background,
+      flex: 1,
+    },
+    disabledText: {
+      opacity: 0.5,
+    },
+    editReminderButton: {
+      backgroundColor: colors.card,
+      borderColor: colors.primary,
+      borderRadius: 8,
+      borderWidth: 1,
+      marginTop: 12,
+      padding: 12,
+    },
+    editReminderText: {
+      color: colors.primary,
+      fontSize: 14,
+      fontWeight: '600',
+      textAlign: 'center',
     },
     emoji: {
       fontSize: 64,
       marginBottom: 16,
     },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 8,
+    header: {
+      alignItems: 'center',
+      padding: 24,
     },
-    subtitle: {
-      fontSize: 14,
+    radio: {
+      alignItems: 'center',
+      borderColor: colors.textMuted,
+      borderRadius: 12,
+      borderWidth: 2,
+      height: 24,
+      justifyContent: 'center',
+      marginRight: 12,
+      width: 24,
+    },
+    radioDescription: {
       color: colors.textSecondary,
-      textAlign: 'center',
+      fontSize: 14,
+    },
+    radioGroup: {
+      gap: 12,
+    },
+    radioInner: {
+      backgroundColor: colors.primary,
+      borderRadius: 6,
+      height: 12,
+      width: 12,
+    },
+    radioLabel: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    radioOption: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderColor: 'transparent',
+      borderRadius: 12,
+      borderWidth: 2,
+      flexDirection: 'row',
+      padding: 16,
+    },
+    radioOptionDisabled: {
+      opacity: 0.5,
+    },
+    radioOptionSelected: {
+      backgroundColor: colors.primaryDark,
+      borderColor: colors.primary,
+    },
+    radioSelected: {
+      borderColor: colors.primary,
+    },
+    radioText: {
+      flex: 1,
     },
     section: {
-      padding: 24,
-      borderBottomWidth: 1,
       borderBottomColor: colors.border,
+      borderBottomWidth: 1,
+      padding: 24,
     },
     sectionTitle: {
+      color: colors.text,
       fontSize: 18,
       fontWeight: 'bold',
-      color: colors.text,
       marginBottom: 16,
     },
-    settingRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: 12,
+    settingDescription: {
+      color: colors.textSecondary,
+      fontSize: 14,
     },
     settingInfo: {
       flex: 1,
       marginRight: 16,
     },
     settingLabel: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
       marginBottom: 4,
     },
-    settingDescription: {
-      fontSize: 14,
-      color: colors.textSecondary,
-    },
-    radioGroup: {
-      gap: 12,
-    },
-    radioOption: {
+    settingRow: {
+      alignItems: 'center',
       flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
-      borderWidth: 2,
-      borderColor: 'transparent',
+      justifyContent: 'space-between',
+      paddingVertical: 12,
     },
-    radioOptionSelected: {
-      borderColor: colors.primary,
-      backgroundColor: colors.primaryDark,
-    },
-    radioOptionDisabled: {
-      opacity: 0.5,
-    },
-    radio: {
-      width: 24,
-      height: 24,
-      borderRadius: 12,
-      borderWidth: 2,
-      borderColor: colors.textMuted,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 12,
-    },
-    radioSelected: {
-      borderColor: colors.primary,
-    },
-    radioInner: {
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      backgroundColor: colors.primary,
-    },
-    radioText: {
-      flex: 1,
-    },
-    radioLabel: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: colors.text,
-      marginBottom: 4,
-    },
-    radioDescription: {
-      fontSize: 14,
+    subtitle: {
       color: colors.textSecondary,
-    },
-    disabledText: {
-      opacity: 0.5,
-    },
-    actions: {
-      padding: 24,
-    },
-    editReminderButton: {
-      marginTop: 12,
-      padding: 12,
-      backgroundColor: colors.card,
-      borderRadius: 8,
-      borderWidth: 1,
-      borderColor: colors.primary,
-    },
-    editReminderText: {
       fontSize: 14,
-      color: colors.primary,
-      fontWeight: '600',
       textAlign: 'center',
+    },
+    title: {
+      color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
   });

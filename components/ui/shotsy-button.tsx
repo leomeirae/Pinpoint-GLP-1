@@ -122,15 +122,15 @@ export function ShotsyButton({
 
 const styles = StyleSheet.create({
   button: {
+    alignItems: 'center',
     borderRadius: 28,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingHorizontal: 24,
-  },
-  text: {
-    textAlign: 'center',
   },
   disabled: {
     opacity: 0.5,
+  },
+  text: {
+    textAlign: 'center',
   },
 });

@@ -22,15 +22,15 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 24,
   },
+  content: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
   title: {
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 0.5,
     marginBottom: 8,
     marginLeft: 16,
-  },
-  content: {
-    borderRadius: 12,
-    overflow: 'hidden',
   },
 });

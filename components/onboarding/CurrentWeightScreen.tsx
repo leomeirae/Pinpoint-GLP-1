@@ -64,7 +64,7 @@ export function CurrentWeightScreen({ onNext, onBack }: CurrentWeightScreenProps
     >
       <View style={styles.content}>
         {/* Weight Picker - V0 Design */}
-          <View style={styles.pickerContainer}>
+        <View style={styles.pickerContainer}>
           <ScrollView
             ref={scrollViewRef}
             style={styles.pickerScroll}
@@ -97,7 +97,7 @@ export function CurrentWeightScreen({ onNext, onBack }: CurrentWeightScreenProps
                         fontWeight: isSelected ? '700' : '400',
                       },
                     ]}
-                >
+                  >
                     {w}kg
                   </Text>
                 </TouchableOpacity>
@@ -105,8 +105,10 @@ export function CurrentWeightScreen({ onNext, onBack }: CurrentWeightScreenProps
             })}
           </ScrollView>
           {/* Selection Indicator */}
-          <View style={[styles.selectionIndicator, { backgroundColor: colors.backgroundSecondary }]} />
-          </View>
+          <View
+            style={[styles.selectionIndicator, { backgroundColor: colors.backgroundSecondary }]}
+          />
+        </View>
       </View>
     </OnboardingScreenBase>
   );
@@ -118,34 +120,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   pickerContainer: {
-    position: 'relative',
     height: 256,
     marginBottom: 32,
-  },
-  pickerScroll: {
-    flex: 1,
+    position: 'relative',
   },
   pickerContent: {
     alignItems: 'center',
     paddingVertical: 104, // Center the items
   },
   pickerItem: {
+    alignItems: 'center',
     height: 48,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingVertical: 8,
+  },
+  pickerScroll: {
+    flex: 1,
   },
   pickerText: {
     fontSize: 24,
   },
   selectionIndicator: {
-    position: 'absolute',
-    top: '50%',
-    left: 0,
-    right: 0,
-    height: 48,
-    marginTop: -24,
     borderRadius: 12,
+    height: 48,
+    left: 0,
+    marginTop: -24,
+    position: 'absolute',
+    right: 0,
+    top: '50%',
     zIndex: -1,
   },
 });

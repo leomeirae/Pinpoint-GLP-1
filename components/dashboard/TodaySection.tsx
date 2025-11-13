@@ -10,11 +10,7 @@ interface TodaySectionProps {
   todayNotes?: string;
 }
 
-export function TodaySection({
-  todayWeight,
-  todaySideEffects,
-  todayNotes,
-}: TodaySectionProps) {
+export function TodaySection({ todayWeight, todaySideEffects, todayNotes }: TodaySectionProps) {
   const colors = useShotsyColors();
 
   const handleWeightPress = () => {
@@ -108,31 +104,10 @@ export function TodaySection({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 12,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  smallCardContainer: {
-    width: '48%',
-    marginBottom: 12,
-  },
   card: {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 120,
-  },
-  emoji: {
-    fontSize: 32,
-    marginBottom: 8,
   },
   cardLabel: {
     fontSize: 12,
@@ -145,25 +120,46 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  placeholder: {
-    fontSize: 12,
-    textAlign: 'center',
-    lineHeight: 16,
+  container: {
+    marginBottom: 24,
   },
-  notesContainer: {
-    marginTop: 4,
+  emoji: {
+    fontSize: 32,
+    marginBottom: 8,
   },
   fullCard: {
     minHeight: 80,
   },
   fullCardHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    flexDirection: 'row',
     gap: 8,
+    marginBottom: 8,
   },
   fullCardValue: {
     fontSize: 14,
     lineHeight: 20,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  notesContainer: {
+    marginTop: 4,
+  },
+  placeholder: {
+    fontSize: 12,
+    lineHeight: 16,
+    textAlign: 'center',
+  },
+  smallCardContainer: {
+    marginBottom: 12,
+    width: '48%',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 12,
   },
 });

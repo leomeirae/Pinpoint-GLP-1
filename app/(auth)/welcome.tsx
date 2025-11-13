@@ -229,64 +229,64 @@ export default function WelcomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  buttonContainer: {
+    marginBottom: 16,
   },
   carouselContainer: {
     flex: 1,
     justifyContent: 'center',
   },
   carouselItem: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingHorizontal: 24,
   },
-  slideImage: {
-    width: '100%',
-    height: '100%',
+  container: {
+    flex: 1,
   },
   contentWrapper: {
-    paddingHorizontal: 24,
     paddingBottom: 32,
+    paddingHorizontal: 24,
   },
-  title: {
-    fontSize: 36,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 16,
-    lineHeight: 44,
+  dot: {
+    borderRadius: 4,
+    height: 8,
+  },
+  pagination: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    height: 8,
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  slideImage: {
+    height: '100%',
+    width: '100%',
   },
   subtitle: {
     fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 32,
     lineHeight: 28,
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 24,
-    height: 8,
-  },
-  dot: {
-    height: 8,
-    borderRadius: 4,
-  },
-  buttonContainer: {
-    marginBottom: 16,
+    marginBottom: 32,
+    textAlign: 'center',
   },
   termsContainer: {
     paddingHorizontal: 12,
   },
-  termsText: {
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
   termsLink: {
     fontWeight: '500',
+  },
+  termsText: {
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: '700',
+    lineHeight: 44,
+    marginBottom: 16,
+    textAlign: 'center',
   },
 });

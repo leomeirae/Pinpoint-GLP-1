@@ -231,9 +231,7 @@ export function getPurchaseSummary(
   const nextPurchaseDate = predictNextPurchase(purchases);
 
   // Only calculate cost per kg if user opted in
-  const costPerKg = financeOptIn
-    ? calculateCostPerKg(purchases, startWeight, currentWeight)
-    : null;
+  const costPerKg = financeOptIn ? calculateCostPerKg(purchases, startWeight, currentWeight) : null;
 
   // Calculate total pens purchased
   const totalPens = purchases.reduce((sum, p) => sum + p.quantity, 0);

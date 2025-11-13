@@ -120,17 +120,22 @@ const sanitizeOnboardingData = (data: OnboardingData): OnboardingData => {
     // Apenas incluir valores primitivos, arrays de primitivos e objetos simples
     if (value === null || value === undefined) {
       sanitized[key] = value;
-    } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    } else if (
+      typeof value === 'string' ||
+      typeof value === 'number' ||
+      typeof value === 'boolean'
+    ) {
       sanitized[key] = value;
     } else if (value instanceof Date) {
       sanitized[key] = value.toISOString();
     } else if (Array.isArray(value)) {
       // Apenas arrays de primitivos
-      sanitized[key] = value.filter(item =>
-        typeof item === 'string' ||
-        typeof item === 'number' ||
-        typeof item === 'boolean' ||
-        item === null
+      sanitized[key] = value.filter(
+        (item) =>
+          typeof item === 'string' ||
+          typeof item === 'number' ||
+          typeof item === 'boolean' ||
+          item === null
       );
     } else if (typeof value === 'object') {
       // Objetos simples (plain objects) - fazer shallow copy de valores primitivos
@@ -182,9 +187,15 @@ const serializeOnboardingData = (data: OnboardingData): string => {
     if (typeof value === 'object' && value !== null) {
       // Remover propriedades conhecidas que causam problemas
       const problematicKeys = [
-        '_owner', '_store', '$$typeof',
-        'user', 'colors', 'theme', 'auth',
-        'router', 'navigation'
+        '_owner',
+        '_store',
+        '$$typeof',
+        'user',
+        'colors',
+        'theme',
+        'auth',
+        'router',
+        'navigation',
       ];
 
       if (problematicKeys.includes(key)) {
@@ -591,10 +602,7 @@ export default function OnboardingFlowScreen() {
       <StatusBar barStyle="dark-content" />
 
       {/* Progress Bar */}
-      <OnboardingProgressBar
-        current={activeSteps.indexOf(currentStep) + 1}
-        total={TOTAL_STEPS}
-      />
+      <OnboardingProgressBar current={activeSteps.indexOf(currentStep) + 1} total={TOTAL_STEPS} />
 
       {renderStep()}
     </SafeAreaView>
@@ -606,10 +614,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
     gap: 16,
+    justifyContent: 'center',
   },
   loadingText: {
     fontSize: 16,

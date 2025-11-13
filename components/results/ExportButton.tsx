@@ -271,36 +271,51 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ weights, application
 };
 
 const styles = StyleSheet.create({
+  cancelButton: {
+    borderRadius: 12,
+    marginTop: 8,
+    padding: 14,
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
   exportButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 20,
+    flexDirection: 'row',
+    gap: 6,
     justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 20,
-    gap: 6,
   },
   exportButtonText: {
     fontSize: 14,
     fontWeight: '600',
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
   modalContent: {
-    width: '100%',
-    maxWidth: 400,
     borderRadius: 20,
+    elevation: 8,
+    maxWidth: 400,
     padding: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 8,
+    width: '100%',
+  },
+  modalOverlay: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  modalSubtitle: {
+    fontSize: 14,
+    marginBottom: 24,
+    textAlign: 'center',
   },
   modalTitle: {
     fontSize: 22,
@@ -308,19 +323,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
   },
-  modalSubtitle: {
-    fontSize: 14,
-    marginBottom: 24,
-    textAlign: 'center',
-  },
   optionButton: {
-    flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    marginBottom: 12,
+    flexDirection: 'row',
     gap: 16,
+    marginBottom: 12,
+    padding: 16,
+  },
+  optionDescription: {
+    fontSize: 13,
   },
   optionTextContainer: {
     flex: 1,
@@ -329,18 +342,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 4,
-  },
-  optionDescription: {
-    fontSize: 13,
-  },
-  cancelButton: {
-    padding: 14,
-    borderRadius: 12,
-    marginTop: 8,
-  },
-  cancelButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
   },
 });

@@ -70,6 +70,9 @@ export function WidgetsIntroScreen({ onNext, onBack }: WidgetsIntroScreenProps) 
 }
 
 const styles = StyleSheet.create({
+  card: {
+    marginBottom: 16,
+  },
   content: {
     flex: 1,
   },
@@ -78,13 +81,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 32,
   },
-  card: {
-    marginBottom: 16,
-  },
   feature: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 16,
+  },
+  featureDescription: {
+    fontSize: 14,
+    lineHeight: 20,
   },
   featureEmoji: {
     // fontSize: 32, // Removed as AppIcon handles its own size
@@ -96,9 +100,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 4,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
   },
 });

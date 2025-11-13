@@ -89,7 +89,8 @@ export default function ResultsScreen() {
     const firstWeight = filteredWeights[filteredWeights.length - 1].weight;
     const lastWeight = filteredWeights[0].weight;
     const timeDiff =
-      filteredWeights[0].date.getTime() - filteredWeights[filteredWeights.length - 1].date.getTime();
+      filteredWeights[0].date.getTime() -
+      filteredWeights[filteredWeights.length - 1].date.getTime();
     const weeks = timeDiff / (7 * 24 * 60 * 60 * 1000);
     return weeks > 0 ? Math.abs(firstWeight - lastWeight) / weeks : 0;
   }, [filteredWeights]);
@@ -141,7 +142,9 @@ export default function ResultsScreen() {
       </View>
 
       <ScrollView
-        refreshControl={<RefreshControl refreshing={refreshing || loading} onRefresh={handleRefresh} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing || loading} onRefresh={handleRefresh} />
+        }
         style={styles.scrollView}
         contentContainerStyle={styles.content}
       >
@@ -276,12 +279,7 @@ export default function ResultsScreen() {
       </ScrollView>
 
       {/* Confetti celebration when goal is reached */}
-      {showConfetti && (
-        <ConfettiCelebration
-          count={50}
-          onComplete={() => setShowConfetti(false)}
-        />
-      )}
+      {showConfetti && <ConfettiCelebration count={50} onComplete={() => setShowConfetti(false)} />}
     </View>
   );
 }
@@ -291,10 +289,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    borderBottomWidth: 1,
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
   headerTitle: {
     ...ShotsyDesignTokens.typography.h2,
@@ -322,13 +320,13 @@ const styles = StyleSheet.create({
     marginBottom: ShotsyDesignTokens.spacing.md,
   },
   metricCard: {
-    flex: 1,
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flex: 1,
     padding: ShotsyDesignTokens.spacing.lg,
   },
   metricHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.xs,
     marginBottom: ShotsyDesignTokens.spacing.sm,
   },

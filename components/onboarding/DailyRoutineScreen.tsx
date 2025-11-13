@@ -99,6 +99,9 @@ const styles = StyleSheet.create({
   content: {
     gap: 12,
   },
+  emoji: {
+    fontSize: 32,
+  },
   option: {
     borderRadius: 12, // Mudança: 16 → 12px (design system)
     padding: 16,
@@ -108,13 +111,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   optionContent: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 16,
   },
-  emoji: {
-    fontSize: 32,
+  optionDescription: {
+    fontSize: 13,
+    lineHeight: 18,
   },
   optionText: {
     flex: 1,
@@ -123,9 +127,5 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '600',
     marginBottom: 2,
-  },
-  optionDescription: {
-    fontSize: 13,
-    lineHeight: 18,
   },
 });

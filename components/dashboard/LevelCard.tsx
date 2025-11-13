@@ -41,45 +41,45 @@ const getStyles = (colors: any) =>
       borderRadius: 16,
       padding: 20,
     },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
     emoji: {
       fontSize: 40,
       marginRight: 16,
+    },
+    header: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginBottom: 16,
     },
     levelInfo: {
       flex: 1,
     },
     levelLabel: {
-      fontSize: 14,
       color: colors.textSecondary,
+      fontSize: 14,
       marginBottom: 4,
     },
     levelNumber: {
+      color: colors.primary,
       fontSize: 32,
       fontWeight: 'bold',
-      color: colors.primary,
+    },
+    progressBar: {
+      backgroundColor: colors.border,
+      borderRadius: 6,
+      height: 12,
+      overflow: 'hidden',
     },
     progressContainer: {
       gap: 8,
     },
-    progressBar: {
-      height: 12,
-      backgroundColor: colors.border,
-      borderRadius: 6,
-      overflow: 'hidden',
-    },
     progressFill: {
-      height: '100%',
       backgroundColor: colors.primary,
       borderRadius: 6,
+      height: '100%',
     },
     progressText: {
-      fontSize: 12,
       color: colors.textMuted,
+      fontSize: 12,
       textAlign: 'center',
     },
   });

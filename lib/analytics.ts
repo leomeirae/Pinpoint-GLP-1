@@ -146,7 +146,9 @@ export async function setAnalyticsOptIn(value: boolean): Promise<void> {
 
     // Save to Supabase (best effort - don't fail if offline)
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
       if (user) {
         // Get user from users table
@@ -157,10 +159,7 @@ export async function setAnalyticsOptIn(value: boolean): Promise<void> {
           .maybeSingle();
 
         if (userData) {
-          await supabase
-            .from('users')
-            .update({ analytics_opt_in: value })
-            .eq('id', userData.id);
+          await supabase.from('users').update({ analytics_opt_in: value }).eq('id', userData.id);
 
           analyticsLogger.info('Analytics opt-in saved to Supabase', { value });
         }

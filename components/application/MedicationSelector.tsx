@@ -96,25 +96,9 @@ export function MedicationSelector({
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    maxHeight: '80%',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-  },
-  modalTitle: {
+  checkmark: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   closeButton: {
     padding: 8,
@@ -125,21 +109,37 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
   },
-  optionCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
-  optionContent: {
+  modalContent: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  optionCard: {
+    borderRadius: 12,
+    marginBottom: 12,
+    padding: 16,
+  },
+  optionContent: {
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   optionText: {
     fontSize: 16,
-  },
-  checkmark: {
-    fontSize: 20,
-    fontWeight: 'bold',
   },
 });

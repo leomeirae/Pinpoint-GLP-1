@@ -95,9 +95,7 @@ export default function FinanceScreen() {
           <Text style={[styles.headerTitle, { color: colors.text }]}>Custos</Text>
         </View>
         <View style={styles.loadingContainer}>
-          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
-            Carregando...
-          </Text>
+          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Carregando...</Text>
         </View>
       </View>
     );
@@ -130,9 +128,7 @@ export default function FinanceScreen() {
         {purchases.length === 0 ? (
           // Empty state
           <FadeInView duration={800} delay={100} style={styles.emptyState}>
-            <View
-              style={[styles.emptyIconContainer, { backgroundColor: colors.primary + '15' }]}
-            >
+            <View style={[styles.emptyIconContainer, { backgroundColor: colors.primary + '15' }]}>
               <Receipt size={48} color={colors.primary} weight="thin" />
             </View>
             <Text style={[styles.emptyTitle, { color: colors.text }]}>
@@ -193,24 +189,9 @@ export default function FinanceScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
-  },
-  headerTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-  },
   addButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 4,
     paddingHorizontal: ShotsyDesignTokens.spacing.sm,
     paddingVertical: 4,
@@ -219,53 +200,19 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
   },
-  scrollView: {
+  bottomSpacer: {
+    height: ShotsyDesignTokens.spacing.xxl * 2,
+  },
+  container: {
     flex: 1,
-  },
-  scrollContent: {
-    padding: ShotsyDesignTokens.spacing.lg,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    ...ShotsyDesignTokens.typography.body,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingVertical: ShotsyDesignTokens.spacing.xxl * 2,
-  },
-  emptyIconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: ShotsyDesignTokens.borderRadius.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  emptyTitle: {
-    ...ShotsyDesignTokens.typography.h2,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  emptySubtitle: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: ShotsyDesignTokens.spacing.xl,
   },
   emptyButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flexDirection: 'row',
     gap: 8,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingVertical: ShotsyDesignTokens.spacing.md,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
     ...ShotsyDesignTokens.shadows.card,
   },
   emptyButtonText: {
@@ -273,18 +220,67 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
   },
+  emptyIconContainer: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    height: 96,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    width: 96,
+  },
+  emptyState: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+    paddingVertical: ShotsyDesignTokens.spacing.xxl * 2,
+  },
+  emptySubtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+    textAlign: 'center',
+  },
+  emptyTitle: {
+    ...ShotsyDesignTokens.typography.h2,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    textAlign: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: 60,
+  },
+  headerTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+  },
   listSection: {
     marginTop: ShotsyDesignTokens.spacing.md,
   },
-  sectionTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-    marginBottom: 4,
+  loadingContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loadingText: {
+    ...ShotsyDesignTokens.typography.body,
+  },
+  scrollContent: {
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  scrollView: {
+    flex: 1,
   },
   sectionSubtitle: {
     ...ShotsyDesignTokens.typography.caption,
     marginBottom: ShotsyDesignTokens.spacing.md,
   },
-  bottomSpacer: {
-    height: ShotsyDesignTokens.spacing.xxl * 2,
+  sectionTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    marginBottom: 4,
   },
 });

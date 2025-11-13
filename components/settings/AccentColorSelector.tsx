@@ -66,42 +66,42 @@ export const AccentColorSelector: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 8,
-  },
-  scrollContent: {
-    paddingHorizontal: 16,
-    gap: 16,
-  },
-  colorOption: {
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 12,
-    minWidth: 80,
-  },
-  colorCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
   checkmark: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: 12,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
   },
   checkmarkIcon: {
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '700',
   },
+  colorCircle: {
+    alignItems: 'center',
+    borderRadius: 24,
+    height: 48,
+    justifyContent: 'center',
+    marginBottom: 8,
+    width: 48,
+  },
   colorLabel: {
     fontSize: 12,
     textAlign: 'center',
+  },
+  colorOption: {
+    alignItems: 'center',
+    borderRadius: 12,
+    minWidth: 80,
+    padding: 12,
+  },
+  container: {
+    paddingVertical: 8,
+  },
+  scrollContent: {
+    gap: 16,
+    paddingHorizontal: 16,
   },
 });

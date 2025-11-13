@@ -23,7 +23,7 @@ try {
   const api = {
     cache: (value) => {
       console.log(`Cache configured: ${value}`);
-    }
+    },
   };
 
   const config = babelConfig(api);

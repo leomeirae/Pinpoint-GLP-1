@@ -33,20 +33,20 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
   },
+  error: {
+    fontSize: 12,
+    marginTop: 4,
+  },
+  input: {
+    borderRadius: 12,
+    borderWidth: 1,
+    fontSize: 16,
+    height: 48,
+    paddingHorizontal: 16,
+  },
   label: {
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
-  },
-  input: {
-    height: 48,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    borderWidth: 1,
-  },
-  error: {
-    fontSize: 12,
-    marginTop: 4,
   },
 });

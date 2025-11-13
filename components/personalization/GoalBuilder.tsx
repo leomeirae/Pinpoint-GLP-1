@@ -308,206 +308,206 @@ export const GoalBuilder: React.FC<GoalBuilderProps> = ({ onComplete, showSkip =
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    padding: 20,
-    paddingBottom: 40,
-  },
-  header: {
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 22,
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1a1a1a',
-    marginBottom: 4,
-  },
-  sectionDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
-  },
-  typeGrid: {
+  actions: {
     gap: 12,
+    marginTop: 8,
   },
-  typeCard: {
-    padding: 20,
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  typeIcon: {
-    fontSize: 32,
-    marginBottom: 8,
-  },
-  typeTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-    textTransform: 'capitalize',
-  },
-  typeDescription: {
-    fontSize: 14,
+  celebrationDescription: {
     color: '#666',
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  inputLabel: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#333',
-    marginBottom: 8,
-  },
-  optional: {
-    fontSize: 13,
-    fontWeight: '400',
-    color: '#999',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 10,
-    padding: 14,
-    fontSize: 16,
-    color: '#333',
-    backgroundColor: '#fafafa',
-  },
-  textArea: {
-    minHeight: 90,
-    paddingTop: 14,
-  },
-  targetRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  targetInput: {
-    flex: 2,
-  },
-  unitInput: {
-    flex: 1,
-  },
-  inputHint: {
-    fontSize: 13,
-    color: '#999',
-    marginTop: 6,
+    fontSize: 12,
+    textAlign: 'center',
   },
   celebrationGrid: {
     flexDirection: 'row',
     gap: 12,
-  },
-  celebrationOption: {
-    flex: 1,
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'transparent',
   },
   celebrationIcon: {
     fontSize: 28,
     marginBottom: 8,
   },
   celebrationLabel: {
+    color: '#333',
     fontSize: 14,
     fontWeight: '500',
-    color: '#333',
     marginBottom: 4,
     textTransform: 'capitalize',
   },
-  celebrationDescription: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
-  },
-  milestonesPreview: {
-    backgroundColor: '#f9fafb',
+  celebrationOption: {
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderColor: 'transparent',
     borderRadius: 12,
-    padding: 16,
-    gap: 12,
-  },
-  milestoneItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  milestoneCheckbox: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#e5e7eb',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  milestoneNumber: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-  },
-  milestoneLabel: {
+    borderWidth: 2,
     flex: 1,
-    fontSize: 15,
-    color: '#333',
+    padding: 16,
   },
-  actions: {
-    gap: 12,
-    marginTop: 8,
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
+  },
+  contentContainer: {
+    padding: 20,
+    paddingBottom: 40,
   },
   createButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
     alignItems: 'center',
+    borderRadius: 12,
     justifyContent: 'center',
     minHeight: 52,
+    paddingVertical: 16,
   },
   createButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
-  skipButton: {
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  skipButtonText: {
-    fontSize: 15,
-    fontWeight: '500',
+  header: {
+    marginBottom: 24,
   },
   infoBox: {
-    flexDirection: 'row',
     backgroundColor: '#f0f9ff',
-    padding: 16,
     borderRadius: 12,
-    marginTop: 24,
+    flexDirection: 'row',
     gap: 12,
+    marginTop: 24,
+    padding: 16,
   },
   infoIcon: {
     fontSize: 20,
   },
   infoText: {
+    color: '#1e40af',
     flex: 1,
     fontSize: 14,
-    color: '#1e40af',
     lineHeight: 20,
+  },
+  input: {
+    backgroundColor: '#fafafa',
+    borderColor: '#e0e0e0',
+    borderRadius: 10,
+    borderWidth: 1,
+    color: '#333',
+    fontSize: 16,
+    padding: 14,
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  inputHint: {
+    color: '#999',
+    fontSize: 13,
+    marginTop: 6,
+  },
+  inputLabel: {
+    color: '#333',
+    fontSize: 15,
+    fontWeight: '500',
+    marginBottom: 8,
+  },
+  milestoneCheckbox: {
+    alignItems: 'center',
+    backgroundColor: '#e5e7eb',
+    borderRadius: 16,
+    height: 32,
+    justifyContent: 'center',
+    width: 32,
+  },
+  milestoneItem: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+  },
+  milestoneLabel: {
+    color: '#333',
+    flex: 1,
+    fontSize: 15,
+  },
+  milestoneNumber: {
+    color: '#666',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  milestonesPreview: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 12,
+    gap: 12,
+    padding: 16,
+  },
+  optional: {
+    color: '#999',
+    fontSize: 13,
+    fontWeight: '400',
+  },
+  section: {
+    marginBottom: 32,
+  },
+  sectionDescription: {
+    color: '#666',
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    color: '#1a1a1a',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  skipButton: {
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  skipButtonText: {
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  subtitle: {
+    color: '#666',
+    fontSize: 16,
+    lineHeight: 22,
+  },
+  targetInput: {
+    flex: 2,
+  },
+  targetRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  textArea: {
+    minHeight: 90,
+    paddingTop: 14,
+  },
+  title: {
+    color: '#1a1a1a',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  typeCard: {
+    backgroundColor: '#f5f5f5',
+    borderColor: 'transparent',
+    borderRadius: 12,
+    borderWidth: 2,
+    padding: 20,
+  },
+  typeDescription: {
+    color: '#666',
+    fontSize: 14,
+  },
+  typeGrid: {
+    gap: 12,
+  },
+  typeIcon: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  typeTitle: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+    textTransform: 'capitalize',
+  },
+  unitInput: {
+    flex: 1,
   },
 });

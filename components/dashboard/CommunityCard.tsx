@@ -55,69 +55,69 @@ export function CommunityCard({
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
+    comparisonItem: {
+      alignItems: 'center',
+      flex: 1,
+    },
+    comparisonLabel: {
+      color: colors.textMuted,
+      fontSize: 12,
+      marginBottom: 4,
+    },
+    comparisonRow: {
+      flexDirection: 'row',
+      marginBottom: 16,
+      width: '100%',
+    },
+    comparisonValue: {
+      color: colors.primary,
+      fontSize: 24,
+      fontWeight: 'bold',
+    },
     container: {
+      alignItems: 'center',
       backgroundColor: colors.card,
       borderRadius: 16,
       padding: 20,
-      alignItems: 'center',
+    },
+    disclaimer: {
+      color: colors.textMuted,
+      fontSize: 10,
+      fontStyle: 'italic',
+      textAlign: 'center',
+    },
+    divider: {
+      backgroundColor: colors.border,
+      marginHorizontal: 16,
+      width: 1,
     },
     emoji: {
       fontSize: 48,
       marginBottom: 12,
     },
     message: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
-      textAlign: 'center',
       marginBottom: 20,
-    },
-    comparisonRow: {
-      flexDirection: 'row',
-      width: '100%',
-      marginBottom: 16,
-    },
-    comparisonItem: {
-      flex: 1,
-      alignItems: 'center',
-    },
-    comparisonLabel: {
-      fontSize: 12,
-      color: colors.textMuted,
-      marginBottom: 4,
-    },
-    comparisonValue: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: colors.primary,
-    },
-    divider: {
-      width: 1,
-      backgroundColor: colors.border,
-      marginHorizontal: 16,
+      textAlign: 'center',
     },
     percentileBar: {
-      width: '100%',
-      height: 8,
       backgroundColor: colors.border,
       borderRadius: 4,
-      overflow: 'hidden',
+      height: 8,
       marginBottom: 8,
+      overflow: 'hidden',
+      width: '100%',
     },
     percentileFill: {
-      height: '100%',
       backgroundColor: colors.success,
       borderRadius: 4,
+      height: '100%',
     },
     percentileText: {
-      fontSize: 14,
       color: colors.textSecondary,
+      fontSize: 14,
       marginBottom: 12,
-    },
-    disclaimer: {
-      fontSize: 10,
-      color: colors.textMuted,
-      fontStyle: 'italic',
-      textAlign: 'center',
     },
   });

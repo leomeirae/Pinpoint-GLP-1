@@ -183,20 +183,27 @@ export const WeeklyAverageChart: React.FC<WeeklyAverageChartProps> = ({ data, pe
 
 const styles = StyleSheet.create({
   card: {
+    marginBottom: 16,
     padding: 16,
-    marginBottom: 16,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 16,
+  chart: {
+    borderRadius: 16,
+    marginVertical: 8,
   },
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 32,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  hint: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    marginTop: 12,
+    textAlign: 'center',
   },
   statItem: {
     alignItems: 'center',
@@ -210,23 +217,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
   },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
+  statsRow: {
+    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 16,
+    paddingVertical: 12,
   },
-  hint: {
-    fontSize: 12,
-    textAlign: 'center',
-    marginTop: 12,
-    fontStyle: 'italic',
-  },
-  emptyState: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 32,
-  },
-  emptyStateText: {
-    fontSize: 14,
-    textAlign: 'center',
+  title: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 16,
   },
 });

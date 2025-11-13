@@ -71,11 +71,13 @@ export const WeightChart: React.FC<WeightChartProps> = ({ data, targetWeight, pe
 
   if (!hasData) {
     return (
-      <View style={[styles.emptyChart, { backgroundColor: colors.card, borderColor: colors.border }]}>
+      <View
+        style={[styles.emptyChart, { backgroundColor: colors.card, borderColor: colors.border }]}
+      >
         <Text style={[styles.emptyText, { color: colors.textMuted }]}>
           Nenhum dado de peso disponível
-          </Text>
-        </View>
+        </Text>
+      </View>
     );
   }
 
@@ -86,7 +88,9 @@ export const WeightChart: React.FC<WeightChartProps> = ({ data, targetWeight, pe
   const chartColor = currentAccent || '#06b6d4';
 
   return (
-    <View style={[styles.chartContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
+    <View
+      style={[styles.chartContainer, { backgroundColor: colors.card, borderColor: colors.border }]}
+    >
       <LineChart
         data={chartData}
         width={chartWidth}
@@ -131,28 +135,28 @@ export const WeightChart: React.FC<WeightChartProps> = ({ data, targetWeight, pe
           return value; // Already formatted as "Mar 2025"
         }}
       />
-      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  chart: {
+    borderRadius: 16,
+    marginVertical: 8,
+  },
   chartContainer: {
     borderRadius: 16,
     borderWidth: 1,
-    padding: 16,
     marginBottom: 16,
-  },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
+    padding: 16,
   },
   emptyChart: {
+    alignItems: 'center',
     borderRadius: 16,
     borderWidth: 1,
-    padding: 24,
-    minHeight: 300,
     justifyContent: 'center',
-    alignItems: 'center',
+    minHeight: 300,
+    padding: 24,
   },
   emptyText: {
     fontSize: 14,

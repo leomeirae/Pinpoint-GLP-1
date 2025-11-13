@@ -104,51 +104,51 @@ export function ResultsScreenSkeleton() {
 }
 
 const styles = StyleSheet.create({
+  chartCard: {
+    marginBottom: 16,
+    padding: 16,
+  },
   container: {
     flex: 1,
   },
-  periodSelector: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    gap: 10,
-  },
   content: {
-    paddingHorizontal: 16,
     paddingBottom: 32,
+    paddingHorizontal: 16,
   },
-  metricsGrid: {
-    gap: 12,
-    marginBottom: 16,
+  legendRow: {
+    flexDirection: 'row',
+    gap: 16,
+    justifyContent: 'center',
+  },
+  metricCard: {
+    borderRadius: 16,
+    flex: 1,
+    padding: 16,
   },
   metricRow: {
     flexDirection: 'row',
     gap: 12,
   },
-  metricCard: {
-    flex: 1,
-    padding: 16,
-    borderRadius: 16,
-  },
-  chartCard: {
-    padding: 16,
+  metricsGrid: {
+    gap: 12,
     marginBottom: 16,
   },
-  legendRow: {
+  periodSelector: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
+    gap: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  statItem: {
+    flex: 1,
   },
   statsCard: {
-    padding: 16,
     marginBottom: 16,
+    padding: 16,
   },
   statsRow: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 12,
-  },
-  statItem: {
-    flex: 1,
   },
 });

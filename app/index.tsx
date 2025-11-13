@@ -57,7 +57,7 @@ export default function IndexScreen() {
     if (syncStatus === 'error') {
       logger.warn('User sync failed, redirecting to onboarding as fallback', {
         syncStatus,
-        waitTime
+        waitTime,
       });
       hasRedirectedRef.current = true;
       router.replace('/(auth)/onboarding-flow');
@@ -82,7 +82,7 @@ export default function IndexScreen() {
         waitTime,
         isSignedIn,
         userLoading,
-        note: 'This usually means Supabase query failed or user does not exist yet'
+        note: 'This usually means Supabase query failed or user does not exist yet',
       });
       hasRedirectedRef.current = true;
       router.replace('/(auth)/onboarding-flow');
@@ -127,7 +127,8 @@ export default function IndexScreen() {
         // Se o onboarding não foi completado (ou campo não existe), ir para onboarding
         if (needsOnboarding) {
           logger.info('🚀 Redirecting to onboarding flow', {
-            reason: user.onboarding_completed === false ? 'flag is false' : 'flag is missing/undefined',
+            reason:
+              user.onboarding_completed === false ? 'flag is false' : 'flag is missing/undefined',
             onboarding_completed: user.onboarding_completed,
           });
           trackEvent('auth_guard_evaluation', {
@@ -184,14 +185,14 @@ export default function IndexScreen() {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     loading: {
-      flex: 1,
-      backgroundColor: colors.background,
       alignItems: 'center',
+      backgroundColor: colors.background,
+      flex: 1,
       justifyContent: 'center',
     },
     loadingText: {
-      marginTop: 16,
-      fontSize: 14,
       color: colors.textSecondary,
+      fontSize: 14,
+      marginTop: 16,
     },
   });

@@ -43,54 +43,6 @@ export function StreakCard({ currentStreak, longestStreak, type }: StreakCardPro
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
-    container: {
-      backgroundColor: colors.card,
-      borderRadius: 16,
-      padding: 20,
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderWidth: 2,
-      borderColor: colors.primary + '40',
-    },
-    containerInactive: {
-      opacity: 0.6,
-      borderColor: colors.border,
-    },
-    emoji: {
-      fontSize: 40,
-      marginRight: 16,
-    },
-    content: {
-      flex: 1,
-    },
-    streakRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 4,
-    },
-    fireEmoji: {
-      fontSize: 20,
-      marginRight: 4,
-    },
-    currentStreak: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginRight: 4,
-    },
-    streakLabel: {
-      fontSize: 14,
-      color: colors.textSecondary,
-    },
-    type: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      marginBottom: 4,
-    },
-    record: {
-      fontSize: 12,
-      color: colors.textMuted,
-    },
     brokenBadge: {
       backgroundColor: colors.error,
       borderRadius: 8,
@@ -98,8 +50,56 @@ const getStyles = (colors: any) =>
       paddingVertical: 6,
     },
     brokenText: {
+      color: colors.text,
       fontSize: 12,
       fontWeight: 'bold',
+    },
+    container: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderColor: colors.primary + '40',
+      borderRadius: 16,
+      borderWidth: 2,
+      flexDirection: 'row',
+      padding: 20,
+    },
+    containerInactive: {
+      borderColor: colors.border,
+      opacity: 0.6,
+    },
+    content: {
+      flex: 1,
+    },
+    currentStreak: {
       color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginRight: 4,
+    },
+    emoji: {
+      fontSize: 40,
+      marginRight: 16,
+    },
+    fireEmoji: {
+      fontSize: 20,
+      marginRight: 4,
+    },
+    record: {
+      color: colors.textMuted,
+      fontSize: 12,
+    },
+    streakLabel: {
+      color: colors.textSecondary,
+      fontSize: 14,
+    },
+    streakRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginBottom: 4,
+    },
+    type: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      marginBottom: 4,
     },
   });

@@ -54,48 +54,48 @@ export const UserProfile: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  arrow: {
+    fontSize: 28,
+    fontWeight: '300',
+  },
+  avatar: {
+    borderRadius: 28,
+    height: 56,
+    width: 56,
+  },
+  avatarPlaceholder: {
+    alignItems: 'center',
+    borderRadius: 28,
+    height: 56,
+    justifyContent: 'center',
+    width: 56,
+  },
   container: {
-    marginHorizontal: 16,
-    marginBottom: 24,
     borderRadius: 12,
+    marginBottom: 24,
+    marginHorizontal: 16,
     overflow: 'hidden',
   },
   content: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
     padding: 16,
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-  },
-  avatarPlaceholder: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  initials: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  info: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 2,
   },
   email: {
     fontSize: 14,
     fontWeight: '500',
   },
-  arrow: {
-    fontSize: 28,
-    fontWeight: '300',
+  info: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  initials: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 2,
   },
 });

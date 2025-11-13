@@ -174,10 +174,8 @@ export default function AddPurchaseScreen() {
                 style={[
                   styles.option,
                   {
-                    backgroundColor:
-                      medication === med.name ? colors.primary + '15' : colors.card,
-                    borderColor:
-                      medication === med.name ? colors.primary : 'transparent',
+                    backgroundColor: medication === med.name ? colors.primary + '15' : colors.card,
+                    borderColor: medication === med.name ? colors.primary : 'transparent',
                     borderWidth: 2,
                   },
                 ]}
@@ -231,8 +229,7 @@ export default function AddPurchaseScreen() {
                   style={[
                     styles.option,
                     {
-                      backgroundColor:
-                        dosage === dose ? colors.primary + '15' : colors.card,
+                      backgroundColor: dosage === dose ? colors.primary + '15' : colors.card,
                       borderColor: dosage === dose ? colors.primary : 'transparent',
                       borderWidth: 2,
                     },
@@ -403,7 +400,12 @@ export default function AddPurchaseScreen() {
       </ScrollView>
 
       {/* Footer with Save button */}
-      <View style={[styles.footer, { backgroundColor: colors.background, borderTopColor: colors.border }]}>
+      <View
+        style={[
+          styles.footer,
+          { backgroundColor: colors.background, borderTopColor: colors.border },
+        ]}
+      >
         <TouchableOpacity
           style={[
             styles.saveButton,
@@ -428,119 +430,109 @@ export default function AddPurchaseScreen() {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    marginLeft: -ShotsyDesignTokens.spacing.sm,
+    padding: ShotsyDesignTokens.spacing.sm,
+  },
+  bottomSpacer: {
+    height: ShotsyDesignTokens.spacing.xxl,
+  },
   container: {
     flex: 1,
   },
+  currencySymbol: {
+    ...ShotsyDesignTokens.typography.h3,
+    fontWeight: '600',
+  },
+  field: {
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+  },
+  footer: {
+    borderTopWidth: 1,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingVertical: ShotsyDesignTokens.spacing.md,
+  },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
-  backButton: {
-    padding: ShotsyDesignTokens.spacing.sm,
-    marginLeft: -ShotsyDesignTokens.spacing.sm,
+  headerSpacer: {
+    width: 44,
   },
   headerTitle: {
     ...ShotsyDesignTokens.typography.h3,
     flex: 1,
     textAlign: 'center',
   },
-  headerSpacer: {
-    width: 44,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: ShotsyDesignTokens.spacing.lg,
-  },
-  field: {
-    marginBottom: ShotsyDesignTokens.spacing.xl,
-  },
-  label: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-    marginBottom: ShotsyDesignTokens.spacing.sm,
-  },
   input: {
-    height: 56,
     borderRadius: ShotsyDesignTokens.borderRadius.md,
     borderWidth: 1,
+    height: 56,
     paddingHorizontal: ShotsyDesignTokens.spacing.md,
     ...ShotsyDesignTokens.typography.body,
   },
   inputText: {
     ...ShotsyDesignTokens.typography.body,
   },
-  textArea: {
-    minHeight: 120,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    borderWidth: 1,
-    padding: ShotsyDesignTokens.spacing.md,
-    ...ShotsyDesignTokens.typography.body,
-  },
-  optionsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: ShotsyDesignTokens.spacing.sm,
+  label: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+    marginBottom: ShotsyDesignTokens.spacing.sm,
   },
   option: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.md,
     paddingVertical: ShotsyDesignTokens.spacing.sm,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
     ...ShotsyDesignTokens.shadows.card,
   },
   optionText: {
     ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
   },
-  priceRow: {
+  optionsGrid: {
     flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
     gap: ShotsyDesignTokens.spacing.sm,
   },
-  currencySymbol: {
+  priceInputCents: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    borderWidth: 1,
+    height: 56,
+    paddingHorizontal: ShotsyDesignTokens.spacing.md,
+    width: 70,
     ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
   },
   priceInputReais: {
-    flex: 1,
-    height: 56,
     borderRadius: ShotsyDesignTokens.borderRadius.md,
     borderWidth: 1,
+    flex: 1,
+    height: 56,
     paddingHorizontal: ShotsyDesignTokens.spacing.md,
     ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
+  },
+  priceRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
   },
   priceSeparator: {
     ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
   },
-  priceInputCents: {
-    width: 70,
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    borderWidth: 1,
-    paddingHorizontal: ShotsyDesignTokens.spacing.md,
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '600',
-  },
-  footer: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingVertical: ShotsyDesignTokens.spacing.md,
-    borderTopWidth: 1,
-  },
   saveButton: {
-    height: 56,
+    alignItems: 'center',
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     gap: 8,
+    height: 56,
+    justifyContent: 'center',
     ...ShotsyDesignTokens.shadows.card,
   },
   saveButtonText: {
@@ -548,7 +540,17 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
   },
-  bottomSpacer: {
-    height: ShotsyDesignTokens.spacing.xxl,
+  scrollContent: {
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  textArea: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    borderWidth: 1,
+    minHeight: 120,
+    padding: ShotsyDesignTokens.spacing.md,
+    ...ShotsyDesignTokens.typography.body,
   },
 });

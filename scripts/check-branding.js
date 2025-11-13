@@ -12,8 +12,8 @@ console.log('🔍 Checking for user-facing "Shotsy" branding...\n');
 
 // Patterns to search for - focusing on user-facing text
 const userFacingPatterns = [
-  '"Shotsy"',  // String literals in user-facing text
-  "'Shotsy'",  // String literals in user-facing text
+  '"Shotsy"', // String literals in user-facing text
+  "'Shotsy'", // String literals in user-facing text
   'title.*Shotsy', // Titles
   'description.*Shotsy', // Descriptions
   'label.*Shotsy', // Labels
@@ -44,8 +44,8 @@ const excludeFiles = [
 
 // Build grep exclude pattern
 const excludePattern = [
-  ...excludeDirs.map(d => `--exclude-dir=${d}`),
-  ...excludeFiles.map(f => `--exclude=${f}`)
+  ...excludeDirs.map((d) => `--exclude-dir=${d}`),
+  ...excludeFiles.map((f) => `--exclude=${f}`),
 ].join(' ');
 
 // Technical patterns that are ALLOWED (internal component names, hooks, types)
@@ -66,7 +66,7 @@ const allowedTechnicalPatterns = [
 
 function isAllowedTechnicalReference(line) {
   // Check if line contains any allowed technical pattern
-  return allowedTechnicalPatterns.some(pattern => pattern.test(line));
+  return allowedTechnicalPatterns.some((pattern) => pattern.test(line));
 }
 
 let foundIssues = false;
@@ -82,14 +82,14 @@ try {
   const result = execSync(grepCommand, {
     cwd: path.join(__dirname, '..'),
     encoding: 'utf8',
-    maxBuffer: 10 * 1024 * 1024
+    maxBuffer: 10 * 1024 * 1024,
   });
 
   if (result.trim()) {
     const lines = result.trim().split('\n');
 
     // Filter for actual user-facing issues
-    const userFacingLines = lines.filter(line => {
+    const userFacingLines = lines.filter((line) => {
       // Skip this script
       if (line.includes('check-branding.js')) return false;
 
@@ -121,9 +121,11 @@ try {
 }
 
 if (foundIssues) {
-  console.log(`❌ Branding check FAILED: Found ${foundUserFacingIssues.length} user-facing "Shotsy" reference(s)\n`);
+  console.log(
+    `❌ Branding check FAILED: Found ${foundUserFacingIssues.length} user-facing "Shotsy" reference(s)\n`
+  );
 
-  foundUserFacingIssues.slice(0, 10).forEach(line => {
+  foundUserFacingIssues.slice(0, 10).forEach((line) => {
     console.log(`   ${line}`);
   });
 

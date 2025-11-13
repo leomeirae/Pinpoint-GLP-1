@@ -45,9 +45,7 @@ export function TargetWeightScreen({
         {/* Goal Weight Display - V0 Design */}
         <View style={[styles.card, { backgroundColor: colors.backgroundSecondary }]}>
           <View style={styles.weightDisplay}>
-          <Text style={[styles.weightValue, { color: colors.text }]}>
-              {targetWeight}kg
-          </Text>
+            <Text style={[styles.weightValue, { color: colors.text }]}>{targetWeight}kg</Text>
           </View>
 
           {/* Slider - V0 Design */}
@@ -108,20 +106,88 @@ export function TargetWeightScreen({
               </View>
             </View>
           </View>
-          </View>
+        </View>
       </View>
     </OnboardingScreenBase>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    gap: 24,
-    paddingHorizontal: 24,
+  bmiBar: {
+    borderRadius: 6,
+    flexDirection: 'row',
+    height: 12,
+    marginBottom: 8,
+    overflow: 'hidden',
+  },
+  bmiCategoryLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  bmiDisplay: {
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 16,
+  },
+  bmiLabel: {
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  bmiLabelItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  bmiLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  bmiPill: {
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+  },
+  bmiPillText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  bmiRange: {
+    fontSize: 11,
+    marginTop: 2,
+  },
+  bmiScale: {
+    width: '100%',
+  },
+  bmiSegment: {
+    height: '100%',
+  },
+  bmiValue: {
+    fontSize: 36,
+    fontWeight: '700',
+    marginBottom: 4,
   },
   card: {
     borderRadius: 24,
     padding: 24,
+  },
+  content: {
+    gap: 24,
+    paddingHorizontal: 24,
+  },
+  rangeLabel: {
+    fontSize: 14,
+  },
+  rangeLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  slider: {
+    height: 40,
+    width: '100%',
+  },
+  sliderContainer: {
+    marginBottom: 24,
+    width: '100%',
   },
   weightDisplay: {
     alignItems: 'center',
@@ -131,73 +197,5 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: '700',
     marginBottom: 8,
-  },
-  sliderContainer: {
-    width: '100%',
-    marginBottom: 24,
-  },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
-  rangeLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 8,
-  },
-  rangeLabel: {
-    fontSize: 14,
-  },
-  bmiDisplay: {
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 6,
-  },
-  bmiValue: {
-    fontSize: 36,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  bmiLabel: {
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  bmiPill: {
-    paddingHorizontal: 16,
-    paddingVertical: 4,
-    borderRadius: 16,
-  },
-  bmiPillText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  bmiScale: {
-    width: '100%',
-  },
-  bmiBar: {
-    flexDirection: 'row',
-    height: 12,
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginBottom: 8,
-  },
-  bmiSegment: {
-    height: '100%',
-  },
-  bmiLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  bmiLabelItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  bmiCategoryLabel: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  bmiRange: {
-    fontSize: 11,
-    marginTop: 2,
   },
 });

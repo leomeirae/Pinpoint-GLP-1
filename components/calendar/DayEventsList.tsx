@@ -206,6 +206,17 @@ export const DayEventsList: React.FC<DayEventsListProps> = ({ selectedDate, even
 };
 
 const styles = StyleSheet.create({
+  addButton: {
+    alignItems: 'center',
+    borderRadius: 12,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+  },
+  addButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+  },
   container: {
     flex: 1,
     paddingHorizontal: 16,
@@ -216,78 +227,33 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textTransform: 'capitalize',
   },
-  eventsList: {
-    flex: 1,
-  },
-  eventCard: {
-    padding: 16,
-    marginBottom: 12,
-  },
-  eventHeader: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  eventIconContainer: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  eventContent: {
-    flex: 1,
-  },
-  eventTitleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  eventTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  eventTime: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  medicationName: {
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  dosageBadge: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  dosageText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  weightRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 4,
-  },
-  weightValue: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
   differenceBadge: {
+    borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 10,
   },
   differenceText: {
     fontSize: 12,
     fontWeight: '700',
   },
+  dosageBadge: {
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  dosageText: {
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  emptyStateActions: {
+    gap: 12,
+    width: '100%',
+  },
   emptyStateContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingVertical: 48,
   },
   emptyStateText: {
@@ -295,19 +261,53 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 24,
   },
-  emptyStateActions: {
-    width: '100%',
-    gap: 12,
+  eventCard: {
+    marginBottom: 12,
+    padding: 16,
   },
-  addButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 12,
+  eventContent: {
+    flex: 1,
+  },
+  eventHeader: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+  eventIconContainer: {
     alignItems: 'center',
+    height: 40,
+    justifyContent: 'center',
+    marginRight: 12,
+    width: 40,
   },
-  addButtonText: {
+  eventTime: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  eventTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
+  },
+  eventTitleRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  eventsList: {
+    flex: 1,
+  },
+  medicationName: {
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  weightRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 4,
+  },
+  weightValue: {
+    fontSize: 20,
+    fontWeight: '700',
   },
 });

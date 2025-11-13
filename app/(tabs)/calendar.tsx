@@ -46,11 +46,7 @@ export default function CalendarViewScreen() {
     loading: loadingApplications,
     refetch: refetchApplications,
   } = useApplications();
-  const {
-    weights,
-    loading: loadingWeights,
-    refetch: refetchWeights,
-  } = useWeights();
+  const { weights, loading: loadingWeights, refetch: refetchWeights } = useWeights();
   const {
     sideEffects,
     loading: loadingSideEffects,
@@ -144,11 +140,7 @@ export default function CalendarViewScreen() {
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      await Promise.all([
-        refetchApplications(),
-        refetchWeights(),
-        refetchSideEffects(),
-      ]);
+      await Promise.all([refetchApplications(), refetchWeights(), refetchSideEffects()]);
     } catch (error) {
       logger.error('Error refreshing data:', error as Error);
     } finally {
@@ -228,7 +220,7 @@ export default function CalendarViewScreen() {
               const dayIsToday = isToday(day);
 
               // Check if day has injection
-              const dayHasInjection = applications.some(app => {
+              const dayHasInjection = applications.some((app) => {
                 const appDate = app.date || new Date(app.application_date);
                 appDate.setHours(0, 0, 0, 0);
                 const checkDay = new Date(day);
@@ -242,9 +234,7 @@ export default function CalendarViewScreen() {
                   style={[
                     styles.dayButton,
                     {
-                      backgroundColor: dayIsSelected
-                        ? colors.primary
-                        : colors.card,
+                      backgroundColor: dayIsSelected ? colors.primary : colors.card,
                     },
                     dayIsSelected && ShotsyDesignTokens.shadows.card,
                   ]}
@@ -275,7 +265,9 @@ export default function CalendarViewScreen() {
 
           {/* Date Title with Visual Hierarchy */}
           <Text style={[styles.dateTitle, { color: colors.text }]}>
-            {isToday(selectedDate) ? 'Today' : ''}{isToday(selectedDate) && ', '}{formatDayDate(selectedDate)}
+            {isToday(selectedDate) ? 'Today' : ''}
+            {isToday(selectedDate) && ', '}
+            {formatDayDate(selectedDate)}
           </Text>
 
           {/* Daily Stats Cards - Shotsy Style with Dosage Colors */}
@@ -288,15 +280,14 @@ export default function CalendarViewScreen() {
                 ShotsyDesignTokens.shadows.card,
               ]}
               onPress={() => router.push('/(tabs)/add-application')}
-              accessibilityLabel={selectedDateData.injection ? `Injection recorded: ${selectedDateData.injection.dosage}mg` : 'Add injection'}
+              accessibilityLabel={
+                selectedDateData.injection
+                  ? `Injection recorded: ${selectedDateData.injection.dosage}mg`
+                  : 'Add injection'
+              }
             >
               {selectedDateData.injection && (
-                <View
-                  style={[
-                    styles.dosageIndicator,
-                    { backgroundColor: injectionColor }
-                  ]}
-                />
+                <View style={[styles.dosageIndicator, { backgroundColor: injectionColor }]} />
               )}
               <View style={styles.statHeader}>
                 <Syringe size={20} color={injectionColor} weight="bold" />
@@ -336,9 +327,7 @@ export default function CalendarViewScreen() {
                   </Text>
                 </View>
               ) : (
-                <Text style={[styles.statPlaceholder, { color: colors.textMuted }]}>
-                  No data
-                </Text>
+                <Text style={[styles.statPlaceholder, { color: colors.textMuted }]}>No data</Text>
               )}
             </View>
 
@@ -350,7 +339,11 @@ export default function CalendarViewScreen() {
                 ShotsyDesignTokens.shadows.card,
               ]}
               onPress={() => router.push('/(tabs)/add-application')}
-              accessibilityLabel={selectedDateData.weight ? `Weight: ${selectedDateData.weight.weight}kg` : 'Add weight'}
+              accessibilityLabel={
+                selectedDateData.weight
+                  ? `Weight: ${selectedDateData.weight.weight}kg`
+                  : 'Add weight'
+              }
             >
               <View style={styles.statHeader}>
                 <Scales size={20} color={colors.success} weight="bold" />
@@ -416,7 +409,13 @@ export default function CalendarViewScreen() {
         </View>
 
         {/* Calendar Month View - Shotsy Style */}
-        <View style={[styles.monthView, { backgroundColor: colors.card }, ShotsyDesignTokens.shadows.card]}>
+        <View
+          style={[
+            styles.monthView,
+            { backgroundColor: colors.card },
+            ShotsyDesignTokens.shadows.card,
+          ]}
+        >
           <Text style={[styles.monthTitle, { color: colors.text }]}>
             {formatMonthYear(currentDate)}
           </Text>
@@ -447,21 +446,146 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  currentDayView: {
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  dateTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    marginTop: ShotsyDesignTokens.spacing.lg,
+  },
+  dayButton: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    height: 64,
+    justifyContent: 'center',
+    marginRight: ShotsyDesignTokens.spacing.sm,
+    width: 56,
+  },
+  dayButtonNumber: {
+    ...ShotsyDesignTokens.typography.h4,
+  },
+  daysScroll: {
+    gap: ShotsyDesignTokens.spacing.sm,
+    paddingVertical: ShotsyDesignTokens.spacing.sm,
+  },
+  dosageIndicator: {
+    borderTopLeftRadius: ShotsyDesignTokens.borderRadius.lg,
+    borderTopRightRadius: ShotsyDesignTokens.borderRadius.lg,
+    height: 4,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
   header: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
   headerTitle: {
     ...ShotsyDesignTokens.typography.h2,
   },
-  todayButton: {
-    flexDirection: 'row',
+  injectionDot: {
+    borderRadius: 3,
+    height: 6,
+    marginTop: 4,
+    width: 6,
+  },
+  loadingContainer: {
     alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    minHeight: 400,
+    paddingVertical: 60,
+  },
+  loadingText: {
+    ...ShotsyDesignTokens.typography.body,
+    marginTop: ShotsyDesignTokens.spacing.lg,
+  },
+  monthTitle: {
+    ...ShotsyDesignTokens.typography.h2,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+  },
+  monthView: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    marginHorizontal: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  scrollContent: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  sectionCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  sectionContent: {
+    ...ShotsyDesignTokens.typography.body,
+  },
+  sectionHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
+  sectionPlaceholder: {
+    ...ShotsyDesignTokens.typography.body,
+    fontStyle: 'italic',
+  },
+  sectionTitle: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+  },
+  statCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    minHeight: 100,
+    overflow: 'hidden',
+    padding: ShotsyDesignTokens.spacing.lg,
+    position: 'relative',
+    width: '47%',
+  },
+  statContent: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  statHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.xs,
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
+  statLabel: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  statPlaceholder: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontStyle: 'italic',
+  },
+  statUnit: {
+    ...ShotsyDesignTokens.typography.body,
+  },
+  statValue: {
+    ...ShotsyDesignTokens.typography.h2,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: ShotsyDesignTokens.spacing.md,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  todayButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.xs,
     paddingHorizontal: ShotsyDesignTokens.spacing.sm,
     paddingVertical: 4,
@@ -470,135 +594,10 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
   },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-  },
-  currentDayView: {
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  daysScroll: {
-    paddingVertical: ShotsyDesignTokens.spacing.sm,
-    gap: ShotsyDesignTokens.spacing.sm,
-  },
-  dayButton: {
-    width: 56,
-    height: 64,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: ShotsyDesignTokens.spacing.sm,
-  },
-  dayButtonNumber: {
-    ...ShotsyDesignTokens.typography.h4,
-  },
   todayDot: {
-    width: 6,
-    height: 6,
     borderRadius: 3,
-    marginTop: 4,
-  },
-  injectionDot: {
-    width: 6,
     height: 6,
-    borderRadius: 3,
     marginTop: 4,
-  },
-  dateTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-    marginTop: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: ShotsyDesignTokens.spacing.md,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  statCard: {
-    width: '47%',
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    minHeight: 100,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  dosageIndicator: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 4,
-    borderTopLeftRadius: ShotsyDesignTokens.borderRadius.lg,
-    borderTopRightRadius: ShotsyDesignTokens.borderRadius.lg,
-  },
-  statHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.xs,
-    marginBottom: ShotsyDesignTokens.spacing.sm,
-  },
-  statLabel: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  statContent: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  statValue: {
-    ...ShotsyDesignTokens.typography.h2,
-  },
-  statUnit: {
-    ...ShotsyDesignTokens.typography.body,
-  },
-  statPlaceholder: {
-    ...ShotsyDesignTokens.typography.caption,
-    fontStyle: 'italic',
-  },
-  sectionCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: ShotsyDesignTokens.spacing.sm,
-  },
-  sectionTitle: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-  },
-  sectionContent: {
-    ...ShotsyDesignTokens.typography.body,
-  },
-  sectionPlaceholder: {
-    ...ShotsyDesignTokens.typography.body,
-    fontStyle: 'italic',
-  },
-  monthView: {
-    marginHorizontal: ShotsyDesignTokens.spacing.lg,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  monthTitle: {
-    ...ShotsyDesignTokens.typography.h2,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 60,
-    minHeight: 400,
-  },
-  loadingText: {
-    ...ShotsyDesignTokens.typography.body,
-    marginTop: ShotsyDesignTokens.spacing.lg,
+    width: 6,
   },
 });

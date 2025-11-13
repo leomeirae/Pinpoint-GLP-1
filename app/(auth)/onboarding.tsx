@@ -181,83 +181,83 @@ export default function OnboardingScreen() {
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
+    card: {
+      backgroundColor: colors.card,
+      borderRadius: 16,
+      marginBottom: 16,
+      padding: 20,
+    },
+    cardTitle: {
+      color: colors.text,
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 16,
+    },
     container: {
-      flex: 1,
       backgroundColor: colors.background,
-    },
-    scrollContent: {
-      padding: 24,
-      flexGrow: 1,
-      justifyContent: 'center',
-    },
-    header: {
-      alignItems: 'center',
-      marginBottom: 32,
+      flex: 1,
     },
     emoji: {
       fontSize: 64,
       marginBottom: 16,
     },
-    title: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 8,
-    },
-    subtitle: {
-      fontSize: 16,
-      color: colors.textSecondary,
-      textAlign: 'center',
-    },
-    card: {
-      backgroundColor: colors.card,
-      borderRadius: 16,
-      padding: 20,
-      marginBottom: 16,
-    },
-    cardTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 16,
+    header: {
+      alignItems: 'center',
+      marginBottom: 32,
     },
     previewCard: {
+      alignItems: 'center',
       backgroundColor: colors.background,
       borderRadius: 12,
-      padding: 16,
       marginTop: 16,
-      alignItems: 'center',
+      padding: 16,
+    },
+    previewGoal: {
+      color: colors.textSecondary,
+      fontSize: 14,
     },
     previewLabel: {
-      fontSize: 14,
       color: colors.textMuted,
+      fontSize: 14,
       marginBottom: 8,
     },
     previewText: {
+      color: colors.primary,
       fontSize: 24,
       fontWeight: 'bold',
-      color: colors.primary,
       marginBottom: 4,
     },
-    previewGoal: {
-      fontSize: 14,
+    scrollContent: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      padding: 24,
+    },
+    subtitle: {
       color: colors.textSecondary,
+      fontSize: 16,
+      textAlign: 'center',
     },
     tipCard: {
-      flexDirection: 'row',
+      alignItems: 'center',
       backgroundColor: colors.card,
       borderRadius: 12,
-      padding: 16,
+      flexDirection: 'row',
       marginBottom: 24,
-      alignItems: 'center',
+      padding: 16,
     },
     tipEmoji: {
       fontSize: 24,
       marginRight: 12,
     },
     tipText: {
+      color: colors.textSecondary,
       flex: 1,
       fontSize: 14,
-      color: colors.textSecondary,
+    },
+    title: {
+      color: colors.text,
+      fontSize: 32,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
   });

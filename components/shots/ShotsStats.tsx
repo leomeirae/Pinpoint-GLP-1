@@ -42,21 +42,21 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 12,
-    paddingHorizontal: 16,
     marginBottom: 16,
+    paddingHorizontal: 16,
   },
   statCard: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     paddingVertical: 16,
+  },
+  statLabel: {
+    fontSize: 12,
+    textAlign: 'center',
   },
   statValue: {
     fontSize: 24,
     fontWeight: '700',
     marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 12,
-    textAlign: 'center',
   },
 });

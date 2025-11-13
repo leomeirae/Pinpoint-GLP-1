@@ -94,52 +94,9 @@ export function AppRatingScreen({ onNext, onBack }: AppRatingScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    gap: 24,
-  },
-  emoji: {
-    fontSize: 80,
-    textAlign: 'center',
-  },
-  messageCard: {
-    padding: 24,
-    alignItems: 'center',
-  },
-  messageTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  messageText: {
-    fontSize: 15,
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  starsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  star: {
-    fontSize: 32,
-  },
-  benefitsCard: {
-    padding: 20,
-    marginTop: 8,
-  },
-  benefitsTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  benefitsList: {
-    gap: 12,
-  },
   benefit: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 12,
   },
   benefitEmoji: {
@@ -149,5 +106,48 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     lineHeight: 20,
+  },
+  benefitsCard: {
+    marginTop: 8,
+    padding: 20,
+  },
+  benefitsList: {
+    gap: 12,
+  },
+  benefitsTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  content: {
+    gap: 24,
+  },
+  emoji: {
+    fontSize: 80,
+    textAlign: 'center',
+  },
+  messageCard: {
+    alignItems: 'center',
+    padding: 24,
+  },
+  messageText: {
+    fontSize: 15,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  messageTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  star: {
+    fontSize: 32,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
   },
 });

@@ -59,20 +59,20 @@ export function SideEffectsChips({ value, onChange }: SideEffectsChipsProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: -4,
-  },
   chip: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 1,
     margin: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   chipText: {
     fontSize: 14,
     fontWeight: '500',
+  },
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -4,
   },
 });

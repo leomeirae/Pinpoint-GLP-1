@@ -64,55 +64,55 @@ export function NextApplicationCard({
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
-    container: {
-      backgroundColor: colors.primary + '20',
-      borderRadius: 20,
-      padding: 24,
-      alignItems: 'center',
-      borderWidth: 3,
-      borderColor: colors.primary,
+    action: {
+      width: '100%',
     },
-    containerToday: {
-      backgroundColor: colors.warning + '20',
-      borderColor: colors.warning,
+    container: {
+      alignItems: 'center',
+      backgroundColor: colors.primary + '20',
+      borderColor: colors.primary,
+      borderRadius: 20,
+      borderWidth: 3,
+      padding: 24,
     },
     containerOverdue: {
       backgroundColor: colors.error + '20',
       borderColor: colors.error,
     },
-    label: {
-      fontSize: 14,
-      fontWeight: 'bold',
-      color: colors.textSecondary,
-      letterSpacing: 2,
-      marginBottom: 16,
+    containerToday: {
+      backgroundColor: colors.warning + '20',
+      borderColor: colors.warning,
     },
     countdown: {
       alignItems: 'center',
       marginBottom: 16,
     },
+    countdownLabel: {
+      color: colors.textSecondary,
+      fontSize: 18,
+    },
     countdownNumber: {
+      color: colors.text,
       fontSize: 64,
       fontWeight: 'bold',
-      color: colors.text,
     },
-    countdownLabel: {
-      fontSize: 18,
+    label: {
       color: colors.textSecondary,
+      fontSize: 14,
+      fontWeight: 'bold',
+      letterSpacing: 2,
+      marginBottom: 16,
     },
-    todayEmoji: {
-      fontSize: 80,
+    medication: {
+      color: colors.text,
+      fontSize: 20,
+      fontWeight: '600',
+      marginBottom: 16,
     },
     overdueEmoji: {
       fontSize: 80,
     },
-    medication: {
-      fontSize: 20,
-      fontWeight: '600',
-      color: colors.text,
-      marginBottom: 16,
-    },
-    action: {
-      width: '100%',
+    todayEmoji: {
+      fontSize: 80,
     },
   });

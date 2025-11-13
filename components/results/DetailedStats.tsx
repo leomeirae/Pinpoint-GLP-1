@@ -90,36 +90,13 @@ const styles = StyleSheet.create({
   card: {
     padding: 16,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 16,
-  },
   grid: {
     gap: 16,
   },
-  statItem: {
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    // borderBottomColor will be applied inline using colors.border with opacity
-  },
-  statLabel: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  statValue: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  statSubtitle: {
-    fontSize: 11,
-    marginTop: 2,
-  },
   nextTitration: {
+    borderRadius: 12,
     marginTop: 16,
     padding: 12,
-    borderRadius: 12,
   },
   nextTitrationLabel: {
     fontSize: 12,
@@ -129,5 +106,28 @@ const styles = StyleSheet.create({
   nextTitrationValue: {
     fontSize: 16,
     fontWeight: '700',
+  },
+  statItem: {
+    borderBottomWidth: 1,
+    paddingVertical: 8,
+    // borderBottomColor will be applied inline using colors.border with opacity
+  },
+  statLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  statSubtitle: {
+    fontSize: 11,
+    marginTop: 2,
+  },
+  statValue: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 16,
   },
 });

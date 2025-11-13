@@ -127,60 +127,60 @@ export function MedicationLevelChart({}: MedicationLevelChartProps) {
 }
 
 const styles = StyleSheet.create({
+  chart: {
+    borderRadius: 16,
+  },
   container: {
     marginBottom: 24,
   },
+  currentValue: {
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  currentValueDate: {
+    fontSize: 12,
+  },
+  currentValueNumber: {
+    fontSize: 28,
+    fontWeight: '700',
+  },
   header: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: 12,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
   },
   info: {
     fontSize: 16,
+  },
+  jumpButton: {
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  jumpContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  jumpText: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  tab: {
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  tabText: {
+    fontSize: 14,
   },
   tabs: {
     flexDirection: 'row',
     gap: 8,
     marginBottom: 12,
   },
-  tab: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  tabText: {
-    fontSize: 14,
-  },
-  jumpContainer: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  jumpButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  jumpText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  currentValue: {
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  currentValueNumber: {
-    fontSize: 28,
+  title: {
+    fontSize: 20,
     fontWeight: '700',
-  },
-  currentValueDate: {
-    fontSize: 12,
-  },
-  chart: {
-    borderRadius: 16,
   },
 });

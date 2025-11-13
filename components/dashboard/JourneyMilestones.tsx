@@ -79,60 +79,60 @@ const getStyles = (colors: any) =>
     container: {
       paddingVertical: 16,
     },
-    title: {
+    lastAppDate: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    lastAppDosage: {
+      color: colors.textSecondary,
+      fontSize: 14,
+    },
+    lastAppTitle: {
+      color: colors.textMuted,
+      fontSize: 12,
+      marginBottom: 4,
+    },
+    lastApplicationCard: {
+      backgroundColor: colors.primary + '20',
+      borderLeftColor: colors.primary,
+      borderLeftWidth: 4,
+      borderRadius: 12,
+      padding: 16,
+    },
+    milestoneCard: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderRadius: 12,
+      flex: 1,
+      marginHorizontal: 6,
+      padding: 16,
+    },
+    milestoneEmoji: {
+      fontSize: 32,
+      marginBottom: 8,
+    },
+    milestoneLabel: {
+      color: colors.textMuted,
+      fontSize: 12,
+      textAlign: 'center',
+    },
+    milestoneValue: {
+      color: colors.text,
       fontSize: 18,
       fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 16,
+      marginBottom: 4,
     },
     milestonesGrid: {
       flexDirection: 'row',
       // gap: 12, // Not supported in React Native StyleSheet
       marginBottom: 16,
     },
-    milestoneCard: {
-      flex: 1,
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
-      alignItems: 'center',
-      marginHorizontal: 6,
-    },
-    milestoneEmoji: {
-      fontSize: 32,
-      marginBottom: 8,
-    },
-    milestoneValue: {
+    title: {
+      color: colors.text,
       fontSize: 18,
       fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 4,
-    },
-    milestoneLabel: {
-      fontSize: 12,
-      color: colors.textMuted,
-      textAlign: 'center',
-    },
-    lastApplicationCard: {
-      backgroundColor: colors.primary + '20',
-      borderRadius: 12,
-      padding: 16,
-      borderLeftWidth: 4,
-      borderLeftColor: colors.primary,
-    },
-    lastAppTitle: {
-      fontSize: 12,
-      color: colors.textMuted,
-      marginBottom: 4,
-    },
-    lastAppDate: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: colors.text,
-      marginBottom: 4,
-    },
-    lastAppDosage: {
-      fontSize: 14,
-      color: colors.textSecondary,
+      marginBottom: 16,
     },
   });

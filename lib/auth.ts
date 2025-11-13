@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SignOut } from '@clerk/clerk-expo';
 import { Router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { clearUserCache } from '@/hooks/useUser';
 import { clearSyncState } from '@/hooks/useUserSync';
 import { createLogger } from '@/lib/logger';
 import { trackEvent, clearAnalyticsOptInCache } from '@/lib/analytics';
+
+// Type for Clerk's signOut function
+type SignOut = () => Promise<void>;
 
 const logger = createLogger('AuthUtils');
 
@@ -49,10 +51,7 @@ const STORAGE_KEYS_TO_CLEAR = [
  * }
  * ```
  */
-export async function performSignOut(
-  signOut: SignOut,
-  router: Router
-): Promise<void> {
+export async function performSignOut(signOut: SignOut, router: Router): Promise<void> {
   try {
     logger.info('Starting sign out process');
     trackEvent('sign_out_started');

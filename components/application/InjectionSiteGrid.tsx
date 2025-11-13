@@ -64,15 +64,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginHorizontal: -6,
   },
-  siteButton: {
-    width: '31%',
-    aspectRatio: 1,
-    margin: 6,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 12,
-  },
   icon: {
     fontSize: 32,
     marginBottom: 8,
@@ -80,7 +71,16 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 11,
     fontWeight: '600',
-    textAlign: 'center',
     lineHeight: 14,
+    textAlign: 'center',
+  },
+  siteButton: {
+    alignItems: 'center',
+    aspectRatio: 1,
+    borderRadius: 16,
+    justifyContent: 'center',
+    margin: 6,
+    padding: 12,
+    width: '31%',
   },
 });

@@ -9,7 +9,11 @@ import { router } from 'expo-router';
 import { useApplications } from '@/hooks/useApplications';
 import { useWeights } from '@/hooks/useWeights';
 import { useProfile } from '@/hooks/useProfile';
-import { calculateNextShotDate, getCurrentEstimatedLevel, MedicationApplication } from '@/lib/pharmacokinetics';
+import {
+  calculateNextShotDate,
+  getCurrentEstimatedLevel,
+  MedicationApplication,
+} from '@/lib/pharmacokinetics';
 import { createLogger } from '@/lib/logger';
 import { List, Plus } from 'phosphor-react-native';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
@@ -55,7 +59,9 @@ export default function DashboardScreen() {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const recentShots = applications.filter(app => new Date(app.date) >= thirtyDaysAgo).length;
+    const recentShots = applications.filter(
+      (app) => app.date && new Date(app.date) >= thirtyDaysAgo
+    ).length;
 
     // Calcula shots esperadas (assumindo weekly = 4 shots/mês)
     const expectedShots = frequency === 'weekly' ? 4 : frequency === 'biweekly' ? 2 : 30;
@@ -78,10 +84,12 @@ export default function DashboardScreen() {
     }
 
     // Convert applications to pharmacokinetics format
-    const medicationApps: MedicationApplication[] = applications.map((app) => ({
-      dose: app.dosage,
-      date: new Date(app.date),
-    }));
+    const medicationApps: MedicationApplication[] = applications
+      .filter((app) => app.date !== undefined)
+      .map((app) => ({
+        dose: app.dosage,
+        date: new Date(app.date!),
+      }));
 
     // Use pharmacokinetics library to calculate next shot date
     const nextDate = calculateNextShotDate(medicationApps, intervalDays);
@@ -92,10 +100,12 @@ export default function DashboardScreen() {
   const estimatedLevel = useMemo(() => {
     if (applications.length === 0) return null;
 
-    const medicationApps: MedicationApplication[] = applications.map((app) => ({
-      dose: app.dosage,
-      date: new Date(app.date),
-    }));
+    const medicationApps: MedicationApplication[] = applications
+      .filter((app) => app.date !== undefined)
+      .map((app) => ({
+        dose: app.dosage,
+        date: new Date(app.date!),
+      }));
 
     return getCurrentEstimatedLevel(medicationApps);
   }, [applications]);
@@ -118,7 +128,8 @@ export default function DashboardScreen() {
         {
           id: 'add-shot-button',
           title: 'Adicionar Aplicação',
-          description: 'Toque aqui para registrar rapidamente uma nova aplicação do seu medicamento',
+          description:
+            'Toque aqui para registrar rapidamente uma nova aplicação do seu medicamento',
           order: 1,
         },
         {
@@ -169,7 +180,9 @@ export default function DashboardScreen() {
               <ShotsyCircularProgressV2
                 progress={adherenceRate}
                 size="large"
-                state={adherenceRate >= 0.8 ? 'success' : adherenceRate >= 0.5 ? 'warning' : 'normal'}
+                state={
+                  adherenceRate >= 0.8 ? 'success' : adherenceRate >= 0.5 ? 'warning' : 'normal'
+                }
                 centerText={`${Math.round(adherenceRate * 100)}%`}
                 centerLabel="Adherence"
               />
@@ -292,13 +305,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
   menuButton: {
     padding: ShotsyDesignTokens.spacing.sm,
@@ -307,8 +320,8 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.h3,
   },
   addButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 4,
     paddingHorizontal: ShotsyDesignTokens.spacing.sm,
     paddingVertical: 4,
@@ -334,8 +347,8 @@ const styles = StyleSheet.create({
 
   // Progress Ring Section
   progressSection: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.xl,
   },
   progressStats: {
@@ -363,10 +376,10 @@ const styles = StyleSheet.create({
     gap: ShotsyDesignTokens.spacing.md,
   },
   statCard: {
-    flex: 1,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flex: 1,
+    padding: ShotsyDesignTokens.spacing.lg,
   },
   statLabel: {
     ...ShotsyDesignTokens.typography.caption,

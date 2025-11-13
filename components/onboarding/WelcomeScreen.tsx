@@ -181,76 +181,76 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  appImage: {
+    height: '100%',
+    width: '100%',
+  },
+  buttonContainer: {
+    marginBottom: 16,
+  },
   container: {
     flex: 1,
   },
-  slide: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 20,
+  contentWrapper: {
+    paddingBottom: 40,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+  },
+  dot: {
+    borderRadius: 4,
+    height: 8,
   },
   imageContainer: {
-    width: width * 0.85,
-    height: width * 1.2,
-    borderRadius: 20,
-    overflow: 'hidden',
     backgroundColor: 'transparent',
+    borderRadius: 20,
+    elevation: 8,
+    height: width * 1.2,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 8,
+    width: width * 0.85,
   },
-  appImage: {
-    width: '100%',
-    height: '100%',
-  },
-  contentWrapper: {
-    paddingHorizontal: 24,
-    paddingBottom: 40,
-    paddingTop: 24,
-  },
-  textContainer: {
-    marginBottom: 24,
+  pagination: {
     alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    marginBottom: 24,
   },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 12,
-    lineHeight: 36,
+  slide: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 20,
   },
   subtitle: {
     fontSize: 16,
-    textAlign: 'center',
     lineHeight: 24,
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 24,
-  },
-  dot: {
-    height: 8,
-    borderRadius: 4,
-  },
-  buttonContainer: {
-    marginBottom: 16,
+    textAlign: 'center',
   },
   termsContainer: {
     alignItems: 'center',
     paddingHorizontal: 12,
   },
-  termsText: {
-    fontSize: 12,
-    textAlign: 'center',
-    lineHeight: 18,
-  },
   termsLink: {
     fontWeight: '600',
+  },
+  termsText: {
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: 'center',
+  },
+  textContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    lineHeight: 36,
+    marginBottom: 12,
+    textAlign: 'center',
   },
 });

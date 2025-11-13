@@ -53,7 +53,7 @@ export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenPro
             <View style={styles.chartArea}>
               <Svg
                 width={chartWidth}
-            height={220}
+                height={220}
                 viewBox="0 0 280 200"
                 preserveAspectRatio="xMidYMid meet"
               >
@@ -65,17 +65,89 @@ export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenPro
                 </Defs>
 
                 {/* Grid lines - horizontal */}
-                <Line x1="0" y1="50" x2="280" y2="50" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="0" y1="100" x2="280" y2="100" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="0" y1="150" x2="280" y2="150" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line
+                  x1="0"
+                  y1="50"
+                  x2="280"
+                  y2="50"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="0"
+                  y1="100"
+                  x2="280"
+                  y2="100"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="0"
+                  y1="150"
+                  x2="280"
+                  y2="150"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
 
                 {/* Grid lines - vertical */}
-                <Line x1="40" y1="0" x2="40" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="80" y1="0" x2="80" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="120" y1="0" x2="120" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="160" y1="0" x2="160" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="200" y1="0" x2="200" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-                <Line x1="240" y1="0" x2="240" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+                <Line
+                  x1="40"
+                  y1="0"
+                  x2="40"
+                  y2="200"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="80"
+                  y1="0"
+                  x2="80"
+                  y2="200"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="120"
+                  y1="0"
+                  x2="120"
+                  y2="200"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="160"
+                  y1="0"
+                  x2="160"
+                  y2="200"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="200"
+                  y1="0"
+                  x2="200"
+                  y2="200"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
+                <Line
+                  x1="240"
+                  y1="0"
+                  x2="240"
+                  y2="200"
+                  stroke={colors.border}
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                />
 
                 {/* Filled area path - curva farmacológica */}
                 <Path
@@ -89,10 +161,17 @@ export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenPro
                   fill="none"
                   stroke={currentAccent}
                   strokeWidth="3"
-            />
+                />
 
                 {/* Ponto do pico (Tmax) - dia 4 */}
-                <Circle cx="160" cy="80" r="6" fill={currentAccent} stroke={colors.background} strokeWidth="2" />
+                <Circle
+                  cx="160"
+                  cy="80"
+                  r="6"
+                  fill={currentAccent}
+                  stroke={colors.background}
+                  strokeWidth="2"
+                />
               </Svg>
 
               {/* X-axis labels */}
@@ -131,70 +210,49 @@ export function EducationGraphScreen({ onNext, onBack }: EducationGraphScreenPro
 }
 
 const styles = StyleSheet.create({
+  chartArea: {
+    flex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+  },
+  chartContainer: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    minHeight: 220,
+    width: '100%',
+  },
   content: {
     gap: 16,
     paddingHorizontal: 24,
   },
   graphCard: {
+    overflow: 'hidden',
     padding: 20,
-    overflow: 'hidden',
-  },
-  chartContainer: {
-    flexDirection: 'row',
-    minHeight: 220,
-    marginBottom: 8,
-    width: '100%',
-  },
-  yAxisLabels: {
-    width: 50,
-    justifyContent: 'space-between',
-    paddingRight: 8,
-    paddingBottom: 20,
-  },
-  yAxisLabel: {
-    fontSize: 10,
-  },
-  chartArea: {
-    flex: 1,
-    position: 'relative',
-    width: '100%',
-    overflow: 'hidden',
-  },
-  xAxisLabels: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 0,
-  },
-  xAxisLabel: {
-    fontSize: 10,
-  },
-  peakLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    textAlign: 'right',
-    marginTop: 8,
-    marginRight: 20,
   },
   infoCard: {
     padding: 20, // Mudança: 16 → 20px (match Shotsy)
+  },
+  infoText: {
+    fontSize: 14,
+    lineHeight: 22,
   },
   infoTitle: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 8,
   },
-  infoText: {
-    fontSize: 14,
-    lineHeight: 22,
+  peakLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginRight: 20,
+    marginTop: 8,
+    textAlign: 'right',
   },
   warningCard: {
-    padding: 16,
     flexDirection: 'row',
     gap: 12,
+    padding: 16,
   },
   warningEmoji: {
     fontSize: 24,
@@ -203,5 +261,26 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 13,
     lineHeight: 20,
+  },
+  xAxisLabel: {
+    fontSize: 10,
+  },
+  xAxisLabels: {
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    left: 0,
+    paddingHorizontal: 0,
+    position: 'absolute',
+    right: 0,
+  },
+  yAxisLabel: {
+    fontSize: 10,
+  },
+  yAxisLabels: {
+    justifyContent: 'space-between',
+    paddingBottom: 20,
+    paddingRight: 8,
+    width: 50,
   },
 });

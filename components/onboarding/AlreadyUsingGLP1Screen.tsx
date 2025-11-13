@@ -37,7 +37,9 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
             <View style={[styles.dot, { backgroundColor: colors.background }]} />
             <View style={[styles.dot, { backgroundColor: colors.background }]} />
             <View style={[styles.dot, { backgroundColor: colors.background }]} />
-            <View style={[styles.dot, styles.dotInactive, { backgroundColor: colors.background }]} />
+            <View
+              style={[styles.dot, styles.dotInactive, { backgroundColor: colors.background }]}
+            />
           </View>
         </View>
         <Text style={[styles.logoText, { color: colors.primary }]}>PINPOINT GLP-1</Text>
@@ -61,7 +63,8 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
               style={[
                 styles.radio,
                 {
-                  borderColor: selected === 'Já estou tomando GLP-1' ? colors.primary : colors.border,
+                  borderColor:
+                    selected === 'Já estou tomando GLP-1' ? colors.primary : colors.border,
                 },
               ]}
             >
@@ -69,9 +72,7 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
                 <View style={[styles.radioInner, { backgroundColor: colors.primary }]} />
               )}
             </View>
-            <Text style={[styles.optionLabel, { color: colors.text }]}>
-              Já estou tomando GLP-1
-            </Text>
+            <Text style={[styles.optionLabel, { color: colors.text }]}>Já estou tomando GLP-1</Text>
           </View>
         </TouchableOpacity>
 
@@ -80,7 +81,8 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
             styles.option,
             {
               backgroundColor: colors.backgroundSecondary,
-              borderColor: selected === 'Eu ainda não comecei a usar GLP-1' ? colors.primary : 'transparent',
+              borderColor:
+                selected === 'Eu ainda não comecei a usar GLP-1' ? colors.primary : 'transparent',
               borderWidth: selected === 'Eu ainda não comecei a usar GLP-1' ? 2 : 0,
             },
           ]}
@@ -91,7 +93,10 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
               style={[
                 styles.radio,
                 {
-                  borderColor: selected === 'Eu ainda não comecei a usar GLP-1' ? colors.primary : colors.border,
+                  borderColor:
+                    selected === 'Eu ainda não comecei a usar GLP-1'
+                      ? colors.primary
+                      : colors.border,
                 },
               ]}
             >
@@ -110,69 +115,69 @@ export function AlreadyUsingGLP1Screen({ onNext, onBack }: AlreadyUsingGLP1Scree
 }
 
 const styles = StyleSheet.create({
-  logoSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  content: {
     gap: 12,
-    marginBottom: 32,
     paddingHorizontal: 24,
   },
+  dot: {
+    borderRadius: 4,
+    height: 8,
+    width: 8,
+  },
+  dotInactive: {
+    opacity: 0.5,
+  },
   logoContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 16,
-    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 16,
+    height: 64,
+    justifyContent: 'center',
+    width: 64,
   },
   logoDots: {
     flexDirection: 'row',
     gap: 4,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  dotInactive: {
-    opacity: 0.5,
+  logoSection: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 32,
+    paddingHorizontal: 24,
   },
   logoText: {
     fontSize: 30,
     fontWeight: '700',
   },
-  content: {
-    gap: 12,
-    paddingHorizontal: 24,
-  },
   option: {
+    alignItems: 'center',
     borderRadius: 16,
-    padding: 20,
+    flexDirection: 'row',
     minHeight: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  radioContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  radio: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  radioInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    padding: 20,
   },
   optionLabel: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '500',
+  },
+  radio: {
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 2,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
+  },
+  radioContainer: {
+    alignItems: 'center',
     flex: 1,
+    flexDirection: 'row',
+    gap: 12,
+  },
+  radioInner: {
+    borderRadius: 6,
+    height: 12,
+    width: 12,
   },
 });

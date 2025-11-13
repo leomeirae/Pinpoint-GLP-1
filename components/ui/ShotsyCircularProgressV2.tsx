@@ -288,13 +288,13 @@ export const ProgressValue: React.FC<ProgressValueProps> = ({ value, label, valu
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   centerContent: {
-    position: 'absolute',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
   },
   centerText: {
     fontWeight: '700',
@@ -302,14 +302,14 @@ const styles = StyleSheet.create({
   },
   centerLabel: {
     fontWeight: '500',
-    textAlign: 'center',
     marginTop: 4,
     opacity: 0.8,
+    textAlign: 'center',
   },
   // ProgressPercentage styles
   percentageContainer: {
-    flexDirection: 'row',
     alignItems: 'baseline',
+    flexDirection: 'row',
   },
   percentageValue: {
     ...ShotsyDesignTokens.typography.numberLarge,

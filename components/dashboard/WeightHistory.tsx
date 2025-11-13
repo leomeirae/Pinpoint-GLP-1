@@ -84,56 +84,56 @@ const getStyles = (colors: any) =>
     container: {
       padding: 16,
     },
-    timelineItem: {
-      flexDirection: 'row',
-      marginBottom: 16,
+    diffNegative: {
+      color: colors.error,
     },
-    timelineDot: {
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      backgroundColor: colors.primary,
-      marginRight: 12,
-      marginTop: 4,
-    },
-    timelineDotPositive: {
-      backgroundColor: colors.success, // Verde para peso perdido
-    },
-    timelineDotNegative: {
-      backgroundColor: colors.error, // Vermelho para peso ganho
+    diffPositive: {
+      color: colors.success,
     },
     timelineContent: {
       flex: 1,
     },
-    timelineHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 4,
-    },
     timelineDate: {
-      fontSize: 14,
       color: colors.textSecondary,
-    },
-    timelineWeight: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: colors.text,
+      fontSize: 14,
     },
     timelineDiff: {
       fontSize: 12,
       fontWeight: '600',
       marginBottom: 4,
     },
-    diffPositive: {
-      color: colors.success,
+    timelineDot: {
+      backgroundColor: colors.primary,
+      borderRadius: 6,
+      height: 12,
+      marginRight: 12,
+      marginTop: 4,
+      width: 12,
     },
-    diffNegative: {
-      color: colors.error,
+    timelineDotNegative: {
+      backgroundColor: colors.error, // Vermelho para peso ganho
+    },
+    timelineDotPositive: {
+      backgroundColor: colors.success, // Verde para peso perdido
+    },
+    timelineHeader: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 4,
+    },
+    timelineItem: {
+      flexDirection: 'row',
+      marginBottom: 16,
     },
     timelineNotes: {
-      fontSize: 12,
       color: colors.textMuted,
+      fontSize: 12,
       fontStyle: 'italic',
+    },
+    timelineWeight: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: 'bold',
     },
   });

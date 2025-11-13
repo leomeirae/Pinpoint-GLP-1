@@ -173,75 +173,33 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  avatar: {
+    alignItems: 'center',
+    borderRadius: 40,
+    height: 80,
+    justifyContent: 'center',
+    marginBottom: 16,
+    width: 80,
+  },
+  avatarText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
+  },
+  email: {
+    fontSize: 14,
   },
   header: {
     alignItems: 'center',
     padding: 24,
     paddingTop: 32,
   },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  avatarText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  email: {
-    fontSize: 14,
-  },
-  section: {
-    padding: 24,
-    gap: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  themeCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-  },
-  themeTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  themeOptions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  themeOption: {
-    flex: 1,
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    borderWidth: 2,
-  },
-  themeOptionLast: {
-    marginRight: 0,
-  },
-  themeOptionText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
   infoCard: {
     borderRadius: 12,
-    padding: 16,
     marginBottom: 12,
+    padding: 16,
   },
   infoLabel: {
     fontSize: 12,
@@ -251,9 +209,51 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  name: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  section: {
+    gap: 12,
+    padding: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  themeCard: {
+    borderRadius: 12,
+    marginBottom: 12,
+    padding: 16,
+  },
+  themeOption: {
+    alignItems: 'center',
+    borderRadius: 8,
+    borderWidth: 2,
+    flex: 1,
+    padding: 12,
+  },
+  themeOptionLast: {
+    marginRight: 0,
+  },
+  themeOptionText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  themeOptions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  themeTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
   version: {
-    textAlign: 'center',
     fontSize: 12,
     padding: 24,
+    textAlign: 'center',
   },
 });

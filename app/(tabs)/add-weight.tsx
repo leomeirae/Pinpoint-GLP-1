@@ -187,64 +187,64 @@ export default function AddWeightScreen() {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: colors.background,
+      flex: 1,
     },
-    scrollContent: {
-      padding: 24,
-      flexGrow: 1,
-      justifyContent: 'center',
+    loadingText: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      marginTop: 8,
+      textAlign: 'center',
     },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 24,
+    moodButton: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderColor: 'transparent',
+      borderRadius: 12,
+      borderWidth: 2,
+      padding: 12,
+      width: '22%',
     },
-    moodSection: {
-      marginVertical: 20,
+    moodButtonLabel: {
+      color: colors.textSecondary,
+      fontSize: 10,
+      textAlign: 'center',
     },
-    moodLabel: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: colors.text,
-      marginBottom: 12,
+    moodButtonSelected: {
+      backgroundColor: colors.backgroundLight,
+      borderColor: colors.primary,
+    },
+    moodEmoji: {
+      // fontSize: 32, // Removed as AppIcon handles its own size
+      marginBottom: 4,
     },
     moodGrid: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       gap: 12,
     },
-    moodButton: {
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 12,
-      alignItems: 'center',
-      width: '22%',
-      borderWidth: 2,
-      borderColor: 'transparent',
-    },
-    moodButtonSelected: {
-      borderColor: colors.primary,
-      backgroundColor: colors.backgroundLight,
-    },
-    moodEmoji: {
-      // fontSize: 32, // Removed as AppIcon handles its own size
-      marginBottom: 4,
-    },
-    moodButtonLabel: {
-      fontSize: 10,
-      color: colors.textSecondary,
-      textAlign: 'center',
+    moodLabel: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 12,
     },
     moodLabelSelected: {
       color: colors.primary,
       fontWeight: 'bold',
     },
-    loadingText: {
-      color: colors.textSecondary,
-      fontSize: 14,
-      textAlign: 'center',
-      marginTop: 8,
+    moodSection: {
+      marginVertical: 20,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      padding: 24,
+    },
+    title: {
+      color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginBottom: 24,
     },
   });

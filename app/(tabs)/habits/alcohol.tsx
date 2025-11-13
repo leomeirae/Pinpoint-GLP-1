@@ -96,9 +96,7 @@ export default function AlcoholScreen() {
           <View style={styles.headerSpacer} />
         </View>
         <View style={styles.loadingContainer}>
-          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
-            Carregando...
-          </Text>
+          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Carregando...</Text>
         </View>
       </View>
     );
@@ -130,9 +128,7 @@ export default function AlcoholScreen() {
 
             {/* Toggle */}
             <View style={styles.toggleRow}>
-              <Text style={[styles.toggleLabel, { color: colors.text }]}>
-                Consumi álcool hoje?
-              </Text>
+              <Text style={[styles.toggleLabel, { color: colors.text }]}>Consumi álcool hoje?</Text>
               <Switch
                 value={consumed}
                 onValueChange={handleToggleConsumed}
@@ -203,9 +199,7 @@ export default function AlcoholScreen() {
               disabled={isSaving}
             >
               <Check size={20} color="#FFFFFF" weight="bold" />
-              <Text style={styles.saveButtonText}>
-                {isSaving ? 'Salvando...' : 'Salvar'}
-              </Text>
+              <Text style={styles.saveButtonText}>{isSaving ? 'Salvando...' : 'Salvar'}</Text>
             </TouchableOpacity>
           </View>
         </FadeInView>
@@ -215,9 +209,7 @@ export default function AlcoholScreen() {
           <View style={styles.calendarSection}>
             <View style={styles.calendarHeader}>
               <Calendar size={24} color={colors.text} weight="regular" />
-              <Text style={[styles.calendarTitle, { color: colors.text }]}>
-                Últimos 30 dias
-              </Text>
+              <Text style={[styles.calendarTitle, { color: colors.text }]}>Últimos 30 dias</Text>
             </View>
 
             <View style={styles.calendarGrid}>
@@ -244,9 +236,7 @@ export default function AlcoholScreen() {
                       style={[
                         styles.calendarDayText,
                         {
-                          color: hasAlcohol
-                            ? colors.accentRed || '#ef4444'
-                            : colors.textMuted,
+                          color: hasAlcohol ? colors.accentRed || '#ef4444' : colors.textMuted,
                           fontWeight: hasAlcohol ? '700' : '400',
                         },
                       ]}
@@ -254,11 +244,7 @@ export default function AlcoholScreen() {
                       {formatDate(date)}
                     </Text>
                     {hasAlcohol && (
-                      <Martini
-                        size={12}
-                        color={colors.accentRed || '#ef4444'}
-                        weight="fill"
-                      />
+                      <Martini size={12} color={colors.accentRed || '#ef4444'} weight="fill" />
                     )}
                   </View>
                 );
@@ -305,69 +291,46 @@ export default function AlcoholScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
-  },
   backButton: {
-    padding: ShotsyDesignTokens.spacing.sm,
     marginLeft: -ShotsyDesignTokens.spacing.sm,
+    padding: ShotsyDesignTokens.spacing.sm,
   },
-  headerTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-    flex: 1,
-    textAlign: 'center',
+  bottomSpacer: {
+    height: ShotsyDesignTokens.spacing.xxl * 2,
   },
-  headerSpacer: {
-    width: 44,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: ShotsyDesignTokens.spacing.lg,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  calendarDay: {
     alignItems: 'center',
-  },
-  loadingText: {
-    ...ShotsyDesignTokens.typography.body,
-  },
-  todayCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.xl,
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    height: 48,
+    justifyContent: 'center',
+    width: 48,
     ...ShotsyDesignTokens.shadows.card,
   },
-  todayHeader: {
+  calendarDayText: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontSize: 10,
+  },
+  calendarGrid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: ShotsyDesignTokens.spacing.sm,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  calendarHeader: {
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  todayTitle: {
-    ...ShotsyDesignTokens.typography.h2,
-    fontWeight: '700',
-  },
-  toggleRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
+    gap: ShotsyDesignTokens.spacing.sm,
+    marginBottom: ShotsyDesignTokens.spacing.md,
   },
-  toggleLabel: {
-    ...ShotsyDesignTokens.typography.body,
-    fontWeight: '500',
+  calendarSection: {
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+  },
+  calendarTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    fontWeight: '600',
+  },
+  container: {
+    flex: 1,
   },
   field: {
     marginBottom: ShotsyDesignTokens.spacing.md,
@@ -377,27 +340,77 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: ShotsyDesignTokens.spacing.sm,
   },
+  header: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: 60,
+  },
+  headerSpacer: {
+    width: 44,
+  },
+  headerTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    flex: 1,
+    textAlign: 'center',
+  },
   input: {
-    height: 56,
     borderRadius: ShotsyDesignTokens.borderRadius.md,
     borderWidth: 1,
+    height: 56,
     paddingHorizontal: ShotsyDesignTokens.spacing.md,
     ...ShotsyDesignTokens.typography.body,
   },
-  textArea: {
-    minHeight: 80,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    borderWidth: 1,
-    padding: ShotsyDesignTokens.spacing.md,
+  legend: {
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.lg,
+  },
+  legendDot: {
+    borderRadius: 6,
+    height: 12,
+    width: 12,
+  },
+  legendItem: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+  },
+  legendText: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loadingText: {
     ...ShotsyDesignTokens.typography.body,
   },
+  noteCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  noteText: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+  },
+  noteTitle: {
+    ...ShotsyDesignTokens.typography.h4,
+    fontWeight: '600',
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
   saveButton: {
-    height: 56,
+    alignItems: 'center',
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     gap: 8,
+    height: 56,
+    justifyContent: 'center',
     marginTop: ShotsyDesignTokens.spacing.md,
     ...ShotsyDesignTokens.shadows.card,
   },
@@ -406,70 +419,43 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
   },
-  calendarSection: {
-    marginBottom: ShotsyDesignTokens.spacing.xl,
-  },
-  calendarHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  calendarTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '600',
-  },
-  calendarGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  calendarDay: {
-    width: 48,
-    height: 48,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  calendarDayText: {
-    ...ShotsyDesignTokens.typography.caption,
-    fontSize: 10,
-  },
-  legend: {
-    flexDirection: 'row',
-    gap: ShotsyDesignTokens.spacing.lg,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.sm,
-  },
-  legendDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  legendText: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  noteCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+  scrollContent: {
     padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  textArea: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    borderWidth: 1,
+    minHeight: 80,
+    padding: ShotsyDesignTokens.spacing.md,
+    ...ShotsyDesignTokens.typography.body,
+  },
+  todayCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+    padding: ShotsyDesignTokens.spacing.lg,
     ...ShotsyDesignTokens.shadows.card,
   },
-  noteTitle: {
-    ...ShotsyDesignTokens.typography.h4,
-    fontWeight: '600',
-    marginBottom: ShotsyDesignTokens.spacing.sm,
+  todayHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
   },
-  noteText: {
+  todayTitle: {
+    ...ShotsyDesignTokens.typography.h2,
+    fontWeight: '700',
+  },
+  toggleLabel: {
     ...ShotsyDesignTokens.typography.body,
-    lineHeight: 22,
+    fontWeight: '500',
   },
-  bottomSpacer: {
-    height: ShotsyDesignTokens.spacing.xxl * 2,
+  toggleRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
   },
 });

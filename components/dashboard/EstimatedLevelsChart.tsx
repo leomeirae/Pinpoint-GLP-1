@@ -35,10 +35,12 @@ export const EstimatedLevelsChart: React.FC = () => {
   const currentLevel = useMemo(() => {
     if (applications.length === 0) return 0;
 
-    const medApplications = applications.map((app) => ({
-      dose: app.dosage,
-      date: app.date,
-    }));
+    const medApplications = applications
+      .filter((app) => app.date !== undefined)
+      .map((app) => ({
+        dose: app.dosage,
+        date: app.date!,
+      }));
 
     return getCurrentEstimatedLevel(medApplications);
   }, [applications]);
@@ -57,11 +59,19 @@ export const EstimatedLevelsChart: React.FC = () => {
 
     // Convert applications to pharmacokinetics format
     const medApplications = applications
+      .filter((app) => app.date !== undefined)
       .map((app) => ({
         dose: app.dosage,
-        date: app.date,
+        date: app.date!,
       }))
       .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    if (medApplications.length === 0) {
+      return {
+        labels: [''],
+        datasets: [{ data: [0] }],
+      };
+    }
 
     // Find first application date
     const firstApplicationDate = medApplications[0].date;
@@ -318,49 +328,56 @@ export const EstimatedLevelsChart: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  chart: {
+    borderRadius: 16,
+  },
+  chartContainer: {
+    alignItems: 'center',
+    marginVertical: 8,
+  },
   container: {
     borderRadius: 16,
-    padding: 16,
+    elevation: 3,
     marginBottom: 16,
+    padding: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    flex: 1,
-  },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  infoIcon: {
-    marginLeft: 4,
   },
   currentLevelCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
     alignItems: 'center',
+    borderRadius: 12,
+    marginBottom: 16,
+    padding: 16,
   },
   currentLevelLabel: {
     fontSize: 13,
-    marginBottom: 4,
     fontWeight: '500',
+    marginBottom: 4,
   },
   currentLevelValue: {
     fontSize: 32,
     fontWeight: '700',
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 48,
+  },
+  emptyStateText: {
+    fontSize: 15,
+    fontWeight: '500',
+    marginTop: 12,
+  },
+  filterButton: {
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    // backgroundColor will be applied inline based on theme
+  },
+  filterText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
   filtersContainer: {
     flexDirection: 'row',
@@ -368,26 +385,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingRight: 16,
   },
-  filterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    // backgroundColor will be applied inline based on theme
-  },
-  filterText: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  chartContainer: {
+  header: {
     alignItems: 'center',
-    marginVertical: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  chart: {
-    borderRadius: 16,
+  headerRight: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+  },
+  infoIcon: {
+    marginLeft: 4,
   },
   jumpButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -396,29 +410,25 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
-  emptyState: {
-    alignItems: 'center',
-    paddingVertical: 48,
-  },
-  emptyStateText: {
-    fontSize: 15,
-    marginTop: 12,
-    fontWeight: '500',
-  },
   legendContainer: {
-    marginTop: 12,
     alignItems: 'center',
     gap: 4,
+    marginTop: 12,
+  },
+  legendSubtext: {
+    fontSize: 10,
+    fontWeight: '400',
+    opacity: 0.7,
+    textAlign: 'center',
   },
   legendText: {
     fontSize: 11,
     fontWeight: '500',
     textAlign: 'center',
   },
-  legendSubtext: {
-    fontSize: 10,
-    fontWeight: '400',
-    textAlign: 'center',
-    opacity: 0.7,
+  title: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: '600',
   },
 });

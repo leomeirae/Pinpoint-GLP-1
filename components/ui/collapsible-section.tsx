@@ -41,22 +41,30 @@ export function CollapsibleSection({
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
+    chevron: {
+      color: colors.textMuted,
+      fontSize: 14,
+      marginLeft: 12,
+    },
     container: {
       marginBottom: 16,
     },
+    content: {
+      marginTop: 12,
+    },
     header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: colors.card,
-      padding: 16,
-      borderRadius: 12,
-      borderLeftWidth: 4,
       borderLeftColor: colors.primary,
+      borderLeftWidth: 4,
+      borderRadius: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 16,
     },
     headerContent: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
       flex: 1,
     },
     icon: {
@@ -64,16 +72,8 @@ const getStyles = (colors: any) =>
       marginRight: 12,
     },
     title: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
-    },
-    chevron: {
-      fontSize: 14,
-      color: colors.textMuted,
-      marginLeft: 12,
-    },
-    content: {
-      marginTop: 12,
     },
   });

@@ -85,12 +85,17 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   explanationCard: {
-    padding: 20,
     alignItems: 'center',
+    padding: 20,
   },
   explanationEmoji: {
     fontSize: 48,
     marginBottom: 12,
+  },
+  explanationText: {
+    fontSize: 14,
+    lineHeight: 22,
+    textAlign: 'center',
   },
   explanationTitle: {
     fontSize: 18,
@@ -98,23 +103,18 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
   },
-  explanationText: {
-    fontSize: 14,
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-  optionsList: {
-    gap: 10,
-  },
   option: {
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 12,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 16,
   },
   optionLabel: {
     fontSize: 16,
     fontWeight: '500',
+  },
+  optionsList: {
+    gap: 10,
   },
 });

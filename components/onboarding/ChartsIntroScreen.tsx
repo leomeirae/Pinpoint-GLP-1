@@ -66,7 +66,12 @@ export function ChartsIntroScreen({ onNext, onBack }: ChartsIntroScreenProps) {
 
           {/* Chart area */}
           <View style={styles.chartArea}>
-            <Svg width={chartWidth} height={chartHeight} viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet">
+            <Svg
+              width={chartWidth}
+              height={chartHeight}
+              viewBox="0 0 600 300"
+              preserveAspectRatio="xMidYMid meet"
+            >
               <Defs>
                 <LinearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                   <Stop offset="0%" stopColor={colors.primary} stopOpacity="0.8" />
@@ -80,11 +85,51 @@ export function ChartsIntroScreen({ onNext, onBack }: ChartsIntroScreenProps) {
               <Line x1="0" y1="225" x2="600" y2="225" stroke={colors.border} strokeWidth="1" />
 
               {/* Grid lines - vertical (dashed) */}
-              <Line x1="100" y1="0" x2="100" y2="300" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="200" y1="0" x2="200" y2="300" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="300" y1="0" x2="300" y2="300" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="400" y1="0" x2="400" y2="300" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="500" y1="0" x2="500" y2="300" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line
+                x1="100"
+                y1="0"
+                x2="100"
+                y2="300"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="200"
+                y1="0"
+                x2="200"
+                y2="300"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="300"
+                y1="0"
+                x2="300"
+                y2="300"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="400"
+                y1="0"
+                x2="400"
+                y2="300"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="500"
+                y1="0"
+                x2="500"
+                y2="300"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
 
               {/* Filled area path */}
               <Path
@@ -110,19 +155,45 @@ export function ChartsIntroScreen({ onNext, onBack }: ChartsIntroScreenProps) {
               />
 
               {/* Interactive point */}
-              <Circle cx="300" cy="110" r="8" fill={colors.primary} stroke={colors.background} strokeWidth="3" />
+              <Circle
+                cx="300"
+                cy="110"
+                r="8"
+                fill={colors.primary}
+                stroke={colors.background}
+                strokeWidth="3"
+              />
 
               {/* Tooltip background */}
-              <Rect x="240" y="60" width="120" height="40" fill={colors.background} rx="8" stroke={colors.border} strokeWidth="1" />
+              <Rect
+                x="240"
+                y="60"
+                width="120"
+                height="40"
+                fill={colors.background}
+                rx="8"
+                stroke={colors.border}
+                strokeWidth="1"
+              />
 
               {/* Vertical line from point */}
-              <Line x1="300" y1="110" x2="300" y2="300" stroke={colors.primary} strokeWidth="1" strokeDasharray="4 2" />
+              <Line
+                x1="300"
+                y1="110"
+                x2="300"
+                y2="300"
+                stroke={colors.primary}
+                strokeWidth="1"
+                strokeDasharray="4 2"
+              />
             </Svg>
 
             {/* Tooltip text */}
             <View style={styles.tooltip}>
               <Text style={[styles.tooltipValue, { color: colors.primary }]}>1.16mg</Text>
-              <Text style={[styles.tooltipDate, { color: colors.textSecondary }]}>28 de out. de 2025, 10</Text>
+              <Text style={[styles.tooltipDate, { color: colors.textSecondary }]}>
+                28 de out. de 2025, 10
+              </Text>
             </View>
 
             {/* X-axis labels */}
@@ -150,65 +221,65 @@ export function ChartsIntroScreen({ onNext, onBack }: ChartsIntroScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  caption: {
+    fontSize: 14,
+    lineHeight: 20,
+    paddingHorizontal: 12,
+    textAlign: 'center',
+  },
+  chartArea: {
+    flex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+  },
+  chartContainer: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    minHeight: 300,
+  },
   content: {
     gap: 24,
     paddingHorizontal: 24,
   },
-  chartContainer: {
-    flexDirection: 'row',
-    minHeight: 300,
-    marginBottom: 16,
-  },
-  yAxisLabels: {
-    width: 48,
-    justifyContent: 'space-between',
-    paddingRight: 8,
-    paddingBottom: 48,
-  },
-  yAxisLabel: {
-    fontSize: 12,
-  },
-  chartArea: {
-    flex: 1,
-    position: 'relative',
-    width: '100%',
-    overflow: 'hidden',
-  },
   tooltip: {
-    position: 'absolute',
-    left: '50%',
-    marginLeft: -60,
-    top: 60,
-    width: 120,
-    height: 40,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
+    height: 40,
+    justifyContent: 'center',
+    left: '50%',
+    marginLeft: -60,
+    position: 'absolute',
+    top: 60,
+    width: 120,
+  },
+  tooltipDate: {
+    fontSize: 11,
   },
   tooltipValue: {
     fontSize: 16,
     fontWeight: '700',
     marginBottom: 2,
   },
-  tooltipDate: {
-    fontSize: 11,
-  },
-  xAxisLabels: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 0,
-  },
   xAxisLabel: {
     fontSize: 12,
   },
-  caption: {
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 20,
-    paddingHorizontal: 12,
+  xAxisLabels: {
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    left: 0,
+    paddingHorizontal: 0,
+    position: 'absolute',
+    right: 0,
+  },
+  yAxisLabel: {
+    fontSize: 12,
+  },
+  yAxisLabels: {
+    justifyContent: 'space-between',
+    paddingBottom: 48,
+    paddingRight: 8,
+    width: 48,
   },
 });

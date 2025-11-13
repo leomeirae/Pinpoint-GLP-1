@@ -25,9 +25,7 @@ export default function WelcomeScreen() {
         </View>
 
         {/* Title */}
-        <Text style={[styles.title, { color: colors.text }]}>
-          Bem-vindo ao Pinpoint GLP-1
-        </Text>
+        <Text style={[styles.title, { color: colors.text }]}>Bem-vindo ao Pinpoint GLP-1</Text>
 
         {/* Subtitle */}
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
@@ -36,18 +34,12 @@ export default function WelcomeScreen() {
 
         {/* Value propositions */}
         <View style={styles.features}>
-          <FeatureItem
-            text="Registre aplicações e doses semanais"
-            color={colors.textSecondary}
-          />
+          <FeatureItem text="Registre aplicações e doses semanais" color={colors.textSecondary} />
           <FeatureItem
             text="Acompanhe progresso de peso ao longo do tempo"
             color={colors.textSecondary}
           />
-          <FeatureItem
-            text="Receba lembretes personalizados"
-            color={colors.textSecondary}
-          />
+          <FeatureItem text="Receba lembretes personalizados" color={colors.textSecondary} />
           <FeatureItem
             text="Controle financeiro de compras e custos"
             color={colors.textSecondary}
@@ -90,53 +82,62 @@ function FeatureItem({ text, color }: { text: string; color: string }) {
 }
 
 const styles = StyleSheet.create({
+  bullet: {
+    borderRadius: 4,
+    height: 8,
+    width: 8,
+  },
+  button: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    height: 56,
+    justifyContent: 'center',
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  buttonText: {
+    ...ShotsyDesignTokens.typography.label,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
   container: {
     flex: 1,
   },
   content: {
     flex: 1,
+    justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
     paddingHorizontal: ShotsyDesignTokens.spacing.xl,
     paddingTop: ShotsyDesignTokens.spacing.xxxl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-    justifyContent: 'space-between',
   },
-  iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: ShotsyDesignTokens.borderRadius.xxl,
-    justifyContent: 'center',
+  dot: {
+    borderRadius: 4,
+    height: 8,
+    width: 8,
+  },
+  dotActive: {
+    width: 24,
+  },
+  featureItem: {
     alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xl,
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
   },
-  title: {
-    ...ShotsyDesignTokens.typography.h1,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  subtitle: {
+  featureText: {
     ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
-    lineHeight: 24,
+    flex: 1,
   },
   features: {
     gap: ShotsyDesignTokens.spacing.lg,
     marginBottom: ShotsyDesignTokens.spacing.xxl,
   },
-  featureItem: {
-    flexDirection: 'row',
+  iconContainer: {
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
-  },
-  bullet: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  featureText: {
-    ...ShotsyDesignTokens.typography.body,
-    flex: 1,
+    alignSelf: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xxl,
+    height: 120,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+    width: 120,
   },
   progressContainer: {
     alignItems: 'center',
@@ -147,27 +148,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  dotActive: {
-    width: 24,
-  },
   progressText: {
     ...ShotsyDesignTokens.typography.caption,
   },
-  button: {
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
+  subtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 24,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    textAlign: 'center',
   },
-  buttonText: {
-    ...ShotsyDesignTokens.typography.label,
-    color: '#FFFFFF',
-    fontWeight: '600',
+  title: {
+    ...ShotsyDesignTokens.typography.h1,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    textAlign: 'center',
   },
 });

@@ -110,11 +110,14 @@ export function useUserSync() {
 
         // Se ainda não tem user após todas as tentativas, criar com dados mínimos
         if (!user) {
-          logger.warn('Clerk user still not available after max retries, creating with minimal data', {
-            retryCount: retryCountRef.current,
-            maxRetries: MAX_SYNC_RETRIES,
-            totalWaitTime: `${MAX_CLERK_WAIT_TIME}ms`,
-          });
+          logger.warn(
+            'Clerk user still not available after max retries, creating with minimal data',
+            {
+              retryCount: retryCountRef.current,
+              maxRetries: MAX_SYNC_RETRIES,
+              totalWaitTime: `${MAX_CLERK_WAIT_TIME}ms`,
+            }
+          );
         }
 
         // Check if user exists in Supabase

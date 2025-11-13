@@ -62,10 +62,7 @@ const ConfettiPiece: React.FC<ConfettiPieceProps> = ({ delay, color, startX }) =
     );
 
     // Fade out no final
-    opacity.value = withDelay(
-      delay + 2500,
-      withTiming(0, { duration: 500 })
-    );
+    opacity.value = withDelay(delay + 2500, withTiming(0, { duration: 500 }));
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -80,13 +77,7 @@ const ConfettiPiece: React.FC<ConfettiPieceProps> = ({ delay, color, startX }) =
   });
 
   return (
-    <Animated.View
-      style={[
-        styles.confettiPiece,
-        { backgroundColor: color },
-        animatedStyle,
-      ]}
-    />
+    <Animated.View style={[styles.confettiPiece, { backgroundColor: color }, animatedStyle]} />
   );
 };
 
@@ -168,18 +159,18 @@ export const ConfettiCelebration: React.FC<ConfettiCelebrationProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 9999,
-  },
   confettiPiece: {
+    borderRadius: 2,
+    height: 8,
     position: 'absolute',
     width: 8,
-    height: 8,
-    borderRadius: 2,
+  },
+  container: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 9999,
   },
 });

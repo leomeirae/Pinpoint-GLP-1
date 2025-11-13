@@ -99,9 +99,7 @@ export default function PermissionsScreen() {
         </View>
 
         {/* Title */}
-        <Text style={[styles.title, { color: colors.text }]}>
-          Ative as notificações
-        </Text>
+        <Text style={[styles.title, { color: colors.text }]}>Ative as notificações</Text>
 
         {/* Subtitle */}
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
@@ -110,18 +108,9 @@ export default function PermissionsScreen() {
 
         {/* Benefits */}
         <View style={styles.benefitsContainer}>
-          <BenefitItem
-            text="Lembretes no horário escolhido"
-            color={colors.textSecondary}
-          />
-          <BenefitItem
-            text="Notificações de aplicações pendentes"
-            color={colors.textSecondary}
-          />
-          <BenefitItem
-            text="Alertas de progresso de peso"
-            color={colors.textSecondary}
-          />
+          <BenefitItem text="Lembretes no horário escolhido" color={colors.textSecondary} />
+          <BenefitItem text="Notificações de aplicações pendentes" color={colors.textSecondary} />
+          <BenefitItem text="Alertas de progresso de peso" color={colors.textSecondary} />
         </View>
 
         {/* Permission Status */}
@@ -216,75 +205,71 @@ function BenefitItem({ text, color }: { text: string; color: string }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingTop: ShotsyDesignTokens.spacing.lg,
-    paddingBottom: ShotsyDesignTokens.spacing.sm,
-  },
   backButton: {
-    width: 44,
+    alignItems: 'center',
     height: 44,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-  },
-  iconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: ShotsyDesignTokens.borderRadius.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h2,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  subtitle: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
-    lineHeight: 22,
-  },
-  benefitsContainer: {
-    gap: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    width: 44,
   },
   benefitItem: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.md,
-  },
-  bullet: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
   },
   benefitText: {
     ...ShotsyDesignTokens.typography.body,
     flex: 1,
   },
-  statusCard: {
+  benefitsContainer: {
+    gap: ShotsyDesignTokens.spacing.lg,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+  },
+  bullet: {
+    borderRadius: 4,
+    height: 8,
+    width: 8,
+  },
+  button: {
+    alignItems: 'center',
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
+    height: 56,
+    justifyContent: 'center',
     ...ShotsyDesignTokens.shadows.card,
   },
-  statusText: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
+  buttonText: {
+    ...ShotsyDesignTokens.typography.label,
+    color: '#FFFFFF',
     fontWeight: '600',
+  },
+  container: {
+    flex: 1,
+  },
+  dot: {
+    borderRadius: 4,
+    height: 8,
+    width: 8,
+  },
+  dotActive: {
+    width: 24,
+  },
+  footer: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+    paddingTop: ShotsyDesignTokens.spacing.md,
+  },
+  header: {
+    paddingBottom: ShotsyDesignTokens.spacing.sm,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: ShotsyDesignTokens.spacing.lg,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    height: 96,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    width: 96,
   },
   infoCard: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
@@ -293,13 +278,8 @@ const styles = StyleSheet.create({
   },
   infoText: {
     ...ShotsyDesignTokens.typography.caption,
-    textAlign: 'center',
     lineHeight: 18,
-  },
-  footer: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-    paddingTop: ShotsyDesignTokens.spacing.md,
+    textAlign: 'center',
   },
   progressContainer: {
     alignItems: 'center',
@@ -310,37 +290,46 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  dotActive: {
-    width: 24,
-  },
   progressText: {
     ...ShotsyDesignTokens.typography.caption,
   },
-  button: {
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
+  scrollContent: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
   },
-  buttonText: {
-    ...ShotsyDesignTokens.typography.label,
-    color: '#FFFFFF',
-    fontWeight: '600',
+  scrollView: {
+    flex: 1,
   },
   skipButton: {
-    marginTop: ShotsyDesignTokens.spacing.md,
+    alignItems: 'center',
     height: 48,
     justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: ShotsyDesignTokens.spacing.md,
   },
   skipButtonText: {
     ...ShotsyDesignTokens.typography.body,
     fontWeight: '600',
+  },
+  statusCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  statusText: {
+    ...ShotsyDesignTokens.typography.body,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  subtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    textAlign: 'center',
+  },
+  title: {
+    ...ShotsyDesignTokens.typography.h2,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    textAlign: 'center',
   },
 });

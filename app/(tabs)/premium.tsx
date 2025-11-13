@@ -289,115 +289,42 @@ export default function PremiumScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 12,
-  },
   backButton: {
-    width: 40,
+    alignItems: 'flex-start',
     height: 40,
     justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 32,
-  },
-  heroSection: {
-    paddingHorizontal: 16,
-    paddingTop: 24,
-    paddingBottom: 16,
-    alignItems: 'center',
-  },
-  heroTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 16,
-    lineHeight: 30,
-  },
-  trialBanner: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  trialBannerText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  pricingSection: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    gap: 12,
-    marginTop: 24,
-  },
-  planCard: {
-    flex: 1,
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'transparent',
-    position: 'relative',
+    width: 40,
   },
   badgeContainer: {
-    position: 'absolute',
-    top: -10,
     backgroundColor: '#FF6B6B',
+    borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 6,
+    position: 'absolute',
+    top: -10,
   },
   badgeText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '700',
   },
-  planTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginTop: 8,
+  container: {
+    flex: 1,
   },
-  planPrice: {
-    fontSize: 28,
-    fontWeight: '700',
-    marginTop: 8,
-  },
-  planPeriod: {
-    fontSize: 14,
-    marginTop: 4,
-  },
-  planSavings: {
-    fontSize: 12,
-    marginTop: 4,
-  },
-  featuresSection: {
-    paddingHorizontal: 16,
+  ctaSection: {
+    gap: 12,
     marginTop: 32,
+    paddingHorizontal: 16,
   },
-  featuresTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 16,
+  featureDescription: {
+    fontSize: 14,
+    lineHeight: 20,
   },
   featureItem: {
-    flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 16,
+    flexDirection: 'row',
     gap: 12,
+    marginBottom: 16,
   },
   featureText: {
     flex: 1,
@@ -407,40 +334,20 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 4,
   },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  ctaSection: {
-    paddingHorizontal: 16,
+  featuresSection: {
     marginTop: 32,
-    gap: 12,
+    paddingHorizontal: 16,
   },
-  trialButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  trialButtonText: {
-    color: '#FFFFFF',
+  featuresTitle: {
     fontSize: 18,
     fontWeight: '600',
-  },
-  purchaseButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  purchaseButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
+    marginBottom: 16,
   },
   footer: {
-    paddingHorizontal: 16,
-    marginTop: 24,
     alignItems: 'center',
     gap: 8,
+    marginTop: 24,
+    paddingHorizontal: 16,
   },
   footerLink: {
     fontSize: 15,
@@ -450,18 +357,111 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
   },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 12,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  heroSection: {
+    alignItems: 'center',
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+    paddingTop: 24,
+  },
+  heroTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    lineHeight: 30,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  planCard: {
+    alignItems: 'center',
+    borderColor: 'transparent',
+    borderRadius: 12,
+    borderWidth: 1,
+    flex: 1,
+    padding: 20,
+    position: 'relative',
+  },
+  planPeriod: {
+    fontSize: 14,
+    marginTop: 4,
+  },
+  planPrice: {
+    fontSize: 28,
+    fontWeight: '700',
+    marginTop: 8,
+  },
+  planSavings: {
+    fontSize: 12,
+    marginTop: 4,
+  },
+  planTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 8,
+  },
+  pricingSection: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+    paddingHorizontal: 16,
+  },
+  purchaseButton: {
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    paddingVertical: 16,
+  },
+  purchaseButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  scrollContent: {
+    paddingBottom: 32,
+  },
+  scrollView: {
+    flex: 1,
+  },
   statusContainer: {
     alignItems: 'center',
-    padding: 32,
     gap: 12,
+    padding: 32,
+  },
+  statusSubtitle: {
+    fontSize: 16,
+    textAlign: 'center',
   },
   statusTitle: {
     fontSize: 22,
     fontWeight: '700',
     textAlign: 'center',
   },
-  statusSubtitle: {
+  trialBanner: {
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  trialBannerText: {
     fontSize: 16,
-    textAlign: 'center',
+    fontWeight: '600',
+  },
+  trialButton: {
+    alignItems: 'center',
+    borderRadius: 12,
+    paddingVertical: 16,
+  },
+  trialButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });

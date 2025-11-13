@@ -194,6 +194,12 @@ export default function AddApplicationScreen() {
       }
     }
 
+    // Final check to ensure medicationToUse is not undefined
+    if (!medicationToUse) {
+      Alert.alert('Erro', 'Medicação não encontrada.');
+      return;
+    }
+
     setIsSaving(true);
 
     try {
@@ -357,10 +363,7 @@ export default function AddApplicationScreen() {
                 >
                   <Ionicons name="chevron-back" size={20} color={colors.textMuted} />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setShowDatePicker(true)}
-                  style={styles.dateInput}
-                >
+                <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateInput}>
                   <Text style={[styles.dateInputText, { color: colors.text }]}>
                     {formatDate(data.date)}
                   </Text>
@@ -400,7 +403,9 @@ export default function AddApplicationScreen() {
               <View style={styles.timeRow}>
                 <Text style={[styles.timeInputText, { color: colors.text }]}>Tempo Decorrido</Text>
                 <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-                  <Text style={[styles.timeValue, { color: colors.text }]}>{formatTime(data.date)}</Text>
+                  <Text style={[styles.timeValue, { color: colors.text }]}>
+                    {formatTime(data.date)}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -748,13 +753,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 16,
     paddingHorizontal: 16,
     paddingTop: 60,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
   },
   headerTitle: {
     fontSize: 18,
@@ -788,20 +793,20 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   dateNavigation: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   dateNavButton: {
-    padding: 4,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 4,
   },
   dateInput: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    flexDirection: 'row',
     flex: 1,
+    gap: 8,
     justifyContent: 'center',
   },
   dateInputText: {
@@ -809,8 +814,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   timeRow: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   timeInputText: {
@@ -822,29 +827,29 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   detailRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: 56,
-    padding: 16,
     borderRadius: 12,
     borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 0,
+    minHeight: 56,
+    padding: 16,
   },
   detailLabel: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '500',
-    flex: 1,
   },
   detailValue: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 4,
   },
   detailValueRight: {
-    maxWidth: '50%',
     flex: 1,
     justifyContent: 'flex-end',
+    maxWidth: '50%',
   },
   detailValueText: {
     fontSize: 16,
@@ -854,9 +859,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   dosageTag: {
+    borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 8,
   },
   dosageTagText: {
     color: '#FFFFFF',
@@ -864,15 +869,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   painLevelContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 12,
     width: '100%',
   },
   painSlider: {
-    width: '100%',
     height: 8,
+    width: '100%',
   },
   painValue: {
     fontSize: 24,
@@ -881,8 +886,8 @@ const styles = StyleSheet.create({
   chartContainer: {
     borderRadius: 12,
     borderWidth: 1,
-    padding: 16,
     minHeight: 200,
+    padding: 16,
   },
   notesInput: {
     fontSize: 16,
@@ -913,12 +918,12 @@ const styles = StyleSheet.create({
     maxHeight: '80%',
   },
   modalHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 16,
-    borderBottomWidth: 1,
   },
   modalCloseButton: {
     fontSize: 16,
@@ -947,24 +952,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   modalItemText: {
-    fontSize: 16,
     flex: 1,
+    fontSize: 16,
   },
   modalItemCheck: {
     fontSize: 20,
     fontWeight: 'bold',
   },
   dosageCheck: {
-    width: 24,
-    height: 24,
+    alignItems: 'center',
     borderRadius: 12,
     borderWidth: 2,
-    alignItems: 'center',
+    height: 24,
     justifyContent: 'center',
+    width: 24,
   },
   dosageCheckInner: {
-    width: 12,
-    height: 12,
     borderRadius: 6,
+    height: 12,
+    width: 12,
   },
 });

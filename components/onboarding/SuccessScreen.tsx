@@ -30,7 +30,9 @@ export function SuccessScreen({ onNext }: SuccessScreenProps) {
           <View style={[styles.statCard, { backgroundColor: colors.background }]}>
             <View style={styles.statHeader}>
               <Text style={styles.statIcon}>💉</Text>
-              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Injeções tomadas</Text>
+              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
+                Injeções tomadas
+              </Text>
             </View>
             <Text style={[styles.statValue, { color: colors.text }]}>0</Text>
           </View>
@@ -61,8 +63,8 @@ export function SuccessScreen({ onNext }: SuccessScreenProps) {
           <Text style={[styles.successTitle, { color: colors.text }]}>Você consegue!</Text>
 
           <Text style={[styles.successText, { color: colors.textSecondary }]}>
-            Parabéns por assumir o controle da sua saúde com medicamentos GLP-1! O Pinpoint GLP-1 foi projetado para
-            facilitar o entendimento e o acompanhamento do seu progresso semanal.
+            Parabéns por assumir o controle da sua saúde com medicamentos GLP-1! O Pinpoint GLP-1
+            foi projetado para facilitar o entendimento e o acompanhamento do seu progresso semanal.
           </Text>
 
           <Text style={[styles.successSubtext, { color: colors.text }]}>
@@ -74,7 +76,12 @@ export function SuccessScreen({ onNext }: SuccessScreenProps) {
       </ScrollView>
 
       {/* Bottom Navigation */}
-      <View style={[styles.bottomNav, { backgroundColor: colors.background, borderTopColor: colors.border }]}>
+      <View
+        style={[
+          styles.bottomNav,
+          { backgroundColor: colors.background, borderTopColor: colors.border },
+        ]}
+      >
         <TouchableOpacity style={styles.navItem}>
           <Text style={styles.navIcon}>📋</Text>
           <Text style={[styles.navLabel, { color: colors.primary }]}>Resumo</Text>
@@ -101,12 +108,34 @@ export function SuccessScreen({ onNext }: SuccessScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  bottomNav: {
+    alignItems: 'center',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  button: {
+    marginTop: 0,
+  },
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
+  emoji: {
+    fontSize: 72,
+  },
+  emojiContainer: {
     alignItems: 'center',
+    marginBottom: 24,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 24,
     paddingVertical: 16,
@@ -115,35 +144,39 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
   },
-  addButton: {
-    fontSize: 18,
-    fontWeight: '600',
+  navIcon: {
+    fontSize: 24,
   },
-  scrollView: {
-    flex: 1,
+  navItem: {
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  navLabel: {
+    fontSize: 12,
+    fontWeight: '500',
   },
   scrollContent: {
     paddingHorizontal: 24,
     paddingVertical: 24,
+  },
+  scrollView: {
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: '700',
     marginBottom: 24,
   },
-  statsGrid: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 32,
-  },
   statCard: {
-    flex: 1,
     borderRadius: 16,
+    flex: 1,
     padding: 16,
   },
   statHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 8,
     marginBottom: 8,
   },
@@ -157,63 +190,36 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
   },
+  statsGrid: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 32,
+  },
   successModal: {
     borderRadius: 24,
+    elevation: 4,
     padding: 32,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 4,
-  },
-  emojiContainer: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  emoji: {
-    fontSize: 72,
-  },
-  successTitle: {
-    fontSize: 30,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  successText: {
-    fontSize: 16,
-    lineHeight: 24,
-    textAlign: 'center',
-    marginBottom: 32,
   },
   successSubtext: {
     fontSize: 16,
     fontWeight: '600',
-    textAlign: 'center',
     marginBottom: 32,
+    textAlign: 'center',
   },
-  button: {
-    marginTop: 0,
+  successText: {
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 32,
+    textAlign: 'center',
   },
-  bottomNav: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderTopWidth: 1,
-  },
-  navItem: {
-    alignItems: 'center',
-    gap: 4,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  navIcon: {
-    fontSize: 24,
-  },
-  navLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+  successTitle: {
+    fontSize: 30,
+    fontWeight: '700',
+    marginBottom: 16,
+    textAlign: 'center',
   },
 });
-

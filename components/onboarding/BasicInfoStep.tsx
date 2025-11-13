@@ -198,9 +198,95 @@ export const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ onComplete }) => {
 };
 
 const styles = StyleSheet.create({
+  arrow: {
+    color: '#999',
+  },
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
+  },
+  continueButton: {
+    alignItems: 'center',
+    borderRadius: 12,
+    justifyContent: 'center',
+    minHeight: 52,
+    paddingVertical: 16,
+  },
+  continueButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  currentWeight: {
+    color: '#666',
+  },
+  difference: {
+    color: '#666',
+    fontSize: 15,
+  },
+  emoji: {
+    fontSize: 56,
+    marginBottom: 16,
+  },
+  form: {
+    gap: 20,
+    marginBottom: 24,
+  },
+  goalWeight: {
+    fontWeight: 'bold',
+  },
+  infoBox: {
+    backgroundColor: '#f0f9ff',
+    borderRadius: 12,
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 24,
+    padding: 16,
+  },
+  infoIcon: {
+    fontSize: 20,
+  },
+  infoText: {
+    color: '#1e40af',
+    flex: 1,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  input: {
+    backgroundColor: '#fafafa',
+    borderColor: '#e0e0e0',
+    borderRadius: 12,
+    borderWidth: 1,
+    color: '#333',
+    fontSize: 16,
+    padding: 16,
+  },
+  inputGroup: {
+    gap: 8,
+  },
+  label: {
+    color: '#333',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  previewCard: {
+    padding: 20,
+    borderRadius: 12, // Mudança: 16 → 12px (design system)
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  previewLabel: {
+    color: '#666',
+    fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+    textTransform: 'uppercase',
+  },
+  previewNumbers: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
   scrollContent: {
     padding: 20,
@@ -211,96 +297,10 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingVertical: 20,
   },
-  emoji: {
-    fontSize: 56,
-    marginBottom: 16,
-  },
   welcomeText: {
+    color: '#333',
     fontSize: 18,
-    color: '#333',
-    textAlign: 'center',
     lineHeight: 24,
-  },
-  form: {
-    gap: 20,
-    marginBottom: 24,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  label: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
-    color: '#333',
-    backgroundColor: '#fafafa',
-  },
-  previewCard: {
-    padding: 20,
-    borderRadius: 12, // Mudança: 16 → 12px (design system)
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  previewLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#666',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 12,
-  },
-  previewNumbers: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  currentWeight: {
-    color: '#666',
-  },
-  arrow: {
-    color: '#999',
-  },
-  goalWeight: {
-    fontWeight: 'bold',
-  },
-  difference: {
-    fontSize: 15,
-    color: '#666',
-  },
-  infoBox: {
-    flexDirection: 'row',
-    backgroundColor: '#f0f9ff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-    gap: 12,
-  },
-  infoIcon: {
-    fontSize: 20,
-  },
-  infoText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#1e40af',
-    lineHeight: 20,
-  },
-  continueButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 52,
-  },
-  continueButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    textAlign: 'center',
   },
 });

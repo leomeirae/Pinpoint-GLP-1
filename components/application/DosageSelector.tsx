@@ -44,15 +44,15 @@ export function DosageSelector({ value, onChange }: DosageSelectorProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 8,
-  },
   button: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
     borderRadius: 24,
     borderWidth: 2,
     marginRight: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  container: {
+    paddingVertical: 8,
   },
   text: {
     fontSize: 16,

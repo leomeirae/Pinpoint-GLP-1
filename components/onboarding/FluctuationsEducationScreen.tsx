@@ -44,13 +44,16 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
               <View style={[styles.logoIcon, { backgroundColor: colors.primary }]}>
                 <View style={styles.logoDots}>
                   {[...Array(5)].map((_, i) => (
-                    <View key={i} style={[styles.logoDot, { backgroundColor: colors.background }]} />
+                    <View
+                      key={i}
+                      style={[styles.logoDot, { backgroundColor: colors.background }]}
+                    />
                   ))}
-            </View>
-            </View>
+                </View>
+              </View>
               <Text style={[styles.logoText, { color: colors.text }]}>Pinpoint GLP-1</Text>
             </View>
-            </View>
+          </View>
 
           <View style={styles.chartContainer}>
             <Svg
@@ -67,16 +70,80 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
               </Defs>
 
               {/* Grid lines - horizontal */}
-              <Line x1="0" y1="50" x2="400" y2="50" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="0" y1="100" x2="400" y2="100" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="0" y1="150" x2="400" y2="150" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line
+                x1="0"
+                y1="50"
+                x2="400"
+                y2="50"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="0"
+                y1="100"
+                x2="400"
+                y2="100"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="0"
+                y1="150"
+                x2="400"
+                y2="150"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
 
               {/* Grid lines - vertical */}
-              <Line x1="66" y1="0" x2="66" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="133" y1="0" x2="133" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="200" y1="0" x2="200" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="266" y1="0" x2="266" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
-              <Line x1="333" y1="0" x2="333" y2="200" stroke={colors.border} strokeWidth="1" strokeDasharray="4 4" />
+              <Line
+                x1="66"
+                y1="0"
+                x2="66"
+                y2="200"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="133"
+                y1="0"
+                x2="133"
+                y2="200"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="200"
+                y1="0"
+                x2="200"
+                y2="200"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="266"
+                y1="0"
+                x2="266"
+                y2="200"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+              <Line
+                x1="333"
+                y1="0"
+                x2="333"
+                y2="200"
+                stroke={colors.border}
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
 
               {/* Filled area path - flutuações */}
               <Path
@@ -116,18 +183,27 @@ export function FluctuationsEducationScreen({ onNext, onBack }: FluctuationsEduc
 }
 
 const styles = StyleSheet.create({
-  content: {
-    gap: 24,
-    paddingHorizontal: 24,
+  chartCaption: {
+    fontSize: 12,
+    lineHeight: 18,
+    paddingHorizontal: 8,
+    textAlign: 'center',
   },
   chartCard: {
     borderRadius: 24,
-    padding: 20,
     overflow: 'hidden',
+    padding: 20,
+  },
+  chartContainer: {
+    height: 192,
+    marginBottom: 16,
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
   },
   chartHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 16,
   },
@@ -135,54 +211,45 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
   },
+  content: {
+    gap: 24,
+    paddingHorizontal: 24,
+  },
   logoContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 8,
   },
-  logoIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoDot: {
+    borderRadius: 1,
+    height: 2,
+    width: 2,
   },
   logoDots: {
     flexDirection: 'row',
     gap: 2,
   },
-  logoDot: {
-    width: 2,
-    height: 2,
-    borderRadius: 1,
+  logoIcon: {
+    alignItems: 'center',
+    borderRadius: 8,
+    height: 32,
+    justifyContent: 'center',
+    width: 32,
   },
   logoText: {
     fontSize: 16,
     fontWeight: '700',
   },
-  chartContainer: {
-    height: 192,
-    marginBottom: 16,
-    position: 'relative',
-    width: '100%',
-    overflow: 'hidden',
-  },
-  xAxisLabels: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 0,
-  },
   xAxisLabel: {
     fontSize: 10,
   },
-  chartCaption: {
-    fontSize: 12,
-    textAlign: 'center',
-    lineHeight: 18,
-    paddingHorizontal: 8,
+  xAxisLabels: {
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    left: 0,
+    paddingHorizontal: 0,
+    position: 'absolute',
+    right: 0,
   },
 });

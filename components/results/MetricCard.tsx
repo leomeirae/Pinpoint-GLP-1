@@ -52,15 +52,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  subtitle: {
+    fontSize: 11,
+    marginTop: 4,
+  },
   title: {
     fontSize: 12,
     fontWeight: '600',
     marginBottom: 8,
-  },
-  valueContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
   },
   trendIcon: {
     // No need for fontSize here, as AppIcon handles its own size
@@ -69,8 +68,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
   },
-  subtitle: {
-    fontSize: 11,
-    marginTop: 4,
+  valueContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
   },
 });

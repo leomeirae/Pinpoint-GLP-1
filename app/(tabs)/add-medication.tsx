@@ -246,8 +246,32 @@ export default function AddMedicationScreen() {
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
+    cancelButton: {
+      fontSize: 16,
+    },
     container: {
       flex: 1,
+    },
+    content: {
+      padding: 16,
+      paddingBottom: 40,
+    },
+    frequencyCard: {
+      alignItems: 'center',
+      borderRadius: 12,
+      borderWidth: 1,
+      flex: 1,
+      justifyContent: 'center',
+      minHeight: 56,
+      paddingVertical: 16,
+    },
+    frequencyRow: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    frequencyText: {
+      fontSize: 16,
+      fontWeight: '500',
     },
     header: {
       flexDirection: 'row',
@@ -262,8 +286,49 @@ const getStyles = (colors: any) =>
       fontSize: 18,
       fontWeight: '600',
     },
-    cancelButton: {
+    input: {
+      flex: 1,
       fontSize: 16,
+      fontWeight: '500',
+    },
+    inputCard: {
+      alignItems: 'center',
+      borderRadius: 12,
+      borderWidth: 1,
+      flexDirection: 'row',
+      minHeight: 56,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    },
+    inputUnit: {
+      fontSize: 16,
+      fontWeight: '600',
+      marginLeft: 8,
+    },
+    loadingText: {
+      fontSize: 14,
+      marginTop: 16,
+      textAlign: 'center',
+    },
+    optionCard: {
+      alignItems: 'center',
+      borderRadius: 12,
+      borderWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      minHeight: 56,
+      padding: 16,
+    },
+    optionCheck: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+    optionText: {
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    optionsGrid: {
+      gap: 8,
     },
     saveButton: {
       fontSize: 16,
@@ -271,10 +336,6 @@ const getStyles = (colors: any) =>
     },
     scrollView: {
       flex: 1,
-    },
-    content: {
-      padding: 16,
-      paddingBottom: 40,
     },
     section: {
       marginBottom: 24,
@@ -284,66 +345,5 @@ const getStyles = (colors: any) =>
       fontWeight: '600',
       marginBottom: 12,
       textTransform: 'uppercase',
-    },
-    optionsGrid: {
-      gap: 8,
-    },
-    optionCard: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      minHeight: 56,
-      padding: 16,
-      borderRadius: 12,
-      borderWidth: 1,
-    },
-    optionText: {
-      fontSize: 16,
-      fontWeight: '500',
-    },
-    optionCheck: {
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    inputCard: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderRadius: 12,
-      borderWidth: 1,
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-      minHeight: 56,
-    },
-    input: {
-      flex: 1,
-      fontSize: 16,
-      fontWeight: '500',
-    },
-    inputUnit: {
-      fontSize: 16,
-      fontWeight: '600',
-      marginLeft: 8,
-    },
-    frequencyRow: {
-      flexDirection: 'row',
-      gap: 12,
-    },
-    frequencyCard: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: 56,
-      paddingVertical: 16,
-      borderRadius: 12,
-      borderWidth: 1,
-    },
-    frequencyText: {
-      fontSize: 16,
-      fontWeight: '500',
-    },
-    loadingText: {
-      fontSize: 14,
-      textAlign: 'center',
-      marginTop: 16,
     },
   });

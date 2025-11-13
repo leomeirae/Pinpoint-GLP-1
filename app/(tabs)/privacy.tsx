@@ -108,9 +108,7 @@ export default function PrivacyScreen() {
         </View>
 
         {/* Title */}
-        <Text style={[styles.title, { color: colors.text }]}>
-          Seus dados, suas escolhas
-        </Text>
+        <Text style={[styles.title, { color: colors.text }]}>Seus dados, suas escolhas</Text>
 
         {/* Subtitle */}
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
@@ -134,15 +132,15 @@ export default function PrivacyScreen() {
           </View>
 
           <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>
-            Compartilhar dados anônimos de uso nos ajuda a melhorar o aplicativo e criar
-            recursos mais úteis para você.
+            Compartilhar dados anônimos de uso nos ajuda a melhorar o aplicativo e criar recursos
+            mais úteis para você.
           </Text>
 
           <View style={[styles.infoBox, { backgroundColor: colors.background }]}>
             <Info size={16} color={colors.textMuted} weight="bold" />
             <Text style={[styles.infoText, { color: colors.textMuted }]}>
-              Seus dados de saúde nunca são compartilhados. Apenas eventos de uso do app
-              (telas visitadas, botões clicados) são coletados de forma anônima.
+              Seus dados de saúde nunca são compartilhados. Apenas eventos de uso do app (telas
+              visitadas, botões clicados) são coletados de forma anônima.
             </Text>
           </View>
         </View>
@@ -179,9 +177,7 @@ export default function PrivacyScreen() {
 
         {/* What We Never Collect */}
         <View style={[styles.section, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            O que nunca coletamos
-          </Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>O que nunca coletamos</Text>
 
           <View style={styles.bulletList}>
             <View style={styles.bulletItem}>
@@ -229,8 +225,8 @@ export default function PrivacyScreen() {
         {/* LGPD Compliance Note */}
         <View style={[styles.complianceNote, { backgroundColor: colors.card }]}>
           <Text style={[styles.complianceText, { color: colors.textMuted }]}>
-            Este app está em conformidade com a LGPD (Lei Geral de Proteção de Dados) e
-            GDPR (General Data Protection Regulation).
+            Este app está em conformidade com a LGPD (Lei Geral de Proteção de Dados) e GDPR
+            (General Data Protection Regulation).
           </Text>
         </View>
       </ScrollView>
@@ -239,119 +235,30 @@ export default function PrivacyScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingTop: ShotsyDesignTokens.spacing.lg,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-  },
   backButton: {
-    width: 44,
+    alignItems: 'center',
     height: 44,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '600',
-  },
-  headerSpacer: {
     width: 44,
   },
-  scrollView: {
-    flex: 1,
+  bullet: {
+    borderRadius: 3,
+    height: 6,
+    marginTop: 7,
+    width: 6,
   },
-  scrollContent: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-  },
-  iconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: ShotsyDesignTokens.borderRadius.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h2,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  subtitle: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
-    lineHeight: 22,
-  },
-  section: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  sectionHeader: {
+  bulletItem: {
+    alignItems: 'flex-start',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  sectionTitle: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-    flex: 1,
-  },
-  sectionDescription: {
-    ...ShotsyDesignTokens.typography.body,
-    lineHeight: 22,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  infoBox: {
-    flexDirection: 'row',
-    gap: ShotsyDesignTokens.spacing.sm,
-    padding: ShotsyDesignTokens.spacing.md,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-  },
-  infoText: {
-    ...ShotsyDesignTokens.typography.caption,
-    lineHeight: 18,
-    flex: 1,
+    gap: ShotsyDesignTokens.spacing.md,
   },
   bulletList: {
     gap: ShotsyDesignTokens.spacing.md,
-  },
-  bulletItem: {
-    flexDirection: 'row',
-    gap: ShotsyDesignTokens.spacing.md,
-    alignItems: 'flex-start',
-  },
-  bullet: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginTop: 7,
   },
   bulletText: {
     ...ShotsyDesignTokens.typography.body,
     flex: 1,
     lineHeight: 22,
-  },
-  linkButton: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    alignItems: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  linkButtonText: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
   },
   complianceNote: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
@@ -360,7 +267,96 @@ const styles = StyleSheet.create({
   },
   complianceText: {
     ...ShotsyDesignTokens.typography.caption,
-    textAlign: 'center',
     lineHeight: 18,
+    textAlign: 'center',
+  },
+  container: {
+    flex: 1,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingTop: ShotsyDesignTokens.spacing.lg,
+  },
+  headerSpacer: {
+    width: 44,
+  },
+  headerTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    fontWeight: '600',
+  },
+  iconContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    height: 96,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    width: 96,
+  },
+  infoBox: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+    padding: ShotsyDesignTokens.spacing.md,
+  },
+  infoText: {
+    ...ShotsyDesignTokens.typography.caption,
+    flex: 1,
+    lineHeight: 18,
+  },
+  linkButton: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  linkButtonText: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+  },
+  scrollContent: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  section: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  sectionDescription: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  sectionHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  sectionTitle: {
+    ...ShotsyDesignTokens.typography.label,
+    flex: 1,
+    fontWeight: '600',
+  },
+  subtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    textAlign: 'center',
+  },
+  title: {
+    ...ShotsyDesignTokens.typography.h2,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    textAlign: 'center',
   },
 });

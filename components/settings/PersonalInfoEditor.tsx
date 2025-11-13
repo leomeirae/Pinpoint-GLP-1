@@ -273,14 +273,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
+  content: {
+    padding: 16,
+  },
+  frequencyButton: {
     alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 2,
+    flex: 1,
+    paddingVertical: 12,
+  },
+  frequencyButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  frequencyContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 8,
+  },
+  header: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 16,
     paddingHorizontal: 16,
     paddingTop: Platform.OS === 'ios' ? 60 : 16,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
   },
   headerButton: {
     fontSize: 16,
@@ -291,45 +310,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
   },
-  content: {
-    padding: 16,
+  hint: {
+    fontSize: 14,
+    marginTop: 4,
   },
-  section: {
-    marginBottom: 16,
+  input: {
+    borderRadius: 12,
+    borderWidth: 1,
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   label: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 8,
   },
-  input: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-  },
-  hint: {
-    fontSize: 14,
-    marginTop: 4,
-  },
-  frequencyContainer: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 8,
-  },
-  frequencyButton: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 12,
-    borderWidth: 2,
-    alignItems: 'center',
-  },
-  frequencyButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
   saveButton: {
     marginTop: 24,
+  },
+  section: {
+    marginBottom: 16,
   },
 });

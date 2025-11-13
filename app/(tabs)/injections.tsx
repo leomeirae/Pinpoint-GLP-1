@@ -13,7 +13,11 @@ import { useColors } from '@/hooks/useShotsyColors';
 import { ShotCard, Shot } from '@/components/shots/ShotCard';
 import { useApplications } from '@/hooks/useApplications';
 import { useProfile } from '@/hooks/useProfile';
-import { calculateNextShotDate, getCurrentEstimatedLevel, MedicationApplication } from '@/lib/pharmacokinetics';
+import {
+  calculateNextShotDate,
+  getCurrentEstimatedLevel,
+  MedicationApplication,
+} from '@/lib/pharmacokinetics';
 import { createLogger } from '@/lib/logger';
 import { ShotsyCircularProgressV2 } from '@/components/ui/ShotsyCircularProgressV2';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
@@ -107,7 +111,10 @@ export default function ShotsScreen() {
     // Calculate percentage (0-100) based on days until next injection
     // If interval is 7 days, and we're 0 days away, we're at 0%
     // If we're 7 days away, we're at 100%
-    const percentage = Math.min(100, Math.max(0, ((intervalDays - daysUntil) / intervalDays) * 100));
+    const percentage = Math.min(
+      100,
+      Math.max(0, ((intervalDays - daysUntil) / intervalDays) * 100)
+    );
 
     return {
       daysUntil,
@@ -181,9 +188,7 @@ export default function ShotsScreen() {
             >
               <View style={styles.statHeader}>
                 <Syringe size={20} color={colors.primary} weight="bold" />
-                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
-                  Total Shots
-                </Text>
+                <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Total Shots</Text>
               </View>
               <Text style={[styles.statValue, { color: colors.text }]}>{totalShots}</Text>
             </View>
@@ -197,16 +202,15 @@ export default function ShotsScreen() {
               ]}
             >
               <View style={styles.statHeader}>
-                <Pill size={20} color={lastDose > 0 ? getDosageColor(lastDose) : colors.textMuted} weight="bold" />
+                <Pill
+                  size={20}
+                  color={lastDose > 0 ? getDosageColor(lastDose) : colors.textMuted}
+                  weight="bold"
+                />
                 <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Last Dose</Text>
               </View>
               {lastDose > 0 ? (
-                <Text
-                  style={[
-                    styles.statValue,
-                    { color: getDosageColor(lastDose) },
-                  ]}
-                >
+                <Text style={[styles.statValue, { color: getDosageColor(lastDose) }]}>
                   {lastDose}mg
                 </Text>
               ) : (
@@ -283,9 +287,7 @@ export default function ShotsScreen() {
         {shots.length === 0 && (
           <View style={styles.emptyState}>
             <Syringe size={64} color={colors.textMuted} weight="thin" />
-            <Text style={[styles.emptyStateTitle, { color: colors.text }]}>
-              No Injections Yet
-            </Text>
+            <Text style={[styles.emptyStateTitle, { color: colors.text }]}>No Injections Yet</Text>
             <Text style={[styles.emptyStateSubtitle, { color: colors.textSecondary }]}>
               Start tracking your GLP-1 journey by adding your first injection.
             </Text>
@@ -311,13 +313,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
   menuButton: {
     padding: ShotsyDesignTokens.spacing.sm,
@@ -326,8 +328,8 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.h3,
   },
   addButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 4,
     paddingHorizontal: ShotsyDesignTokens.spacing.sm,
     paddingVertical: 4,
@@ -357,13 +359,13 @@ const styles = StyleSheet.create({
     gap: ShotsyDesignTokens.spacing.md,
   },
   statCard: {
-    flex: 1,
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flex: 1,
     padding: ShotsyDesignTokens.spacing.lg,
   },
   statHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.xs,
     marginBottom: ShotsyDesignTokens.spacing.sm,
   },
@@ -380,9 +382,9 @@ const styles = StyleSheet.create({
 
   // Next Injection Card
   nextInjectionCard: {
+    alignItems: 'center',
     borderRadius: ShotsyDesignTokens.borderRadius.xl,
     padding: ShotsyDesignTokens.spacing.xl,
-    alignItems: 'center',
   },
   progressContainer: {
     alignItems: 'center',
@@ -397,8 +399,8 @@ const styles = StyleSheet.create({
   // Empty State
   emptyState: {
     alignItems: 'center',
-    paddingVertical: ShotsyDesignTokens.spacing.xxxxl,
     gap: ShotsyDesignTokens.spacing.lg,
+    paddingVertical: ShotsyDesignTokens.spacing.xxxxl,
   },
   emptyStateTitle: {
     ...ShotsyDesignTokens.typography.h2,
@@ -406,17 +408,17 @@ const styles = StyleSheet.create({
   },
   emptyStateSubtitle: {
     ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
     maxWidth: 280,
+    textAlign: 'center',
   },
   emptyStateButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
+    marginTop: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.xl,
     paddingVertical: ShotsyDesignTokens.spacing.lg,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    marginTop: ShotsyDesignTokens.spacing.md,
   },
   emptyStateButtonText: {
     color: '#FFFFFF',
@@ -426,9 +428,9 @@ const styles = StyleSheet.create({
 
   // Loading
   loadingContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   loadingText: {
     marginTop: ShotsyDesignTokens.spacing.lg,

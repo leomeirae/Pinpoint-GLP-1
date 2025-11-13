@@ -95,53 +95,53 @@ const styles = StyleSheet.create({
   },
   emoji: {
     fontSize: 80,
-    textAlign: 'center',
     marginVertical: 8,
+    textAlign: 'center',
   },
-  messageCard: {
-    padding: 24,
-    alignItems: 'center',
+  goalNumber: {
+    fontSize: 48,
+    fontWeight: 'bold',
   },
   goalText: {
     fontSize: 16,
     marginBottom: 8,
   },
-  goalNumber: {
-    fontSize: 48,
-    fontWeight: 'bold',
+  messageCard: {
+    alignItems: 'center',
+    padding: 24,
   },
   motivationCard: {
     padding: 20,
   },
   motivationText: {
     fontSize: 18,
+    fontWeight: '500',
     lineHeight: 28,
     textAlign: 'center',
-    fontWeight: '500',
-  },
-  tipsCard: {
-    padding: 20,
-  },
-  tipsTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 16,
-  },
-  tipsList: {
-    gap: 12,
-  },
-  tipItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
   },
   tipBullet: {
     fontSize: 18,
     fontWeight: 'bold',
   },
+  tipItem: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    gap: 12,
+  },
   tipText: {
     flex: 1,
     fontSize: 15,
     lineHeight: 22,
+  },
+  tipsCard: {
+    padding: 20,
+  },
+  tipsList: {
+    gap: 12,
+  },
+  tipsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
   },
 });

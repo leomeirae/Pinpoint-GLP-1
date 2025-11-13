@@ -38,28 +38,28 @@ export function InsightCard({ insight }: InsightCardProps) {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 12,
-      borderLeftWidth: 4,
       alignItems: 'center',
+      borderLeftWidth: 4,
+      borderRadius: 12,
+      flexDirection: 'row',
+      marginBottom: 12,
+      padding: 16,
+    },
+    content: {
+      flex: 1,
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: 14,
     },
     emoji: {
       fontSize: 32,
       marginRight: 12,
     },
-    content: {
-      flex: 1,
-    },
     title: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: 'bold',
-      color: colors.text,
       marginBottom: 4,
-    },
-    description: {
-      fontSize: 14,
-      color: colors.textSecondary,
     },
   });

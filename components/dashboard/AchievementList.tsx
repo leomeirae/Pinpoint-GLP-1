@@ -65,56 +65,56 @@ const getStyles = (colors: any) =>
     container: {
       marginBottom: 16,
     },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.text,
-    },
     count: {
+      backgroundColor: colors.card,
+      borderRadius: 12,
+      color: colors.primary,
       fontSize: 16,
       fontWeight: 'bold',
-      color: colors.primary,
-      backgroundColor: colors.card,
       paddingHorizontal: 12,
       paddingVertical: 4,
-      borderRadius: 12,
-    },
-    loadingContainer: {
-      padding: 32,
-      alignItems: 'center',
     },
     emptyContainer: {
+      alignItems: 'center',
       backgroundColor: colors.card,
       borderRadius: 16,
-      padding: 32,
-      alignItems: 'center',
       marginBottom: 16,
+      padding: 32,
     },
     emptyIcon: {
       fontSize: 48,
       marginBottom: 12,
     },
+    emptySubtext: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      textAlign: 'center',
+    },
     emptyText: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
       marginBottom: 8,
     },
-    emptySubtext: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      textAlign: 'center',
+    header: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
+    },
+    loadingContainer: {
+      alignItems: 'center',
+      padding: 32,
     },
     moreText: {
-      fontSize: 14,
       color: colors.textMuted,
-      textAlign: 'center',
+      fontSize: 14,
       marginTop: 8,
+      textAlign: 'center',
+    },
+    title: {
+      color: colors.text,
+      fontSize: 18,
+      fontWeight: 'bold',
     },
   });

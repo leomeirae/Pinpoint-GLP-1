@@ -75,7 +75,10 @@ export function FinancialSummaryCard({
             <View style={styles.metricLabelRow}>
               <Text style={[styles.metricLabel, { color: colors.textSecondary }]}>R$/kg</Text>
               {onCostPerKgInfo && (
-                <TouchableOpacity onPress={onCostPerKgInfo} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                <TouchableOpacity
+                  onPress={onCostPerKgInfo}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
                   <Question size={14} color={colors.textMuted} weight="bold" />
                 </TouchableOpacity>
               )}
@@ -135,51 +138,51 @@ function formatNextPurchaseDate(date: Date): string {
 const styles = StyleSheet.create({
   container: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
     marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
     ...ShotsyDesignTokens.shadows.card,
   },
   header: {
     marginBottom: ShotsyDesignTokens.spacing.lg,
   },
-  title: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '600',
-    marginBottom: 4,
+  iconContainer: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    height: 40,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+    width: 40,
   },
-  subtitle: {
+  metricItem: {
+    alignItems: 'flex-start',
+    flex: 1,
+    minWidth: '45%',
+  },
+  metricLabel: {
     ...ShotsyDesignTokens.typography.caption,
-    lineHeight: 18,
+    marginBottom: 2,
+  },
+  metricLabelRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+  },
+  metricValue: {
+    ...ShotsyDesignTokens.typography.h4,
+    fontWeight: '600',
   },
   metricsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: ShotsyDesignTokens.spacing.md,
   },
-  metricItem: {
-    flex: 1,
-    minWidth: '45%',
-    alignItems: 'flex-start',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.sm,
-  },
-  metricLabelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  metricLabel: {
+  subtitle: {
     ...ShotsyDesignTokens.typography.caption,
-    marginBottom: 2,
+    lineHeight: 18,
   },
-  metricValue: {
-    ...ShotsyDesignTokens.typography.h4,
+  title: {
+    ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
+    marginBottom: 4,
   },
 });

@@ -81,6 +81,10 @@ export const SettingsRow: React.FC<SettingsRowProps> = ({
 };
 
 const styles = StyleSheet.create({
+  arrow: {
+    fontSize: 24,
+    fontWeight: '300',
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -89,31 +93,27 @@ const styles = StyleSheet.create({
     paddingVertical: 12, // Mudança: 14 → 12px (Shotsy vertical padding)
     minHeight: 56, // Mudança: 50 → 56px (Shotsy touch target, better UX)
   },
-  leftContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
   iconContainer: {
-    marginRight: 12,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
   },
   label: {
     fontSize: 16,
     fontWeight: '500',
   },
-  rightContent: {
-    flexDirection: 'row',
+  leftContent: {
     alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  rightContent: {
+    alignItems: 'center',
+    flexDirection: 'row',
     gap: 8,
   },
   value: {
     fontSize: 16,
     fontWeight: '500',
-  },
-  arrow: {
-    fontSize: 24,
-    fontWeight: '300',
   },
 });

@@ -74,7 +74,7 @@ export const ShotCard: React.FC<ShotCardProps> = ({ shot, onDelete }) => {
 
     return (
       <View style={styles.actionsContainer}>
-        <Animated.View style={[{ transform: [{ scale }] }]}>
+        <Animated.View style={{ transform: [{ scale }] }}>
           <TouchableOpacity
             style={[styles.actionButton, styles.editButton, { backgroundColor: '#10B981' }]} // Verde padrão para Edit (convenção UI)
             onPress={handleEdit}
@@ -99,7 +99,7 @@ export const ShotCard: React.FC<ShotCardProps> = ({ shot, onDelete }) => {
 
     return (
       <View style={styles.actionsContainer}>
-        <Animated.View style={[{ transform: [{ scale }] }]}>
+        <Animated.View style={{ transform: [{ scale }] }}>
           <TouchableOpacity
             style={[styles.actionButton, styles.deleteButton, { backgroundColor: colors.error }]}
             onPress={handleDelete}
@@ -182,9 +182,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   header: {
+    alignItems: 'flex-start',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
     marginBottom: 12,
   },
   date: {
@@ -196,9 +196,9 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   dosageBadge: {
+    borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
   },
   dosageText: {
     fontSize: 14,
@@ -208,27 +208,27 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detailRow: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 8,
   },
   icon: {
     fontSize: 16,
   },
   detailText: {
-    fontSize: 14,
     flex: 1,
+    fontSize: 14,
   },
   sideEffectsContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    alignItems: 'center',
   },
   sideEffectChip: {
+    borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 8,
   },
   sideEffectText: {
     fontSize: 12,
@@ -243,18 +243,18 @@ const styles = StyleSheet.create({
   },
   // Swipe Actions Styles
   actionsContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 12,
   },
   actionButton: {
-    justifyContent: 'center',
     alignItems: 'center',
-    width: 80,
-    height: '100%',
     borderRadius: 16,
     gap: 4,
+    height: '100%',
+    justifyContent: 'center',
+    width: 80,
   },
   editButton: {
     marginRight: 8,

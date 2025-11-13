@@ -54,31 +54,10 @@ export function ShotHistoryCards({ data }: ShotHistoryCardsProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 24,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  link: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  cards: {
-    flexDirection: 'row',
-    gap: 12,
-  },
   card: {
+    alignItems: 'center',
     flex: 1,
     padding: 12,
-    alignItems: 'center',
   },
   cardIcon: {
     fontSize: 24,
@@ -86,10 +65,31 @@ const styles = StyleSheet.create({
   },
   cardLabel: {
     fontSize: 11,
-    textAlign: 'center',
     marginBottom: 4,
+    textAlign: 'center',
   },
   cardValue: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  cards: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  container: {
+    marginBottom: 24,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  link: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  title: {
     fontSize: 20,
     fontWeight: '700',
   },

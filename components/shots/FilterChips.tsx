@@ -47,22 +47,22 @@ export const FilterChips: React.FC<FilterChipsProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 16,
-  },
-  content: {
-    paddingHorizontal: 16,
-    gap: 8,
-  },
   chip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1,
     marginRight: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   chipText: {
     fontSize: 14,
     fontWeight: '600',
+  },
+  container: {
+    marginVertical: 16,
+  },
+  content: {
+    gap: 8,
+    paddingHorizontal: 16,
   },
 });

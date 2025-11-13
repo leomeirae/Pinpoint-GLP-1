@@ -128,33 +128,33 @@ export function TodaySectionSkeleton() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 24,
+  card: {
+    alignItems: 'center',
+    borderRadius: 16,
+    flex: 1,
+    padding: 12,
   },
   cards: {
     flexDirection: 'row',
     gap: 12,
   },
-  card: {
-    flex: 1,
-    padding: 12,
+  container: {
+    marginBottom: 24,
+  },
+  gridItem: {
     alignItems: 'center',
     borderRadius: 16,
-  },
-  widgetContainer: {
-    padding: 24,
-    borderRadius: 24,
-    marginBottom: 24,
+    flex: 1,
+    padding: 12,
   },
   gridRow: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 12,
   },
-  gridItem: {
-    flex: 1,
-    padding: 12,
-    borderRadius: 16,
-    alignItems: 'center',
+  widgetContainer: {
+    borderRadius: 24,
+    marginBottom: 24,
+    padding: 24,
   },
 });

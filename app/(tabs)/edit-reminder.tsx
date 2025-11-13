@@ -188,9 +188,7 @@ export default function EditReminderScreen() {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.loadingContainer}>
-          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
-            Carregando...
-          </Text>
+          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Carregando...</Text>
         </View>
       </SafeAreaView>
     );
@@ -223,9 +221,7 @@ export default function EditReminderScreen() {
         </View>
 
         {/* Title */}
-        <Text style={[styles.title, { color: colors.text }]}>
-          Quando você prefere aplicar?
-        </Text>
+        <Text style={[styles.title, { color: colors.text }]}>Quando você prefere aplicar?</Text>
 
         {/* Subtitle */}
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
@@ -234,9 +230,7 @@ export default function EditReminderScreen() {
 
         {/* Day Selection */}
         <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>
-            Dia da semana
-          </Text>
+          <Text style={[styles.sectionLabel, { color: colors.textSecondary }]}>Dia da semana</Text>
           <View style={styles.daysGrid}>
             {DAYS_OF_WEEK.map((day) => (
               <TouchableOpacity
@@ -272,13 +266,22 @@ export default function EditReminderScreen() {
             Horário preferido
           </Text>
           <TouchableOpacity
-            style={[styles.timeButton, { backgroundColor: colors.card, borderColor: colors.border }]}
+            style={[
+              styles.timeButton,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
             onPress={handleTimePress}
             accessibilityRole="button"
-            accessibilityLabel={selectedTime ? `Horário selecionado: ${formatTime(selectedTime)}` : 'Selecionar horário'}
+            accessibilityLabel={
+              selectedTime
+                ? `Horário selecionado: ${formatTime(selectedTime)}`
+                : 'Selecionar horário'
+            }
           >
             <Clock size={24} color={colors.textSecondary} weight="thin" />
-            <Text style={[styles.timeText, { color: selectedTime ? colors.text : colors.textMuted }]}>
+            <Text
+              style={[styles.timeText, { color: selectedTime ? colors.text : colors.textMuted }]}
+            >
               {selectedTime ? formatTime(selectedTime) : 'Selecionar horário'}
             </Text>
           </TouchableOpacity>
@@ -329,7 +332,8 @@ export default function EditReminderScreen() {
           style={[
             styles.button,
             {
-              backgroundColor: selectedDay !== null && selectedTime ? colors.primary : colors.border,
+              backgroundColor:
+                selectedDay !== null && selectedTime ? colors.primary : colors.border,
             },
           ]}
           onPress={handleSave}
@@ -353,64 +357,122 @@ export default function EditReminderScreen() {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    alignItems: 'center',
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
+  button: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    height: 56,
+    justifyContent: 'center',
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  buttonText: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+  },
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
+  dayCard: {
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    borderWidth: 1,
+    flex: 1,
+    height: 56,
+    justifyContent: 'center',
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  dayShort: {
+    ...ShotsyDesignTokens.typography.label,
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  daysGrid: {
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.xs,
     justifyContent: 'space-between',
+  },
+  doneButton: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    height: 48,
+    justifyContent: 'center',
+    marginTop: ShotsyDesignTokens.spacing.md,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  doneButtonText: {
+    ...ShotsyDesignTokens.typography.label,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  footer: {
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+    paddingTop: ShotsyDesignTokens.spacing.md,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: ShotsyDesignTokens.spacing.lg,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
   },
-  backButton: {
+  headerSpacer: {
     width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   headerTitle: {
     ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
   },
-  headerSpacer: {
-    width: 44,
+  iconContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    height: 96,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    width: 96,
+  },
+  infoCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  infoText: {
+    ...ShotsyDesignTokens.typography.caption,
+    lineHeight: 18,
+    textAlign: 'center',
   },
   loadingContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   loadingText: {
     ...ShotsyDesignTokens.typography.body,
   },
-  scrollView: {
-    flex: 1,
+  previewCard: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  previewText: {
+    ...ShotsyDesignTokens.typography.body,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   scrollContent: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
     paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
   },
-  iconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: ShotsyDesignTokens.borderRadius.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h2,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  subtitle: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
-    lineHeight: 22,
+  scrollView: {
+    flex: 1,
   },
   section: {
     marginBottom: ShotsyDesignTokens.spacing.xl,
@@ -420,33 +482,20 @@ const styles = StyleSheet.create({
     marginBottom: ShotsyDesignTokens.spacing.md,
     textAlign: 'center',
   },
-  daysGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: ShotsyDesignTokens.spacing.xs,
-  },
-  dayCard: {
-    flex: 1,
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  dayShort: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-    fontSize: 13,
+  subtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    textAlign: 'center',
   },
   timeButton: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
-    height: 64,
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
     borderWidth: 1,
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
+    height: 64,
+    justifyContent: 'center',
     ...ShotsyDesignTokens.shadows.card,
   },
   timeText: {
@@ -454,54 +503,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
-  doneButton: {
-    marginTop: ShotsyDesignTokens.spacing.md,
-    height: 48,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  doneButtonText: {
-    ...ShotsyDesignTokens.typography.label,
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  previewCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  previewText: {
-    ...ShotsyDesignTokens.typography.body,
+  title: {
+    ...ShotsyDesignTokens.typography.h2,
+    marginBottom: ShotsyDesignTokens.spacing.md,
     textAlign: 'center',
-    fontWeight: '600',
-  },
-  infoCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  infoText: {
-    ...ShotsyDesignTokens.typography.caption,
-    textAlign: 'center',
-    lineHeight: 18,
-  },
-  footer: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-    paddingTop: ShotsyDesignTokens.spacing.md,
-  },
-  button: {
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  buttonText: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
   },
 });

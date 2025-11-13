@@ -50,15 +50,23 @@ export function ExpandableSection({
 }
 
 const styles = StyleSheet.create({
+  chevron: {
+    fontSize: 12,
+    marginLeft: 8,
+  },
   container: {
     borderRadius: 16,
     borderWidth: 1,
     marginBottom: 12,
     overflow: 'hidden',
   },
+  content: {
+    padding: 16,
+    paddingTop: 0,
+  },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 16,
   },
@@ -73,13 +81,5 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  chevron: {
-    fontSize: 12,
-    marginLeft: 8,
-  },
-  content: {
-    padding: 16,
-    paddingTop: 0,
   },
 });

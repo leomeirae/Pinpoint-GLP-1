@@ -68,21 +68,42 @@ export function CustomizationIntroScreen({ onNext, onBack }: CustomizationIntroS
 }
 
 const styles = StyleSheet.create({
+  card: {
+    marginBottom: 16,
+  },
+  colorPreview: {
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  colorPreviewLabel: {
+    fontSize: 14,
+    marginBottom: 12,
+  },
+  colorRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  colorSwatch: {
+    borderRadius: 24,
+    height: 48,
+    width: 48,
+  },
   content: {
     flex: 1,
   },
   emoji: {
     fontSize: 80,
-    textAlign: 'center',
     marginBottom: 32,
-  },
-  card: {
-    marginBottom: 16,
+    textAlign: 'center',
   },
   feature: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 16,
+  },
+  featureDescription: {
+    fontSize: 14,
+    lineHeight: 20,
   },
   featureEmoji: {
     fontSize: 32,
@@ -94,26 +115,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 4,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  colorPreview: {
-    marginTop: 24,
-    alignItems: 'center',
-  },
-  colorPreviewLabel: {
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  colorRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  colorSwatch: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
   },
 });

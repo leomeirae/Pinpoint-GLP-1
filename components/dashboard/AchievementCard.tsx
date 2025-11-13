@@ -31,35 +31,35 @@ export function AchievementCard({ achievement }: AchievementCardProps) {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     card: {
-      flexDirection: 'row',
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 12,
       alignItems: 'center',
+      backgroundColor: colors.card,
+      borderColor: colors.primary + '20',
+      borderRadius: 12,
       borderWidth: 2,
-      borderColor: colors.primary + '20', // 20% opacity
+      flexDirection: 'row',
+      marginBottom: 12,
+      padding: 16, // 20% opacity
+    },
+    content: {
+      flex: 1,
+    },
+    date: {
+      color: colors.textMuted,
+      fontSize: 12,
+    },
+    description: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      marginBottom: 4,
     },
     icon: {
       fontSize: 40,
       marginRight: 16,
     },
-    content: {
-      flex: 1,
-    },
     title: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: 'bold',
-      color: colors.text,
       marginBottom: 4,
-    },
-    description: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      marginBottom: 4,
-    },
-    date: {
-      fontSize: 12,
-      color: colors.textMuted,
     },
   });

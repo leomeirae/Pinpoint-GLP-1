@@ -108,10 +108,7 @@ export default function TreatmentPauseScreen() {
               await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
               logger.info('Treatment resumed successfully');
 
-              Alert.alert(
-                'Tratamento retomado',
-                'Seus lembretes de medicação foram religados.'
-              );
+              Alert.alert('Tratamento retomado', 'Seus lembretes de medicação foram religados.');
             } catch (error) {
               logger.error('Failed to resume treatment', error as Error);
               Alert.alert('Erro', 'Não foi possível retomar o tratamento. Tente novamente.');
@@ -141,9 +138,7 @@ export default function TreatmentPauseScreen() {
           <View style={styles.headerSpacer} />
         </View>
         <View style={styles.loadingContainer}>
-          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
-            Carregando...
-          </Text>
+          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Carregando...</Text>
         </View>
       </View>
     );
@@ -179,11 +174,7 @@ export default function TreatmentPauseScreen() {
           >
             <View style={styles.statusHeader}>
               {isCurrentlyPaused ? (
-                <Pause
-                  size={32}
-                  color={colors.accentOrange || '#f97316'}
-                  weight="bold"
-                />
+                <Pause size={32} color={colors.accentOrange || '#f97316'} weight="bold" />
               ) : (
                 <Play size={32} color={colors.accentGreen || '#22c55e'} weight="fill" />
               )}
@@ -281,9 +272,7 @@ export default function TreatmentPauseScreen() {
         {/* Timeline of Previous Pauses */}
         {pauses.filter((p) => !p.isActive).length > 0 && (
           <View style={styles.timelineSection}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>
-              Histórico de pausas
-            </Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Histórico de pausas</Text>
 
             {pauses
               .filter((p) => !p.isActive)
@@ -298,8 +287,7 @@ export default function TreatmentPauseScreen() {
                     </View>
 
                     <Text style={[styles.timelineItemDuration, { color: colors.textSecondary }]}>
-                      Duração: {pause.durationDays}{' '}
-                      {pause.durationDays === 1 ? 'dia' : 'dias'}
+                      Duração: {pause.durationDays} {pause.durationDays === 1 ? 'dia' : 'dias'}
                     </Text>
 
                     {pause.reason && (
@@ -357,13 +345,22 @@ export default function TreatmentPauseScreen() {
               ))}
             </View>
 
-            <Text style={[styles.fieldLabel, { color: colors.text, marginTop: ShotsyDesignTokens.spacing.lg }]}>
+            <Text
+              style={[
+                styles.fieldLabel,
+                { color: colors.text, marginTop: ShotsyDesignTokens.spacing.lg },
+              ]}
+            >
               Observações (opcional)
             </Text>
             <TextInput
               style={[
                 styles.notesInput,
-                { backgroundColor: colors.background, color: colors.text, borderColor: colors.border },
+                {
+                  backgroundColor: colors.background,
+                  color: colors.text,
+                  borderColor: colors.border,
+                },
               ]}
               value={notes}
               onChangeText={setNotes}
@@ -406,70 +403,106 @@ export default function TreatmentPauseScreen() {
 }
 
 const styles = StyleSheet.create({
+  actionButton: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flexDirection: 'row',
+    gap: 8,
+    height: 56,
+    justifyContent: 'center',
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  actionButtonText: {
+    ...ShotsyDesignTokens.typography.label,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  backButton: {
+    marginLeft: -ShotsyDesignTokens.spacing.sm,
+    padding: ShotsyDesignTokens.spacing.sm,
+  },
+  bottomSpacer: {
+    height: ShotsyDesignTokens.spacing.xxl * 2,
+  },
   container: {
     flex: 1,
   },
+  fieldLabel: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
-  backButton: {
-    padding: ShotsyDesignTokens.spacing.sm,
-    marginLeft: -ShotsyDesignTokens.spacing.sm,
+  headerSpacer: {
+    width: 44,
   },
   headerTitle: {
     ...ShotsyDesignTokens.typography.h3,
     flex: 1,
     textAlign: 'center',
   },
-  headerSpacer: {
-    width: 44,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: ShotsyDesignTokens.spacing.lg,
-  },
   loadingContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   loadingText: {
     ...ShotsyDesignTokens.typography.body,
   },
-  statusCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.xl,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  statusHeader: {
+  modalActions: {
     flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+  },
+  modalButton: {
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  statusTextContainer: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
     flex: 1,
+    height: 48,
+    justifyContent: 'center',
   },
-  statusTitle: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '700',
-    marginBottom: 2,
+  modalButtonText: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
   },
-  statusSubtitle: {
-    ...ShotsyDesignTokens.typography.caption,
+  modalContent: {
+    borderRadius: ShotsyDesignTokens.borderRadius.xl,
+    maxWidth: 400,
+    padding: ShotsyDesignTokens.spacing.xl,
+    width: '100%',
+    ...ShotsyDesignTokens.shadows.modal,
   },
-  pauseDetails: {
+  modalOverlay: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    flex: 1,
+    justifyContent: 'center',
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  modalSubtitle: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 22,
     marginBottom: ShotsyDesignTokens.spacing.lg,
-    paddingTop: ShotsyDesignTokens.spacing.md,
+  },
+  modalTitle: {
+    ...ShotsyDesignTokens.typography.h2,
+    fontWeight: '700',
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
+  notesInput: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    borderWidth: 1,
+    minHeight: 80,
+    padding: ShotsyDesignTokens.spacing.md,
+    ...ShotsyDesignTokens.typography.body,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
   },
   pauseDetailLabel: {
     ...ShotsyDesignTokens.typography.caption,
@@ -479,38 +512,64 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.body,
     fontWeight: '500',
   },
-  actionButton: {
-    height: 56,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    ...ShotsyDesignTokens.shadows.card,
+  pauseDetails: {
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    paddingTop: ShotsyDesignTokens.spacing.md,
   },
-  actionButtonText: {
+  reasonGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: ShotsyDesignTokens.spacing.sm,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  reasonOption: {
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    borderWidth: 2,
+    paddingHorizontal: ShotsyDesignTokens.spacing.md,
+    paddingVertical: ShotsyDesignTokens.spacing.sm,
+  },
+  reasonText: {
     ...ShotsyDesignTokens.typography.label,
-    color: '#FFFFFF',
     fontWeight: '600',
   },
-  timelineSection: {
-    marginTop: ShotsyDesignTokens.spacing.md,
+  scrollContent: {
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  scrollView: {
+    flex: 1,
   },
   sectionTitle: {
     ...ShotsyDesignTokens.typography.h3,
     marginBottom: ShotsyDesignTokens.spacing.md,
   },
-  timelineItem: {
+  statusCard: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.md,
-    marginBottom: ShotsyDesignTokens.spacing.md,
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+    padding: ShotsyDesignTokens.spacing.lg,
     ...ShotsyDesignTokens.shadows.card,
   },
-  timelineItemHeader: {
-    flexDirection: 'row',
+  statusHeader: {
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: 4,
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  statusSubtitle: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  statusTextContainer: {
+    flex: 1,
+  },
+  statusTitle: {
+    ...ShotsyDesignTokens.typography.h3,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  timelineItem: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    padding: ShotsyDesignTokens.spacing.md,
+    ...ShotsyDesignTokens.shadows.card,
   },
   timelineItemDate: {
     ...ShotsyDesignTokens.typography.body,
@@ -520,78 +579,16 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.caption,
     marginBottom: 2,
   },
+  timelineItemHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+    marginBottom: 4,
+  },
   timelineItemReason: {
     ...ShotsyDesignTokens.typography.caption,
   },
-  bottomSpacer: {
-    height: ShotsyDesignTokens.spacing.xxl * 2,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: ShotsyDesignTokens.spacing.lg,
-  },
-  modalContent: {
-    width: '100%',
-    maxWidth: 400,
-    borderRadius: ShotsyDesignTokens.borderRadius.xl,
-    padding: ShotsyDesignTokens.spacing.xl,
-    ...ShotsyDesignTokens.shadows.modal,
-  },
-  modalTitle: {
-    ...ShotsyDesignTokens.typography.h2,
-    fontWeight: '700',
-    marginBottom: ShotsyDesignTokens.spacing.sm,
-  },
-  modalSubtitle: {
-    ...ShotsyDesignTokens.typography.body,
-    lineHeight: 22,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  fieldLabel: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-    marginBottom: ShotsyDesignTokens.spacing.sm,
-  },
-  reasonGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  reasonOption: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.md,
-    paddingVertical: ShotsyDesignTokens.spacing.sm,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    borderWidth: 2,
-  },
-  reasonText: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
-  },
-  notesInput: {
-    minHeight: 80,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    borderWidth: 1,
-    padding: ShotsyDesignTokens.spacing.md,
-    ...ShotsyDesignTokens.typography.body,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  modalActions: {
-    flexDirection: 'row',
-    gap: ShotsyDesignTokens.spacing.sm,
-  },
-  modalButton: {
-    flex: 1,
-    height: 48,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalButtonText: {
-    ...ShotsyDesignTokens.typography.label,
-    fontWeight: '600',
+  timelineSection: {
+    marginTop: ShotsyDesignTokens.spacing.md,
   },
 });

@@ -190,60 +190,60 @@ export default function VerifyEmailScreen() {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: colors.background,
-    },
-    scrollContent: {
-      flexGrow: 1,
-      justifyContent: 'center',
+      flex: 1,
     },
     content: {
-      padding: 24,
-      justifyContent: 'center',
       alignItems: 'center',
+      justifyContent: 'center',
       minHeight: '100%',
-    },
-    icon: {
-      fontSize: 64,
-      marginBottom: 16,
-    },
-    title: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 8,
-      textAlign: 'center',
-    },
-    subtitle: {
-      fontSize: 16,
-      color: colors.textSecondary,
-      marginBottom: 32,
-      textAlign: 'center',
-      lineHeight: 24,
+      padding: 24,
     },
     email: {
       color: colors.primary,
       fontWeight: '600',
     },
+    errorText: {
+      color: colors.error,
+      fontSize: 14,
+      textAlign: 'center',
+    },
     form: {
       gap: 16,
       width: '100%',
     },
+    icon: {
+      fontSize: 64,
+      marginBottom: 16,
+    },
     infoBox: {
       backgroundColor: colors.card,
-      padding: 16,
-      borderRadius: 12,
-      borderLeftWidth: 4,
       borderLeftColor: colors.primary,
+      borderLeftWidth: 4,
+      borderRadius: 12,
+      padding: 16,
     },
     infoText: {
       color: colors.textSecondary,
       fontSize: 14,
       lineHeight: 20,
     },
-    errorText: {
-      color: colors.error,
-      fontSize: 14,
+    scrollContent: {
+      flexGrow: 1,
+      justifyContent: 'center',
+    },
+    subtitle: {
+      color: colors.textSecondary,
+      fontSize: 16,
+      lineHeight: 24,
+      marginBottom: 32,
+      textAlign: 'center',
+    },
+    title: {
+      color: colors.text,
+      fontSize: 32,
+      fontWeight: 'bold',
+      marginBottom: 8,
       textAlign: 'center',
     },
   });

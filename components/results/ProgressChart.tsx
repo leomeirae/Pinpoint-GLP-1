@@ -210,61 +210,17 @@ export const ProgressChart: React.FC<ProgressChartProps> = ({
 
 const styles = StyleSheet.create({
   card: {
+    marginBottom: 16,
     padding: 16,
-    marginBottom: 16,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
+  chart: {
+    borderRadius: 16,
+    marginVertical: 8,
   },
   currentProgress: {
     fontSize: 14,
     fontWeight: '600',
     marginTop: 4,
-  },
-  projectionBanner: {
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  projectionLabel: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  projectionDate: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
-  },
-  legend: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
-    marginTop: 12,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  legendDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  legendText: {
-    fontSize: 11,
   },
   emptyState: {
     alignItems: 'center',
@@ -274,5 +230,49 @@ const styles = StyleSheet.create({
   emptyStateText: {
     fontSize: 14,
     textAlign: 'center',
+  },
+  header: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  legend: {
+    flexDirection: 'row',
+    gap: 16,
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  legendDot: {
+    borderRadius: 5,
+    height: 10,
+    width: 10,
+  },
+  legendItem: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
+  },
+  legendText: {
+    fontSize: 11,
+  },
+  projectionBanner: {
+    alignItems: 'center',
+    borderRadius: 12,
+    marginBottom: 12,
+    padding: 12,
+  },
+  projectionDate: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  projectionLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '700',
   },
 });

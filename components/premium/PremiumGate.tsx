@@ -65,30 +65,30 @@ export function PremiumGate({ children, featureName, fallback }: PremiumGateProp
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    padding: 24,
-    alignItems: 'center',
-  },
   gateContainer: {
-    padding: 24,
     alignItems: 'center',
     gap: 12,
+    padding: 24,
+  },
+  gateDescription: {
+    fontSize: 15,
+    lineHeight: 22,
+    textAlign: 'center',
   },
   gateTitle: {
     fontSize: 18,
     fontWeight: '600',
     textAlign: 'center',
   },
-  gateDescription: {
-    fontSize: 15,
-    textAlign: 'center',
-    lineHeight: 22,
+  loadingContainer: {
+    alignItems: 'center',
+    padding: 24,
   },
   upgradeButton: {
+    borderRadius: 12,
     marginTop: 8,
     paddingHorizontal: 24,
     paddingVertical: 12,
-    borderRadius: 12,
   },
   upgradeButtonText: {
     color: '#FFFFFF',

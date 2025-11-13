@@ -229,32 +229,34 @@ export default function AddSideEffectScreen() {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: colors.background,
+      flex: 1,
     },
-    scrollContent: {
-      padding: 24,
-      flexGrow: 1,
+    effectButton: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderColor: 'transparent',
+      borderRadius: 12,
+      borderWidth: 2,
+      padding: 12,
+      width: '30%',
     },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 8,
+    effectButtonSelected: {
+      backgroundColor: colors.backgroundLight,
+      borderColor: colors.primary,
     },
-    subtitle: {
-      fontSize: 14,
+    effectEmoji: {
+      fontSize: 32,
+      marginBottom: 4,
+    },
+    effectLabel: {
       color: colors.textSecondary,
-      marginBottom: 24,
+      fontSize: 11,
+      textAlign: 'center',
     },
-    section: {
-      marginBottom: 24,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: colors.text,
-      marginBottom: 12,
+    effectLabelSelected: {
+      color: colors.primary,
+      fontWeight: 'bold',
     },
     effectsGrid: {
       flexDirection: 'row',
@@ -262,74 +264,72 @@ const getStyles = (colors: any) =>
       gap: 12,
       marginBottom: 16,
     },
-    effectButton: {
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 12,
-      alignItems: 'center',
-      width: '30%',
-      borderWidth: 2,
-      borderColor: 'transparent',
+    label: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 12,
     },
-    effectButtonSelected: {
-      borderColor: colors.primary,
-      backgroundColor: colors.backgroundLight,
-    },
-    effectEmoji: {
-      fontSize: 32,
-      marginBottom: 4,
-    },
-    effectLabel: {
-      fontSize: 11,
+    loadingText: {
       color: colors.textSecondary,
+      fontSize: 14,
+      marginTop: 8,
       textAlign: 'center',
     },
-    effectLabelSelected: {
-      color: colors.primary,
-      fontWeight: 'bold',
+    scrollContent: {
+      flexGrow: 1,
+      padding: 24,
+    },
+    section: {
+      marginBottom: 24,
+    },
+    severityButton: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderColor: 'transparent',
+      borderRadius: 12,
+      borderWidth: 2,
+      flexDirection: 'row',
+      padding: 16,
+    },
+    severityButtonSelected: {
+      backgroundColor: colors.backgroundLight,
+      borderWidth: 2,
     },
     severityContainer: {
       gap: 12,
     },
-    severityButton: {
-      flexDirection: 'row',
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
-      alignItems: 'center',
-      borderWidth: 2,
-      borderColor: 'transparent',
-    },
-    severityButtonSelected: {
-      borderWidth: 2,
-      backgroundColor: colors.backgroundLight,
-    },
-    severityIndicator: {
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      marginRight: 12,
-    },
     severityContent: {
       flex: 1,
     },
+    severityDescription: {
+      color: colors.textMuted,
+      fontSize: 12,
+    },
+    severityIndicator: {
+      borderRadius: 6,
+      height: 12,
+      marginRight: 12,
+      width: 12,
+    },
     severityLabel: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
       marginBottom: 2,
     },
     severityLabelSelected: {
       color: colors.primary,
     },
-    severityDescription: {
-      fontSize: 12,
-      color: colors.textMuted,
-    },
-    loadingText: {
+    subtitle: {
       color: colors.textSecondary,
       fontSize: 14,
-      textAlign: 'center',
-      marginTop: 8,
+      marginBottom: 24,
+    },
+    title: {
+      color: colors.text,
+      fontSize: 28,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
   });

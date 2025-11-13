@@ -9,7 +9,14 @@ interface MedicationSelectionScreenProps {
   onBack: () => void;
 }
 
-const medications = ['Zepbound®', 'Mounjaro®', 'Ozempic®', 'Wegovy®', 'Tirzepatida', 'Semaglutida'];
+const medications = [
+  'Zepbound®',
+  'Mounjaro®',
+  'Ozempic®',
+  'Wegovy®',
+  'Tirzepatida',
+  'Semaglutida',
+];
 
 export function MedicationSelectionScreen({ onNext, onBack }: MedicationSelectionScreenProps) {
   const colors = useColors();
@@ -72,35 +79,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   option: {
+    alignItems: 'center',
     borderRadius: 16,
-    padding: 20,
+    flexDirection: 'row',
     minHeight: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  radioContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  radio: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  radioInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    padding: 20,
   },
   optionLabel: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '500',
-    flex: 1,
     lineHeight: 18,
+  },
+  radio: {
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 2,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
+  },
+  radioContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 12,
+  },
+  radioInner: {
+    borderRadius: 6,
+    height: 12,
+    width: 12,
   },
 });

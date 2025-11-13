@@ -59,30 +59,23 @@ export const ThemeSelector: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  checkmark: {
+    alignItems: 'center',
+    borderRadius: 12,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
+  },
+  checkmarkIcon: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
   container: {
     gap: 0,
-  },
-  themeOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderWidth: 1.5,
-    marginHorizontal: 16,
-    marginVertical: 6,
   },
   firstOption: {
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-  },
-  lastOption: {
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-  },
-  optionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   icon: {
     fontSize: 24,
@@ -92,15 +85,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  checkmark: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+  lastOption: {
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
-  checkmarkIcon: {
-    fontSize: 14,
-    fontWeight: '700',
+  optionContent: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  themeOption: {
+    alignItems: 'center',
+    borderWidth: 1.5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 16,
+    marginVertical: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
 });

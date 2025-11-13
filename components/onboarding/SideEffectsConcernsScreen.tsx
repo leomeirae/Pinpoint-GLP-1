@@ -11,7 +11,14 @@ interface SideEffectsConcernsScreenProps {
 }
 
 // V0 Design: Simple list
-const options = ['Náusea', 'Azia', 'Fadiga', 'Queda de cabelo', 'Prisão de Ventre', 'Perda de massa muscular'];
+const options = [
+  'Náusea',
+  'Azia',
+  'Fadiga',
+  'Queda de cabelo',
+  'Prisão de Ventre',
+  'Perda de massa muscular',
+];
 
 export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcernsScreenProps) {
   const colors = useColors();
@@ -19,7 +26,9 @@ export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcern
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggleSelection = (option: string) => {
-    setSelected((prev) => (prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]));
+    setSelected((prev) =>
+      prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+    );
   };
 
   const handleNext = () => {
@@ -43,7 +52,9 @@ export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcern
               style={[
                 styles.option,
                 {
-                  backgroundColor: isSelected ? colors.backgroundSecondary : colors.backgroundSecondary,
+                  backgroundColor: isSelected
+                    ? colors.backgroundSecondary
+                    : colors.backgroundSecondary,
                   borderColor: isSelected ? colors.border : 'transparent',
                   borderWidth: isSelected ? 2 : 0,
                 },
@@ -73,35 +84,35 @@ export function SideEffectsConcernsScreen({ onNext, onBack }: SideEffectsConcern
 }
 
 const styles = StyleSheet.create({
+  checkbox: {
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 2,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
+  },
+  checkboxContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 12,
+  },
   content: {
     gap: 12,
     paddingHorizontal: 24,
     paddingTop: 8, // Extra padding to avoid overlap with back button
   },
   option: {
+    alignItems: 'center',
     borderRadius: 16,
-    padding: 16,
+    flexDirection: 'row',
     minHeight: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkboxContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 16,
   },
   optionLabel: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '500',
-    flex: 1,
   },
 });

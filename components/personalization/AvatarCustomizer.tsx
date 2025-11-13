@@ -296,117 +296,72 @@ export const AvatarCustomizer: React.FC<AvatarCustomizerProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    padding: 20,
-    paddingBottom: 40,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: '#666',
-  },
-  header: {
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 22,
-  },
-  previewContainer: {
-    alignItems: 'center',
-    padding: 32,
-    borderRadius: 20,
-    marginBottom: 32,
-  },
-  avatarCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    position: 'relative',
-  },
-  avatarEmoji: {
-    fontSize: 56,
+  accessoriesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
   },
   accessoryBadge: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: '#EF4444',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
+    backgroundColor: '#EF4444',
     borderColor: '#fff',
+    borderRadius: 14,
+    borderWidth: 3,
+    height: 28,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: 28,
   },
   accessoryBadgeText: {
     color: '#fff',
     fontSize: 12,
     fontWeight: 'bold',
   },
-  previewLabel: {
-    fontSize: 16,
-    color: '#666',
-    textTransform: 'capitalize',
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1a1a1a',
-    marginBottom: 4,
-  },
-  sectionDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
-  },
-  optionsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  gridOption: {
-    width: (width - 52) / 2,
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-    borderRadius: 12,
+  accessoryChip: {
     backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    borderWidth: 2,
     borderColor: 'transparent',
+    borderRadius: 20,
+    borderWidth: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
-  optionIcon: {
-    fontSize: 32,
-    marginBottom: 8,
+  accessoryDisabled: {
+    opacity: 0.4,
   },
-  optionLabel: {
-    fontSize: 14,
+  accessoryText: {
     color: '#333',
+    fontSize: 14,
     textTransform: 'capitalize',
+  },
+  accessoryTextDisabled: {
+    color: '#999',
+  },
+  accessoryTextSelected: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+  actions: {
+    gap: 12,
+    marginTop: 8,
+  },
+  avatarCircle: {
+    alignItems: 'center',
+    borderRadius: 60,
+    height: 120,
+    justifyContent: 'center',
+    marginBottom: 16,
+    position: 'relative',
+    width: 120,
+  },
+  avatarEmoji: {
+    fontSize: 56,
+  },
+  checkmark: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   colorGrid: {
     flexDirection: 'row',
@@ -414,95 +369,140 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   colorOption: {
-    width: 56,
-    height: 56,
+    alignItems: 'center',
+    borderColor: '#fff',
     borderRadius: 28,
     borderWidth: 3,
-    borderColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
     elevation: 2,
+    height: 56,
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    width: 56,
   },
   colorSelected: {
     borderColor: '#1a1a1a',
     borderWidth: 4,
   },
-  checkmark: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
   },
-  accessoriesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
+  contentContainer: {
+    padding: 20,
+    paddingBottom: 40,
   },
-  accessoryChip: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+  gridOption: {
+    alignItems: 'center',
     backgroundColor: '#f5f5f5',
-    borderWidth: 2,
     borderColor: 'transparent',
+    borderRadius: 12,
+    borderWidth: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+    width: (width - 52) / 2,
   },
-  accessoryDisabled: {
-    opacity: 0.4,
+  header: {
+    marginBottom: 24,
   },
-  accessoryText: {
+  infoBox: {
+    backgroundColor: '#f0f9ff',
+    borderRadius: 12,
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+    padding: 16,
+  },
+  infoIcon: {
+    fontSize: 20,
+  },
+  infoText: {
+    color: '#1e40af',
+    flex: 1,
     fontSize: 14,
+    lineHeight: 20,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  loadingText: {
+    color: '#666',
+    fontSize: 16,
+    marginTop: 12,
+  },
+  optionIcon: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  optionLabel: {
     color: '#333',
+    fontSize: 14,
     textTransform: 'capitalize',
   },
-  accessoryTextSelected: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  accessoryTextDisabled: {
-    color: '#999',
-  },
-  actions: {
+  optionsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
-    marginTop: 8,
+  },
+  previewContainer: {
+    alignItems: 'center',
+    borderRadius: 20,
+    marginBottom: 32,
+    padding: 32,
+  },
+  previewLabel: {
+    color: '#666',
+    fontSize: 16,
+    textTransform: 'capitalize',
   },
   saveButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
     alignItems: 'center',
+    borderRadius: 12,
     justifyContent: 'center',
     minHeight: 52,
+    paddingVertical: 16,
   },
   saveButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
+  section: {
+    marginBottom: 32,
+  },
+  sectionDescription: {
+    color: '#666',
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    color: '#1a1a1a',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
   skipButton: {
-    paddingVertical: 12,
     alignItems: 'center',
+    paddingVertical: 12,
   },
   skipButtonText: {
     fontSize: 15,
     fontWeight: '500',
   },
-  infoBox: {
-    flexDirection: 'row',
-    backgroundColor: '#f0f9ff',
-    padding: 16,
-    borderRadius: 12,
-    marginTop: 24,
-    gap: 12,
+  subtitle: {
+    color: '#666',
+    fontSize: 16,
+    lineHeight: 22,
   },
-  infoIcon: {
-    fontSize: 20,
-  },
-  infoText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#1e40af',
-    lineHeight: 20,
+  title: {
+    color: '#1a1a1a',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
 });

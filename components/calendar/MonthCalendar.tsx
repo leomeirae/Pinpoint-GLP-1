@@ -155,50 +155,50 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     paddingHorizontal: 8,
     paddingVertical: 12,
+    width: '100%',
   },
-  weekDaysRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    paddingHorizontal: 4,
+  dayCell: {
+    alignItems: 'center',
+    aspectRatio: 1,
+    borderRadius: 8,
+    justifyContent: 'center',
+    minHeight: 40,
+    position: 'relative',
+    width: `${100 / 7}%`,
   },
-  weekDay: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 12,
-    fontWeight: '600',
+  dayNumber: {
+    fontSize: 16,
   },
   daysGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
   },
-  dayCell: {
-    width: `${100 / 7}%`,
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-    position: 'relative',
-    minHeight: 40,
-  },
-  dayNumber: {
-    fontSize: 16,
+  eventDot: {
+    borderRadius: 2,
+    height: 4,
+    width: 4,
   },
   eventMarkers: {
-    position: 'absolute',
+    alignItems: 'center',
     bottom: 4,
     flexDirection: 'row',
     gap: 3,
     justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
     width: '100%',
   },
-  eventDot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+  weekDay: {
+    flex: 1,
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  weekDaysRow: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    paddingHorizontal: 4,
   },
 });

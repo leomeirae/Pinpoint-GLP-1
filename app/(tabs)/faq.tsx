@@ -233,56 +233,50 @@ export default function FAQScreen() {
 }
 
 const styles = StyleSheet.create({
+  answerText: {
+    fontSize: 15,
+    lineHeight: 22,
+    marginTop: 12,
+  },
+  backButton: {
+    alignItems: 'flex-start',
+    height: 40,
+    justifyContent: 'center',
+    width: 40,
+  },
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
+  emptyState: {
     alignItems: 'center',
+    padding: 32,
+  },
+  emptyText: {
+    fontSize: 16,
+  },
+  faqItem: {
+    borderBottomWidth: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  header: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 12,
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 16,
-    marginTop: 12,
-    marginBottom: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 12,
-    gap: 8,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  faqItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-  },
   questionRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     gap: 12,
+    justifyContent: 'space-between',
   },
   questionText: {
     flex: 1,
@@ -290,16 +284,22 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 22,
   },
-  answerText: {
-    marginTop: 12,
-    fontSize: 15,
-    lineHeight: 22,
+  scrollView: {
+    flex: 1,
   },
-  emptyState: {
-    padding: 32,
+  searchContainer: {
     alignItems: 'center',
+    borderRadius: 12,
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+    marginHorizontal: 16,
+    marginTop: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
-  emptyText: {
+  searchInput: {
+    flex: 1,
     fontSize: 16,
   },
 });

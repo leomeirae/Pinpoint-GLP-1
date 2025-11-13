@@ -12,7 +12,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable, Dimensions, ScrollView } from 'react-native';
-import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine } from 'victory-native';
+import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine } from 'victory';
 import { LinearGradient, Defs, Stop } from 'react-native-svg';
 import { useShotsyColors } from '@/hooks/useShotsyColors';
 import { useApplications } from '@/hooks/useApplications';
@@ -57,10 +57,12 @@ export const EstimatedLevelsChartV2: React.FC = () => {
   const currentLevel = useMemo(() => {
     if (applications.length === 0) return 0;
 
-    const medApplications = applications.map((app) => ({
-      dose: app.dosage,
-      date: app.date,
-    }));
+    const medApplications = applications
+      .filter((app) => app.date !== undefined)
+      .map((app) => ({
+        dose: app.dosage,
+        date: app.date!,
+      }));
 
     return getCurrentEstimatedLevel(medApplications);
   }, [applications]);
@@ -80,11 +82,20 @@ export const EstimatedLevelsChartV2: React.FC = () => {
 
     // Convert applications to pharmacokinetics format
     const medApplications = applications
+      .filter((app) => app.date !== undefined)
       .map((app) => ({
         dose: app.dosage,
-        date: app.date,
+        date: app.date!,
       }))
       .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    if (medApplications.length === 0) {
+      return {
+        chartData: [],
+        maxY: 10,
+        todayIndex: 0,
+      };
+    }
 
     const firstApplicationDate = medApplications[0].date;
 
@@ -174,7 +185,9 @@ export const EstimatedLevelsChartV2: React.FC = () => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.card }, ShotsyDesignTokens.shadows.card]}>
+    <View
+      style={[styles.container, { backgroundColor: colors.card }, ShotsyDesignTokens.shadows.card]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <Text style={[styles.title, { color: colors.text }]}>Estimated Levels</Text>
@@ -342,42 +355,19 @@ export const EstimatedLevelsChartV2: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  chartContainer: {
+    alignItems: 'center',
+  },
   container: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
     padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h3,
-    flex: 1,
-  },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
-  },
-  jumpButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: ShotsyDesignTokens.spacing.sm,
-    paddingVertical: 4,
-  },
-  jumpButtonText: {
-    ...ShotsyDesignTokens.typography.caption,
-    fontWeight: '600',
   },
   currentLevelCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
   },
   currentLevelLabel: {
     ...ShotsyDesignTokens.typography.caption,
@@ -385,55 +375,6 @@ const styles = StyleSheet.create({
   },
   currentLevelValue: {
     ...ShotsyDesignTokens.typography.numberLarge,
-  },
-  unitText: {
-    fontSize: 20,
-    fontWeight: '400',
-  },
-  tabsContainer: {
-    flexDirection: 'row',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  tab: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingVertical: ShotsyDesignTokens.spacing.sm,
-    borderRadius: ShotsyDesignTokens.borderRadius.full,
-    borderWidth: 1,
-  },
-  tabText: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  chartContainer: {
-    alignItems: 'center',
-  },
-  legendContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: ShotsyDesignTokens.spacing.xl,
-    marginTop: ShotsyDesignTokens.spacing.sm,
-  },
-  legendRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.xs,
-  },
-  legendLine: {
-    width: 16,
-    height: 2,
-    borderRadius: 1,
-  },
-  legendLineDashed: {
-    width: 20,
-  },
-  legendText: {
-    ...ShotsyDesignTokens.typography.tiny,
-  },
-  footnote: {
-    ...ShotsyDesignTokens.typography.tiny,
-    textAlign: 'center',
-    marginTop: ShotsyDesignTokens.spacing.xs,
-    opacity: 0.7,
   },
   emptyState: {
     alignItems: 'center',
@@ -443,5 +384,77 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.body,
     marginTop: ShotsyDesignTokens.spacing.md,
     textAlign: 'center',
+  },
+  footnote: {
+    ...ShotsyDesignTokens.typography.tiny,
+    marginTop: ShotsyDesignTokens.spacing.xs,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+  },
+  headerRight: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
+  },
+  jumpButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+    paddingHorizontal: ShotsyDesignTokens.spacing.sm,
+    paddingVertical: 4,
+  },
+  jumpButtonText: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontWeight: '600',
+  },
+  legendContainer: {
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.xl,
+    justifyContent: 'center',
+    marginTop: ShotsyDesignTokens.spacing.sm,
+  },
+  legendLine: {
+    borderRadius: 1,
+    height: 2,
+    width: 16,
+  },
+  legendLineDashed: {
+    width: 20,
+  },
+  legendRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.xs,
+  },
+  legendText: {
+    ...ShotsyDesignTokens.typography.tiny,
+  },
+  tab: {
+    borderRadius: ShotsyDesignTokens.borderRadius.full,
+    borderWidth: 1,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingVertical: ShotsyDesignTokens.spacing.sm,
+  },
+  tabText: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+  },
+  title: {
+    ...ShotsyDesignTokens.typography.h3,
+    flex: 1,
+  },
+  unitText: {
+    fontSize: 20,
+    fontWeight: '400',
   },
 });

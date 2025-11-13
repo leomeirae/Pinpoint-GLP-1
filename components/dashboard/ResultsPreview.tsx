@@ -112,41 +112,24 @@ export function ResultsPreview({ metrics }: ResultsPreviewProps) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    minHeight: 90,
+    padding: 12,
+  },
   container: {
     marginBottom: 24,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  linkButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  link: {
-    fontSize: 14,
-    fontWeight: '600',
   },
   grid: {
     gap: 12,
   },
-  row: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  card: {
-    flex: 1,
-    padding: 12,
-    minHeight: 90,
-    justifyContent: 'center',
+  header: {
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
   },
   label: {
     fontSize: 10,
@@ -155,14 +138,31 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     textAlign: 'center',
   },
+  link: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  linkButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  subtitle: {
+    fontSize: 11,
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
   value: {
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 2,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 11,
     textAlign: 'center',
   },
 });

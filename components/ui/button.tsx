@@ -69,17 +69,17 @@ export function Button({
 
 const styles = StyleSheet.create({
   button: {
-    height: 48,
-    borderRadius: 12,
     alignItems: 'center',
+    borderRadius: 12,
+    height: 48,
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
-  pressed: {
-    opacity: 0.8,
-  },
   disabled: {
     opacity: 0.5,
+  },
+  pressed: {
+    opacity: 0.8,
   },
   text: {
     fontSize: 16,

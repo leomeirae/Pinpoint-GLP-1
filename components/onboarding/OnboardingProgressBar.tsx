@@ -37,24 +37,24 @@ export function OnboardingProgressBar({ current, total }: OnboardingProgressBarP
 
 const styles = StyleSheet.create({
   container: {
+    paddingBottom: 8,
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 8,
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
   },
   progressBackground: {
+    borderRadius: 3,
     flex: 1,
     height: 6,
-    borderRadius: 3,
     overflow: 'hidden',
   },
   progressBar: {
-    height: '100%',
     borderRadius: 3,
+    height: '100%',
+  },
+  progressContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
   },
   progressText: {
     fontSize: 12,

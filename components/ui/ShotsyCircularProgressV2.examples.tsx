@@ -53,11 +53,7 @@ export function WeightLossProgressExample() {
       size="xlarge"
       state={progress >= 1 ? 'success' : 'normal'}
     >
-      <ProgressValue
-        value={`${lostWeight.toFixed(1)}kg`}
-        label="Lost"
-        valueColor="#10B981"
-      />
+      <ProgressValue value={`${lostWeight.toFixed(1)}kg`} label="Lost" valueColor="#10B981" />
     </ShotsyCircularProgressV2>
   );
 }
@@ -156,11 +152,7 @@ export function CustomGoalProgressExample() {
   const customColors = ['#FF6B6B', '#FFE66D', '#4ECDC4', '#45B7D1', '#A8E6CF'];
 
   return (
-    <ShotsyCircularProgressV2
-      progress={progress}
-      size="medium"
-      customGradient={customColors}
-    >
+    <ShotsyCircularProgressV2 progress={progress} size="medium" customGradient={customColors}>
       <ProgressPercentage value={progress} />
     </ShotsyCircularProgressV2>
   );
@@ -201,17 +193,32 @@ export function StatesComparisonExample() {
   return (
     <View style={styles.rowContainer}>
       <View style={styles.stateExample}>
-        <ShotsyCircularProgressV2 progress={progress} size="small" state="normal" centerText="80%" />
+        <ShotsyCircularProgressV2
+          progress={progress}
+          size="small"
+          state="normal"
+          centerText="80%"
+        />
         <Text style={styles.stateLabel}>Normal</Text>
       </View>
 
       <View style={styles.stateExample}>
-        <ShotsyCircularProgressV2 progress={progress} size="small" state="success" centerText="80%" />
+        <ShotsyCircularProgressV2
+          progress={progress}
+          size="small"
+          state="success"
+          centerText="80%"
+        />
         <Text style={styles.stateLabel}>Success</Text>
       </View>
 
       <View style={styles.stateExample}>
-        <ShotsyCircularProgressV2 progress={progress} size="small" state="warning" centerText="80%" />
+        <ShotsyCircularProgressV2
+          progress={progress}
+          size="small"
+          state="warning"
+          centerText="80%"
+        />
         <Text style={styles.stateLabel}>Warning</Text>
       </View>
 
@@ -265,11 +272,7 @@ export function TrendProgressExample() {
       <View style={styles.trendContent}>
         <Text style={[styles.trendValue, { color: colors.text }]}>68%</Text>
         <View style={styles.trendRow}>
-          <TrendUp
-            size={16}
-            weight="bold"
-            color={trend === 'up' ? '#10B981' : '#EF4444'}
-          />
+          <TrendUp size={16} weight="bold" color={trend === 'up' ? '#10B981' : '#EF4444'} />
           <Text style={[styles.trendLabel, { color: colors.textSecondary }]}>+5% this week</Text>
         </View>
       </View>
@@ -333,103 +336,103 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 16,
   },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap',
-    padding: 20,
-    gap: 20,
-  },
-  sizeExample: {
-    alignItems: 'center',
-  },
-  sizeLabel: {
-    marginTop: 8,
-    fontSize: 12,
-    opacity: 0.7,
-  },
-  stateExample: {
-    alignItems: 'center',
-  },
-  stateLabel: {
-    marginTop: 8,
-    fontSize: 11,
-    opacity: 0.7,
-  },
-  streakContent: {
-    alignItems: 'center',
-  },
-  streakNumber: {
-    fontSize: 32,
-    fontWeight: '700',
-    marginTop: 4,
-  },
-  streakLabel: {
-    fontSize: 12,
-    marginTop: 2,
-  },
   healthContent: {
     alignItems: 'center',
+  },
+  healthLabel: {
+    fontSize: 12,
+    marginTop: 4,
   },
   healthScore: {
     fontSize: 36,
     fontWeight: '700',
     marginTop: 8,
   },
-  healthLabel: {
+  rowContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 20,
+    justifyContent: 'space-around',
+    padding: 20,
+  },
+  sizeExample: {
+    alignItems: 'center',
+  },
+  sizeLabel: {
     fontSize: 12,
+    marginTop: 8,
+    opacity: 0.7,
+  },
+  statLabel: {
+    fontSize: 14,
+  },
+  statRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  statValue: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  stateExample: {
+    alignItems: 'center',
+  },
+  stateLabel: {
+    fontSize: 11,
+    marginTop: 8,
+    opacity: 0.7,
+  },
+  streakContent: {
+    alignItems: 'center',
+  },
+  streakLabel: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  streakNumber: {
+    fontSize: 32,
+    fontWeight: '700',
     marginTop: 4,
   },
   trendContent: {
     alignItems: 'center',
   },
+  trendLabel: {
+    fontSize: 11,
+  },
+  trendRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+    marginTop: 4,
+  },
   trendValue: {
     fontSize: 32,
     fontWeight: '700',
   },
-  trendRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: 4,
-  },
-  trendLabel: {
-    fontSize: 11,
-  },
   widget: {
     borderRadius: 16,
-    padding: 20,
+    elevation: 3,
     margin: 16,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 3,
-  },
-  widgetTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 20,
   },
   widgetContent: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 24,
   },
   widgetStats: {
     flex: 1,
     gap: 12,
   },
-  statRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statLabel: {
-    fontSize: 14,
-  },
-  statValue: {
-    fontSize: 16,
-    fontWeight: '600',
+  widgetTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 20,
   },
 });

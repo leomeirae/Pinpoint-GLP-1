@@ -83,12 +83,7 @@ export function ForecastChart({ dosage, date, existingApplications = [] }: Forec
 
   return (
     <View style={styles.container}>
-      <Svg
-        width={chartWidth}
-        height={chartHeight}
-        viewBox="0 0 400 200"
-        preserveAspectRatio="none"
-      >
+      <Svg width={chartWidth} height={chartHeight} viewBox="0 0 400 200" preserveAspectRatio="none">
         <Defs>
           <LinearGradient id="forecastGradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <Stop offset="5%" stopColor={colors.primary} stopOpacity="0.6" />
@@ -97,8 +92,24 @@ export function ForecastChart({ dosage, date, existingApplications = [] }: Forec
         </Defs>
 
         {/* Grid lines - horizontal */}
-        <Line x1="0" y1="66.67" x2="400" y2="66.67" stroke={colors.border} strokeWidth="1" strokeDasharray="3 3" />
-        <Line x1="0" y1="133.33" x2="400" y2="133.33" stroke={colors.border} strokeWidth="1" strokeDasharray="3 3" />
+        <Line
+          x1="0"
+          y1="66.67"
+          x2="400"
+          y2="66.67"
+          stroke={colors.border}
+          strokeWidth="1"
+          strokeDasharray="3 3"
+        />
+        <Line
+          x1="0"
+          y1="133.33"
+          x2="400"
+          y2="133.33"
+          stroke={colors.border}
+          strokeWidth="1"
+          strokeDasharray="3 3"
+        />
 
         {/* Grid lines - vertical */}
         {chartData.map((point, index) => (
@@ -155,37 +166,36 @@ export function ForecastChart({ dosage, date, existingApplications = [] }: Forec
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     position: 'relative',
-  },
-  xAxisLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 0,
-    marginTop: 4,
-  },
-  xAxisLabel: {
-    fontSize: 10,
-  },
-  displayContainer: {
-    alignItems: 'center',
-    marginTop: 8,
+    width: '100%',
   },
   dateLabel: {
     fontSize: 12,
     marginBottom: 4,
   },
-  valueDisplay: {
-    fontSize: 14,
+  displayContainer: {
+    alignItems: 'center',
+    marginTop: 8,
   },
   valueBold: {
     fontWeight: '700',
   },
-  valueUnit: {
-    fontSize: 12,
+  valueDisplay: {
+    fontSize: 14,
   },
   valueEst: {
     fontSize: 12,
   },
+  valueUnit: {
+    fontSize: 12,
+  },
+  xAxisLabel: {
+    fontSize: 10,
+  },
+  xAxisLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+    paddingHorizontal: 0,
+  },
 });
-

@@ -101,39 +101,15 @@ const styles = StyleSheet.create({
   content: {
     gap: 24,
   },
-  rateCard: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  rateLabel: {
-    fontSize: 18,
-    marginBottom: 8,
-  },
-  rateValue: {
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  optionsContainer: {
-    gap: 12,
-  },
-  option: {
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    borderWidth: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  optionLabel: {
-    fontSize: 16,
-    fontWeight: '600',
+  emoji: {
+    fontSize: 64,
+    textAlign: 'center',
   },
   infoCard: {
-    padding: 16,
+    alignItems: 'flex-start',
     flexDirection: 'row',
     gap: 12,
-    alignItems: 'flex-start',
+    padding: 16,
   },
   infoEmoji: {
     fontSize: 24,
@@ -143,8 +119,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
   },
-  emoji: {
-    fontSize: 64,
-    textAlign: 'center',
+  option: {
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  optionsContainer: {
+    gap: 12,
+  },
+  rateCard: {
+    alignItems: 'center',
+    padding: 32,
+  },
+  rateLabel: {
+    fontSize: 18,
+    marginBottom: 8,
+  },
+  rateValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
   },
 });

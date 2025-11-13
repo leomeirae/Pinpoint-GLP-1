@@ -44,11 +44,7 @@ export interface ErrorLog {
  * @param error - Objeto de erro ou string
  * @param metadata - Dados adicionais úteis para debug
  */
-export async function logError(
-  context: string,
-  error: any,
-  metadata?: any
-): Promise<void> {
+export async function logError(context: string, error: any, metadata?: any): Promise<void> {
   const logEntry: ErrorLog = {
     timestamp: new Date().toISOString(),
     context,

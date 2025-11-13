@@ -134,18 +134,11 @@ export default function FeatureHookScreen() {
       <View style={styles.content}>
         {/* Feature Card */}
         <View style={styles.featureContainer}>
-          <View
-            style={[
-              styles.iconContainer,
-              { backgroundColor: currentFeature.color + '15' },
-            ]}
-          >
+          <View style={[styles.iconContainer, { backgroundColor: currentFeature.color + '15' }]}>
             <FeatureIcon size={64} color={currentFeature.color} weight="thin" />
           </View>
 
-          <Text style={[styles.title, { color: colors.text }]}>
-            {currentFeature.title}
-          </Text>
+          <Text style={[styles.title, { color: colors.text }]}>{currentFeature.title}</Text>
 
           <Text style={[styles.description, { color: colors.textSecondary }]}>
             {currentFeature.description}
@@ -160,8 +153,7 @@ export default function FeatureHookScreen() {
               style={[
                 styles.paginationDot,
                 {
-                  backgroundColor:
-                    index === currentIndex ? colors.primary : colors.border,
+                  backgroundColor: index === currentIndex ? colors.primary : colors.border,
                   width: index === currentIndex ? 24 : 8,
                 },
               ]}
@@ -185,9 +177,7 @@ export default function FeatureHookScreen() {
           <Text style={styles.buttonText}>
             {isSaving ? 'Salvando...' : isLastFeature ? 'Começar a usar' : 'Próximo'}
           </Text>
-          {!isLastFeature && !isSaving && (
-            <ArrowRight size={20} color="#FFFFFF" weight="bold" />
-          )}
+          {!isLastFeature && !isSaving && <ArrowRight size={20} color="#FFFFFF" weight="bold" />}
         </TouchableOpacity>
 
         {/* Skip Button */}
@@ -198,9 +188,7 @@ export default function FeatureHookScreen() {
             accessibilityRole="button"
             accessibilityLabel="Pular apresentação"
           >
-            <Text style={[styles.skipButtonText, { color: colors.textSecondary }]}>
-              Pular
-            </Text>
+            <Text style={[styles.skipButtonText, { color: colors.textSecondary }]}>Pular</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -209,59 +197,13 @@ export default function FeatureHookScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
-    paddingTop: ShotsyDesignTokens.spacing.xxxl,
-    paddingBottom: ShotsyDesignTokens.spacing.xxl,
-    justifyContent: 'space-between',
-  },
-  featureContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: ShotsyDesignTokens.spacing.xxxl,
-  },
-  iconContainer: {
-    width: 128,
-    height: 128,
-    borderRadius: ShotsyDesignTokens.borderRadius.xxl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.xxl,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h1,
-    textAlign: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  description: {
-    ...ShotsyDesignTokens.typography.body,
-    textAlign: 'center',
-    lineHeight: 24,
-    maxWidth: 320,
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.sm,
-    marginBottom: ShotsyDesignTokens.spacing.xl,
-  },
-  paginationDot: {
-    height: 8,
-    borderRadius: 4,
-  },
   button: {
-    height: 56,
+    alignItems: 'center',
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     gap: ShotsyDesignTokens.spacing.sm,
+    height: 56,
+    justifyContent: 'center',
     ...ShotsyDesignTokens.shadows.card,
   },
   buttonText: {
@@ -269,14 +211,60 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
   },
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.xxl,
+    paddingHorizontal: ShotsyDesignTokens.spacing.xl,
+    paddingTop: ShotsyDesignTokens.spacing.xxxl,
+  },
+  description: {
+    ...ShotsyDesignTokens.typography.body,
+    lineHeight: 24,
+    maxWidth: 320,
+    textAlign: 'center',
+  },
+  featureContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: ShotsyDesignTokens.spacing.xxxl,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.xxl,
+    height: 128,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.xxl,
+    width: 128,
+  },
+  pagination: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+    justifyContent: 'center',
+    marginBottom: ShotsyDesignTokens.spacing.xl,
+  },
+  paginationDot: {
+    borderRadius: 4,
+    height: 8,
+  },
   skipButton: {
-    marginTop: ShotsyDesignTokens.spacing.md,
+    alignItems: 'center',
     height: 48,
     justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: ShotsyDesignTokens.spacing.md,
   },
   skipButtonText: {
     ...ShotsyDesignTokens.typography.body,
     fontWeight: '600',
+  },
+  title: {
+    ...ShotsyDesignTokens.typography.h1,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    textAlign: 'center',
   },
 });

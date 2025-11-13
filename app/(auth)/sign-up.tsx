@@ -99,47 +99,47 @@ export default function SignUpScreen() {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: colors.background,
+      flex: 1,
     },
     content: {
       flex: 1,
-      padding: 24,
       justifyContent: 'center',
+      padding: 24,
     },
-    title: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 8,
+    divider: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginVertical: 24,
     },
-    subtitle: {
-      fontSize: 16,
-      color: colors.textSecondary,
-      marginBottom: 32,
+    dividerLine: {
+      backgroundColor: colors.border,
+      flex: 1,
+      height: 1,
     },
-    form: {
-      gap: 16,
+    dividerText: {
+      color: colors.textMuted,
+      fontSize: 14,
+      fontWeight: '600',
+      marginHorizontal: 16,
     },
     errorText: {
       color: colors.error,
       fontSize: 14,
       textAlign: 'center',
     },
-    divider: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginVertical: 24,
+    form: {
+      gap: 16,
     },
-    dividerLine: {
-      flex: 1,
-      height: 1,
-      backgroundColor: colors.border,
+    subtitle: {
+      color: colors.textSecondary,
+      fontSize: 16,
+      marginBottom: 32,
     },
-    dividerText: {
-      marginHorizontal: 16,
-      fontSize: 14,
-      color: colors.textMuted,
-      fontWeight: '600',
+    title: {
+      color: colors.text,
+      fontSize: 32,
+      fontWeight: 'bold',
+      marginBottom: 8,
     },
   });

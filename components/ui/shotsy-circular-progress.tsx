@@ -65,13 +65,13 @@ export function ShotsyCircularProgress({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   childrenContainer: {
-    position: 'absolute',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

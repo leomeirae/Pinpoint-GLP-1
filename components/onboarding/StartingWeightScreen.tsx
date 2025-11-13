@@ -19,9 +19,7 @@ export function StartingWeightScreen({
   startDate: initialDate,
 }: StartingWeightScreenProps) {
   const colors = useColors();
-  const [startDate, setStartDate] = useState(
-    initialDate ? new Date(initialDate) : new Date()
-  );
+  const [startDate, setStartDate] = useState(initialDate ? new Date(initialDate) : new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const formatDate = (date: Date) => {
@@ -35,10 +33,10 @@ export function StartingWeightScreen({
   };
 
   const handleNext = () => {
-        onNext({
+    onNext({
       startingWeight: startWeight,
-          startDate: startDate.toISOString().split('T')[0],
-        });
+      startDate: startDate.toISOString().split('T')[0],
+    });
   };
 
   return (
@@ -54,27 +52,31 @@ export function StartingWeightScreen({
           <View style={styles.cardContent}>
             <Ionicons name="scale" size={32} color={colors.textSecondary} />
             <View style={styles.cardText}>
-            <Text style={[styles.cardLabel, { color: colors.textSecondary }]}>Peso Inicial</Text>
+              <Text style={[styles.cardLabel, { color: colors.textSecondary }]}>Peso Inicial</Text>
               <Text style={[styles.cardValue, { color: colors.text }]}>{startWeight}kg</Text>
             </View>
           </View>
           <TouchableOpacity>
             <Ionicons name="pencil" size={24} color={colors.textMuted} />
           </TouchableOpacity>
-            </View>
+        </View>
 
         {/* Start Date Card - V0 Design */}
         <TouchableOpacity
           onPress={() => setShowDatePicker(true)}
           style={[styles.card, { backgroundColor: colors.backgroundSecondary }]}
         >
-            <View style={styles.cardContent}>
+          <View style={styles.cardContent}>
             <Ionicons name="calendar" size={32} color={colors.textSecondary} />
             <View style={styles.cardText}>
-              <Text style={[styles.cardLabel, { color: colors.textSecondary }]}>Data de Início</Text>
-              <Text style={[styles.cardValue, { color: colors.text }]}>{formatDate(startDate)}</Text>
+              <Text style={[styles.cardLabel, { color: colors.textSecondary }]}>
+                Data de Início
+              </Text>
+              <Text style={[styles.cardValue, { color: colors.text }]}>
+                {formatDate(startDate)}
+              </Text>
             </View>
-            </View>
+          </View>
           <TouchableOpacity>
             <Ionicons name="pencil" size={24} color={colors.textMuted} />
           </TouchableOpacity>
@@ -99,33 +101,32 @@ export function StartingWeightScreen({
 }
 
 const styles = StyleSheet.create({
-  content: {
-    gap: 16,
-    paddingHorizontal: 24,
-  },
   card: {
-    borderRadius: 16,
-    padding: 24,
-    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 16,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 24,
   },
   cardContent: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 16,
-  },
-  cardText: {
-    flex: 1,
   },
   cardLabel: {
     fontSize: 14,
     marginBottom: 4,
   },
+  cardText: {
+    flex: 1,
+  },
   cardValue: {
     fontSize: 20,
     fontWeight: '700',
   },
+  content: {
+    gap: 16,
+    paddingHorizontal: 24,
+  },
 });
-

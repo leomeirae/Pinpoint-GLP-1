@@ -95,91 +95,91 @@ export function MedicationList({ medications, onEdit, onDelete }: MedicationList
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
+    actionButton: {
+      backgroundColor: colors.background,
+      borderRadius: 8,
+      marginLeft: 8,
+      padding: 8,
+    },
+    actionIcon: {
+      fontSize: 18,
+    },
+    actions: {
+      flexDirection: 'row',
+      // gap: 8, // Not supported in React Native StyleSheet
+    },
     container: {
       marginBottom: 16,
     },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 12,
-    },
-    emptyContainer: {
-      backgroundColor: colors.card,
-      borderRadius: 16,
-      padding: 32,
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    emptyIcon: {
-      fontSize: 48,
-      marginBottom: 16,
-    },
-    emptyText: {
-      fontSize: 16,
-      color: colors.text,
-      marginBottom: 16,
-      fontWeight: '600',
-    },
     emptyButton: {
       backgroundColor: colors.primary,
+      borderRadius: 12,
       paddingHorizontal: 24,
       paddingVertical: 12,
-      borderRadius: 12,
     },
     emptyButtonText: {
       color: colors.text,
       fontSize: 16,
       fontWeight: '600',
     },
+    emptyContainer: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderRadius: 16,
+      marginBottom: 16,
+      padding: 32,
+    },
+    emptyIcon: {
+      fontSize: 48,
+      marginBottom: 16,
+    },
+    emptyText: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
     medicationCard: {
       backgroundColor: colors.card,
       borderRadius: 12,
-      padding: 16,
       marginBottom: 12,
+      padding: 16,
+    },
+    medicationDosage: {
+      color: colors.primary,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    medicationFrequency: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      marginBottom: 4,
     },
     medicationHeader: {
+      alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
       marginBottom: 8,
     },
     medicationInfo: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
       // gap: 12, // Not supported in React Native StyleSheet
     },
     medicationName: {
+      color: colors.text,
       fontSize: 18,
       fontWeight: 'bold',
-      color: colors.text,
       marginRight: 12,
     },
-    medicationDosage: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: colors.primary,
-    },
-    actions: {
-      flexDirection: 'row',
-      // gap: 8, // Not supported in React Native StyleSheet
-    },
-    actionButton: {
-      padding: 8,
-      borderRadius: 8,
-      backgroundColor: colors.background,
-      marginLeft: 8,
-    },
-    actionIcon: {
-      fontSize: 18,
-    },
-    medicationFrequency: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      marginBottom: 4,
-    },
     medicationStart: {
-      fontSize: 12,
       color: colors.textMuted,
+      fontSize: 12,
+    },
+    title: {
+      color: colors.text,
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 12,
     },
   });

@@ -120,18 +120,13 @@ export function PurchaseListItem({ purchase, onEdit, onDelete }: PurchaseListIte
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.actionButton,
-            { backgroundColor: (colors.accentRed || '#ef4444') + '15' },
-          ]}
+          style={[styles.actionButton, { backgroundColor: (colors.accentRed || '#ef4444') + '15' }]}
           onPress={handleDelete}
           accessibilityRole="button"
           accessibilityLabel="Excluir compra"
         >
           <Trash size={18} color={colors.accentRed || '#ef4444'} weight="regular" />
-          <Text style={[styles.actionText, { color: colors.accentRed || '#ef4444' }]}>
-            Excluir
-          </Text>
+          <Text style={[styles.actionText, { color: colors.accentRed || '#ef4444' }]}>Excluir</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -139,85 +134,85 @@ export function PurchaseListItem({ purchase, onEdit, onDelete }: PurchaseListIte
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    marginBottom: ShotsyDesignTokens.spacing.md,
-    ...ShotsyDesignTokens.shadows.card,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  headerLeft: {
-    flex: 1,
-    marginRight: ShotsyDesignTokens.spacing.md,
-  },
-  medication: {
-    ...ShotsyDesignTokens.typography.h4,
-    fontWeight: '600',
-    marginBottom: 2,
-  },
-  brand: {
-    ...ShotsyDesignTokens.typography.caption,
-    fontWeight: '400',
-  },
-  dosage: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  date: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  priceSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  priceLabel: {
-    ...ShotsyDesignTokens.typography.caption,
-    marginBottom: 2,
-  },
-  totalPrice: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '700',
-  },
-  pricePerPen: {
-    ...ShotsyDesignTokens.typography.body,
-    fontWeight: '600',
-  },
-  locationRow: {
-    flexDirection: 'row',
+  actionButton: {
     alignItems: 'center',
-    gap: 4,
-    marginBottom: ShotsyDesignTokens.spacing.sm,
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 6,
+    justifyContent: 'center',
+    paddingHorizontal: ShotsyDesignTokens.spacing.md,
+    paddingVertical: ShotsyDesignTokens.spacing.sm,
   },
-  location: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  notes: {
-    ...ShotsyDesignTokens.typography.caption,
-    lineHeight: 18,
-    marginBottom: ShotsyDesignTokens.spacing.md,
+  actionText: {
+    ...ShotsyDesignTokens.typography.label,
+    fontWeight: '600',
   },
   actions: {
     flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
     marginTop: ShotsyDesignTokens.spacing.sm,
   },
-  actionButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: ShotsyDesignTokens.spacing.sm,
-    paddingHorizontal: ShotsyDesignTokens.spacing.md,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
+  brand: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontWeight: '400',
   },
-  actionText: {
-    ...ShotsyDesignTokens.typography.label,
+  container: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    padding: ShotsyDesignTokens.spacing.lg,
+    ...ShotsyDesignTokens.shadows.card,
+  },
+  date: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  dosage: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  header: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  headerLeft: {
+    flex: 1,
+    marginRight: ShotsyDesignTokens.spacing.md,
+  },
+  location: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  locationRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+    marginBottom: ShotsyDesignTokens.spacing.sm,
+  },
+  medication: {
+    ...ShotsyDesignTokens.typography.h4,
     fontWeight: '600',
+    marginBottom: 2,
+  },
+  notes: {
+    ...ShotsyDesignTokens.typography.caption,
+    lineHeight: 18,
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  priceLabel: {
+    ...ShotsyDesignTokens.typography.caption,
+    marginBottom: 2,
+  },
+  pricePerPen: {
+    ...ShotsyDesignTokens.typography.body,
+    fontWeight: '600',
+  },
+  priceSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: ShotsyDesignTokens.spacing.md,
+  },
+  totalPrice: {
+    ...ShotsyDesignTokens.typography.h3,
+    fontWeight: '700',
   },
 });

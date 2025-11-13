@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { router } from 'expo-router';
-import { Syringe, Scale, CurrencyCircleDollar, Pause, Martini } from 'phosphor-react-native';
+import { Syringe, Scales, CurrencyCircleDollar, Pause, Martini } from 'phosphor-react-native';
 import { useColors } from '@/hooks/useShotsyColors';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
 import { createLogger } from '@/lib/logger';
@@ -33,7 +33,7 @@ export function QuickActionsCard() {
     {
       id: 'add-weight',
       label: 'Registrar Peso',
-      icon: Scale,
+      icon: Scales,
       color: colors.accentGreen || '#22c55e',
       route: '/(tabs)/add-weight',
       available: true,
@@ -110,18 +110,10 @@ export function QuickActionsCard() {
               accessibilityRole="button"
               accessibilityLabel={action.label}
             >
-              <View
-                style={[
-                  styles.iconContainer,
-                  { backgroundColor: action.color + '15' },
-                ]}
-              >
+              <View style={[styles.iconContainer, { backgroundColor: action.color + '15' }]}>
                 <Icon size={24} color={action.color} weight="bold" />
               </View>
-              <Text
-                style={[styles.actionLabel, { color: colors.text }]}
-                numberOfLines={2}
-              >
+              <Text style={[styles.actionLabel, { color: colors.text }]} numberOfLines={2}>
                 {action.label}
               </Text>
             </Pressable>
@@ -133,51 +125,51 @@ export function QuickActionsCard() {
 }
 
 const styles = StyleSheet.create({
+  actionButton: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    flex: 1,
+    justifyContent: 'center',
+    maxWidth: '48%',
+    minHeight: 100,
+    minWidth: 100,
+    padding: ShotsyDesignTokens.spacing.md,
+  },
+  actionLabel: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontWeight: '600',
+    lineHeight: 16,
+    textAlign: 'center',
+  },
   container: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
     marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
     ...ShotsyDesignTokens.shadows.card,
-  },
-  header: {
-    marginBottom: ShotsyDesignTokens.spacing.md,
-  },
-  title: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  subtitle: {
-    ...ShotsyDesignTokens.typography.caption,
-    lineHeight: 18,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: ShotsyDesignTokens.spacing.md,
   },
-  actionButton: {
-    flex: 1,
-    minWidth: 100,
-    maxWidth: '48%',
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    padding: ShotsyDesignTokens.spacing.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 100,
+  header: {
+    marginBottom: ShotsyDesignTokens.spacing.md,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    height: 48,
+    justifyContent: 'center',
     marginBottom: ShotsyDesignTokens.spacing.sm,
+    width: 48,
   },
-  actionLabel: {
+  subtitle: {
     ...ShotsyDesignTokens.typography.caption,
+    lineHeight: 18,
+  },
+  title: {
+    ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
-    textAlign: 'center',
-    lineHeight: 16,
+    marginBottom: 4,
   },
 });

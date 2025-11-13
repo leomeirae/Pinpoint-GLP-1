@@ -93,20 +93,20 @@ const getStyles = (colors: any) =>
       // gap: 16, // Not supported in React Native StyleSheet
     },
     emptyContainer: {
+      alignItems: 'center',
       backgroundColor: colors.card,
       borderRadius: 16,
-      padding: 32,
-      alignItems: 'center',
       marginBottom: 16,
+      padding: 32,
     },
     emptyText: {
-      fontSize: 16,
       color: colors.text,
+      fontSize: 16,
       marginBottom: 8,
     },
     emptySubtext: {
-      fontSize: 14,
       color: colors.textMuted,
+      fontSize: 14,
     },
 
     // Progress Card
@@ -116,20 +116,20 @@ const getStyles = (colors: any) =>
       padding: 20,
     },
     titleContainer: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
       gap: 8,
       marginBottom: 16,
     },
     title: {
+      color: colors.text,
       fontSize: 18,
       fontWeight: 'bold',
-      color: colors.text,
     },
     weightFlow: {
+      alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
       marginBottom: 20,
     },
     weightPoint: {
@@ -137,14 +137,14 @@ const getStyles = (colors: any) =>
       flex: 1,
     },
     weightLabel: {
-      fontSize: 12,
       color: colors.textMuted,
+      fontSize: 12,
       marginBottom: 4,
     },
     weightValue: {
+      color: colors.text,
       fontSize: 20,
       fontWeight: 'bold',
-      color: colors.text,
     },
     currentWeight: {
       color: colors.primary,
@@ -158,20 +158,20 @@ const getStyles = (colors: any) =>
       color: colors.primary,
     },
     progressBarContainer: {
-      height: 8,
       backgroundColor: colors.background,
       borderRadius: 4,
-      overflow: 'hidden',
+      height: 8,
       marginBottom: 8,
+      overflow: 'hidden',
     },
     progressBar: {
-      height: '100%',
       backgroundColor: colors.primary,
       borderRadius: 4,
+      height: '100%',
     },
     progressText: {
-      fontSize: 14,
       color: colors.textSecondary,
+      fontSize: 14,
       textAlign: 'center',
     },
   });

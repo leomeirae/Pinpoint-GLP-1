@@ -182,63 +182,17 @@ export const BMIChart: React.FC<BMIChartProps> = ({ data, periodFilter }) => {
 
 const styles = StyleSheet.create({
   card: {
+    marginBottom: 16,
     padding: 16,
-    marginBottom: 16,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
+  chart: {
+    borderRadius: 16,
+    marginVertical: 8,
   },
   currentBMI: {
     fontSize: 14,
     fontWeight: '600',
     marginTop: 4,
-  },
-  selectedPointBanner: {
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  selectedPointBMI: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  selectedPointCategory: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  selectedPointDate: {
-    fontSize: 13,
-  },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
-  },
-  zones: {
-    marginTop: 12,
-    gap: 8,
-  },
-  zoneItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  zoneDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  zoneText: {
-    fontSize: 12,
   },
   emptyState: {
     alignItems: 'center',
@@ -248,5 +202,51 @@ const styles = StyleSheet.create({
   emptyStateText: {
     fontSize: 14,
     textAlign: 'center',
+  },
+  header: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  selectedPointBMI: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  selectedPointBanner: {
+    alignItems: 'center',
+    borderRadius: 12,
+    marginBottom: 12,
+    padding: 12,
+  },
+  selectedPointCategory: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  selectedPointDate: {
+    fontSize: 13,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  zoneDot: {
+    borderRadius: 6,
+    height: 12,
+    width: 12,
+  },
+  zoneItem: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+  },
+  zoneText: {
+    fontSize: 12,
+  },
+  zones: {
+    gap: 8,
+    marginTop: 12,
   },
 });

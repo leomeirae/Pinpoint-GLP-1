@@ -85,24 +85,31 @@ export function OnboardingScreenBase({
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    alignItems: 'center',
+    borderRadius: 20,
+    height: 40,
+    justifyContent: 'center',
+    left: 20,
+    position: 'absolute',
+    width: 40,
+    zIndex: 10,
+  },
   container: {
     flex: 1,
   },
-  backButton: {
-    position: 'absolute',
-    left: 20,
-    zIndex: 10,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
+  footer: {
+    bottom: 0,
+    elevation: 5,
+    left: 0,
     paddingHorizontal: 24,
+    paddingTop: 16,
+    position: 'absolute',
+    right: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   header: {
     marginBottom: 32,
@@ -111,27 +118,20 @@ const styles = StyleSheet.create({
   headerWithBackButton: {
     paddingLeft: 0, // No extra padding needed, back button is absolute
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    lineHeight: 36,
+  scrollContent: {
+    paddingHorizontal: 24,
+  },
+  scrollView: {
+    flex: 1,
   },
   subtitle: {
     fontSize: 16,
     lineHeight: 24,
   },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    lineHeight: 36,
+    marginBottom: 8,
   },
 });

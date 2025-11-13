@@ -19,7 +19,7 @@ import {
   VictoryScatter,
   VictoryLegend,
   VictoryGroup,
-} from 'victory-native';
+} from 'victory';
 import { useColors } from '@/hooks/useShotsyColors';
 import { getDosageColor, getDosageLabel } from '@/lib/dosageColors';
 import { ShotsyDesignTokens } from '@/constants/shotsyDesignTokens';
@@ -51,7 +51,11 @@ const PERIOD_OPTIONS: PeriodOption[] = [
   { key: 'all', label: 'All time', months: 999 },
 ];
 
-export const WeightChartV2: React.FC<WeightChartV2Props> = ({ data, targetWeight, initialWeight }) => {
+export const WeightChartV2: React.FC<WeightChartV2Props> = ({
+  data,
+  targetWeight,
+  initialWeight,
+}) => {
   const colors = useColors();
   const { width } = useWindowDimensions();
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('3months');
@@ -143,7 +147,9 @@ export const WeightChartV2: React.FC<WeightChartV2Props> = ({ data, targetWeight
   const chartHeight = 280;
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.card }, ShotsyDesignTokens.shadows.card]}>
+    <View
+      style={[styles.container, { backgroundColor: colors.card }, ShotsyDesignTokens.shadows.card]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <Text style={[styles.title, { color: colors.text }]}>Weight Progress</Text>
@@ -309,9 +315,7 @@ export const WeightChartV2: React.FC<WeightChartV2Props> = ({ data, targetWeight
               <View style={styles.legendItems}>
                 {groupedByDosage.map((group) => (
                   <View key={group.dosage} style={styles.legendItem}>
-                    <View
-                      style={[styles.legendColor, { backgroundColor: group.color }]}
-                    />
+                    <View style={[styles.legendColor, { backgroundColor: group.color }]} />
                     <Text style={[styles.legendText, { color: colors.textSecondary }]}>
                       {group.dosage}mg
                     </Text>
@@ -326,9 +330,7 @@ export const WeightChartV2: React.FC<WeightChartV2Props> = ({ data, targetWeight
                         { backgroundColor: colors.success },
                       ]}
                     />
-                    <Text style={[styles.legendText, { color: colors.textSecondary }]}>
-                      Target
-                    </Text>
+                    <Text style={[styles.legendText, { color: colors.textSecondary }]}>Target</Text>
                   </View>
                 )}
               </View>
@@ -341,27 +343,80 @@ export const WeightChartV2: React.FC<WeightChartV2Props> = ({ data, targetWeight
 };
 
 const styles = StyleSheet.create({
+  chartContainer: {
+    alignItems: 'center',
+  },
   container: {
     borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
     marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.lg,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    marginBottom: ShotsyDesignTokens.spacing.lg,
+    padding: ShotsyDesignTokens.spacing.xxl,
+  },
+  emptySubtext: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
+  emptyText: {
+    ...ShotsyDesignTokens.typography.body,
+    marginBottom: ShotsyDesignTokens.spacing.xs,
   },
   header: {
     marginBottom: ShotsyDesignTokens.spacing.lg,
   },
-  title: {
-    ...ShotsyDesignTokens.typography.h3,
+  legendColor: {
+    borderRadius: 2,
+    height: 3,
+    width: 16,
   },
-  statsRow: {
+  legendColorDashed: {
+    height: 2,
+    width: 20,
+  },
+  legendContainer: {
+    marginTop: ShotsyDesignTokens.spacing.md,
+    width: '100%',
+  },
+  legendItem: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.xs,
+  },
+  legendItems: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: ShotsyDesignTokens.spacing.md,
+  },
+  legendText: {
+    ...ShotsyDesignTokens.typography.tiny,
+  },
+  legendTitle: {
+    ...ShotsyDesignTokens.typography.caption,
+    fontWeight: '600',
+    marginBottom: ShotsyDesignTokens.spacing.xs,
+  },
+  periodButton: {
+    borderRadius: ShotsyDesignTokens.borderRadius.full,
+    borderWidth: 1,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingVertical: ShotsyDesignTokens.spacing.sm,
+  },
+  periodContainer: {
     flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
     marginBottom: ShotsyDesignTokens.spacing.lg,
   },
+  periodText: {
+    ...ShotsyDesignTokens.typography.caption,
+  },
   statCard: {
-    flex: 1,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-    padding: ShotsyDesignTokens.spacing.md,
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    flex: 1,
+    padding: ShotsyDesignTokens.spacing.md,
   },
   statLabel: {
     ...ShotsyDesignTokens.typography.caption,
@@ -370,65 +425,12 @@ const styles = StyleSheet.create({
   statValue: {
     ...ShotsyDesignTokens.typography.h4,
   },
-  periodContainer: {
+  statsRow: {
     flexDirection: 'row',
     gap: ShotsyDesignTokens.spacing.sm,
     marginBottom: ShotsyDesignTokens.spacing.lg,
   },
-  periodButton: {
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingVertical: ShotsyDesignTokens.spacing.sm,
-    borderRadius: ShotsyDesignTokens.borderRadius.full,
-    borderWidth: 1,
-  },
-  periodText: {
-    ...ShotsyDesignTokens.typography.caption,
-  },
-  chartContainer: {
-    alignItems: 'center',
-  },
-  legendContainer: {
-    marginTop: ShotsyDesignTokens.spacing.md,
-    width: '100%',
-  },
-  legendTitle: {
-    ...ShotsyDesignTokens.typography.caption,
-    marginBottom: ShotsyDesignTokens.spacing.xs,
-    fontWeight: '600',
-  },
-  legendItems: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: ShotsyDesignTokens.spacing.md,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.xs,
-  },
-  legendColor: {
-    width: 16,
-    height: 3,
-    borderRadius: 2,
-  },
-  legendColorDashed: {
-    width: 20,
-    height: 2,
-  },
-  legendText: {
-    ...ShotsyDesignTokens.typography.tiny,
-  },
-  emptyContainer: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.xxl,
-    alignItems: 'center',
-    marginBottom: ShotsyDesignTokens.spacing.lg,
-  },
-  emptyText: {
-    ...ShotsyDesignTokens.typography.body,
-    marginBottom: ShotsyDesignTokens.spacing.xs,
-  },
-  emptySubtext: {
-    ...ShotsyDesignTokens.typography.caption,
+  title: {
+    ...ShotsyDesignTokens.typography.h3,
   },
 });

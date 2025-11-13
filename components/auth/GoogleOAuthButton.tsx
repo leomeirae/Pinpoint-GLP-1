@@ -119,23 +119,23 @@ export function GoogleOAuthButton({ mode = 'signin' }: GoogleOAuthButtonProps) {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     button: {
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
       alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 1,
+      backgroundColor: colors.card,
       borderColor: colors.border,
+      borderRadius: 12,
+      borderWidth: 1,
+      justifyContent: 'center',
       minHeight: 56,
+      padding: 16,
     },
     content: {
-      flexDirection: 'row',
       alignItems: 'center',
+      flexDirection: 'row',
       gap: 12,
     },
     text: {
+      color: colors.text,
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
     },
   });

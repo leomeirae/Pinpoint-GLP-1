@@ -107,7 +107,10 @@ export const usePurchases = () => {
     }
   };
 
-  const updatePurchase = async (id: string, updates: Partial<Omit<Purchase, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'date'>>) => {
+  const updatePurchase = async (
+    id: string,
+    updates: Partial<Omit<Purchase, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'date'>>
+  ) => {
     if (!user) {
       throw new Error('User not authenticated');
     }

@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Linking, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Linking,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import { useAuth } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useShotsyColors';
@@ -81,7 +90,10 @@ export default function SettingsScreen() {
               router.push('/(auth)/welcome');
             } catch (fallbackError) {
               logger.error('Fallback redirect also failed', fallbackError as Error);
-              Alert.alert('Erro', 'Não foi possível sair da conta. Por favor, feche o app e tente novamente.');
+              Alert.alert(
+                'Erro',
+                'Não foi possível sair da conta. Por favor, feche o app e tente novamente.'
+              );
             }
           }
         },
@@ -116,18 +128,14 @@ export default function SettingsScreen() {
           style: 'destructive',
           onPress: async () => {
             // Confirmation dialog before actual deletion
-            Alert.alert(
-              'Confirmação Final',
-              'Tem certeza? Esta ação é irreversível.',
-              [
-                { text: 'Cancelar', style: 'cancel' },
-                {
-                  text: 'Sim, Excluir',
-                  style: 'destructive',
-                  onPress: () => handleAccountDeletionConfirmed(),
-                },
-              ]
-            );
+            Alert.alert('Confirmação Final', 'Tem certeza? Esta ação é irreversível.', [
+              { text: 'Cancelar', style: 'cancel' },
+              {
+                text: 'Sim, Excluir',
+                style: 'destructive',
+                onPress: () => handleAccountDeletionConfirmed(),
+              },
+            ]);
           },
         },
       ]
@@ -197,7 +205,8 @@ export default function SettingsScreen() {
       icon: <Ruler size={20} color={colors.accentBlue || '#3b82f6'} weight="bold" />,
       label: 'Unidades de Medida',
       color: colors.accentBlue || '#3b82f6',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
       icon: <Target size={20} color={colors.accentGreen || '#22c55e'} weight="bold" />,
@@ -221,7 +230,8 @@ export default function SettingsScreen() {
       icon: <GridFour size={20} color={colors.accentYellow || '#eab308'} weight="bold" />,
       label: 'Widgets',
       color: colors.accentYellow || '#eab308',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
       icon: <Pill size={20} color={colors.primary || '#06b6d4'} weight="bold" />,
@@ -249,19 +259,22 @@ export default function SettingsScreen() {
       icon: <Heart size={20} color={colors.accentRed || '#ef4444'} weight="bold" />,
       label: 'Dados do Apple Saúde',
       color: colors.accentRed || '#ef4444',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
       icon: <Database size={20} color={colors.accentBlue || '#3b82f6'} weight="bold" />,
       label: 'Gerenciar Meus Dados',
       color: colors.accentBlue || '#3b82f6',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
       icon: <CloudArrowUp size={20} color={colors.primary || '#06b6d4'} weight="bold" />,
       label: 'Status do iCloud',
       color: colors.primary || '#06b6d4',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
   ];
 
@@ -283,23 +296,22 @@ export default function SettingsScreen() {
       icon: <Megaphone size={20} color={colors.textSecondary || '#6b7280'} weight="bold" />,
       label: 'O que há de novo',
       color: colors.textSecondary || '#6b7280',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
     {
       icon: <Star size={20} color={colors.textSecondary || '#6b7280'} weight="bold" />,
       label: 'Avalie este App',
       color: colors.textSecondary || '#6b7280',
-      onPress: () => Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
+      onPress: () =>
+        Alert.alert('Em desenvolvimento', 'Esta funcionalidade será implementada em breve.'),
     },
   ];
 
   const renderSettingsItem = (item: SettingsItem, index: number, isLast: boolean) => {
     const content = (
       <TouchableOpacity
-        style={[
-          styles.settingsItem,
-          isLast && styles.lastItem,
-        ]}
+        style={[styles.settingsItem, isLast && styles.lastItem]}
         onPress={item.onPress}
       >
         <View style={styles.settingsItemContent}>
@@ -353,14 +365,11 @@ export default function SettingsScreen() {
             onPress={() => router.push('/(tabs)/theme')}
           >
             <View style={styles.themePreviewContent}>
-              <ShotsyCircularProgressV2
-                progress={0.75}
-                size="small"
-                state="normal"
-                centerText=""
-              />
+              <ShotsyCircularProgressV2 progress={0.75} size="small" state="normal" centerText="" />
               <View style={styles.themeInfo}>
-                <Text style={[styles.themeLabel, { color: colors.textSecondary }]}>Active Theme</Text>
+                <Text style={[styles.themeLabel, { color: colors.textSecondary }]}>
+                  Active Theme
+                </Text>
                 <Text style={[styles.themeName, { color: colors.text }]}>{currentTheme}</Text>
                 <Text style={[styles.themeDescription, { color: colors.textMuted }]}>
                   Tap to customize colors
@@ -431,10 +440,7 @@ export default function SettingsScreen() {
               ShotsyDesignTokens.shadows.card,
             ]}
           >
-            <TouchableOpacity
-              style={styles.settingsItem}
-              onPress={handleSignOut}
-            >
+            <TouchableOpacity style={styles.settingsItem} onPress={handleSignOut}>
               <View style={styles.settingsItemContent}>
                 <SignOut size={20} color={colors.accentRed || '#ef4444'} weight="bold" />
                 <Text style={[styles.settingsItemLabel, { color: colors.accentRed || '#ef4444' }]}>
@@ -480,13 +486,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: ShotsyDesignTokens.spacing.md,
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingTop: 60,
-    paddingBottom: ShotsyDesignTokens.spacing.md,
-    borderBottomWidth: 1,
   },
   menuButton: {
     padding: ShotsyDesignTokens.spacing.sm,
@@ -514,17 +520,17 @@ const styles = StyleSheet.create({
 
   // Theme Preview Card - NEW!
   themePreviewCard: {
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.lg,
-    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: ShotsyDesignTokens.spacing.lg,
   },
   themePreviewContent: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.lg,
+    flexDirection: 'row',
     flex: 1,
+    gap: ShotsyDesignTokens.spacing.lg,
   },
   themeInfo: {
     flex: 1,
@@ -547,30 +553,30 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   settingsItem: {
-    flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: ShotsyDesignTokens.spacing.lg,
     paddingVertical: ShotsyDesignTokens.spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
   },
   lastItem: {
     borderBottomWidth: 0,
   },
   settingsItemContent: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
+    flexDirection: 'row',
     flex: 1,
+    gap: ShotsyDesignTokens.spacing.md,
   },
   settingsItemLabel: {
     ...ShotsyDesignTokens.typography.body,
     fontWeight: '500',
   },
   chevronContainer: {
-    width: 20,
     alignItems: 'center',
+    width: 20,
   },
   chevron: {
     fontSize: 24,

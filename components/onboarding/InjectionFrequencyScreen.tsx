@@ -58,15 +58,15 @@ export function InjectionFrequencyScreen({ onNext, onBack }: InjectionFrequencyS
                 {isSelected ? (
                   <View style={[styles.checkCircle, { backgroundColor: colors.primary }]}>
                     <Ionicons name="checkmark" size={16} color="#FFFFFF" />
-                </View>
+                  </View>
                 ) : (
-              <View
-                style={[
+                  <View
+                    style={[
                       styles.radio,
                       {
                         borderColor: colors.border,
                       },
-                ]}
+                    ]}
                   />
                 )}
                 <Text
@@ -89,40 +89,40 @@ export function InjectionFrequencyScreen({ onNext, onBack }: InjectionFrequencyS
 }
 
 const styles = StyleSheet.create({
+  checkCircle: {
+    alignItems: 'center',
+    borderRadius: 12,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
+  },
   content: {
     gap: 12,
     paddingHorizontal: 24,
     paddingTop: 8, // Extra padding to avoid overlap with back button
   },
   option: {
+    alignItems: 'center',
     borderRadius: 16,
-    padding: 20,
+    flexDirection: 'row',
     minHeight: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  radioContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  radio: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-  },
-  checkCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
   },
   optionLabel: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '500',
+  },
+  radio: {
+    borderRadius: 12,
+    borderWidth: 2,
+    height: 24,
+    width: 24,
+  },
+  radioContainer: {
+    alignItems: 'center',
     flex: 1,
+    flexDirection: 'row',
+    gap: 12,
   },
 });

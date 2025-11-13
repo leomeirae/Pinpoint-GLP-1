@@ -169,92 +169,32 @@ export function Timeline({
 
 const getStyles = (colors: any) =>
   StyleSheet.create({
-    container: {
-      paddingVertical: 16,
+    actionButton: {
+      backgroundColor: colors.background,
+      borderRadius: 6,
+      padding: 6,
     },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: 16,
+    actionButtonSecond: {
+      marginLeft: 8,
     },
-    emptyContainer: {
-      backgroundColor: colors.card,
-      borderRadius: 16,
-      padding: 32,
-      alignItems: 'center',
-    },
-    emptyText: {
+    actionIcon: {
       fontSize: 16,
-      color: colors.text,
-      marginBottom: 8,
     },
-    emptySubtext: {
-      fontSize: 14,
-      color: colors.textMuted,
-      textAlign: 'center',
-    },
-    timelineContainer: {
-      paddingLeft: 8,
-    },
-    eventWrapper: {
-      position: 'relative',
-      marginBottom: 16,
+    actions: {
+      flexDirection: 'row',
+      // gap: 4, // Not supported in React Native StyleSheet
+      alignSelf: 'flex-start',
     },
     connector: {
-      position: 'absolute',
+      backgroundColor: colors.border,
+      height: '100%',
       left: 19,
+      position: 'absolute',
       top: 40,
       width: 2,
-      height: '100%',
-      backgroundColor: colors.border,
     },
-    eventCard: {
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      padding: 16,
-      marginLeft: 48,
-    },
-    eventHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    iconCircle: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginLeft: -64,
-      marginRight: 16,
-      borderWidth: 3,
-      borderColor: colors.background,
-    },
-    iconApplication: {
-      backgroundColor: colors.primary,
-    },
-    iconWeight: {
-      backgroundColor: colors.success,
-    },
-    iconText: {
-      fontSize: 20,
-    },
-    dateContainer: {
-      flex: 1,
-    },
-    dateText: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: colors.text,
-    },
-    timeText: {
-      fontSize: 12,
-      color: colors.textMuted,
-      marginTop: 2,
-    },
-    eventContent: {
-      // gap: 4, // Not supported in React Native StyleSheet
+    container: {
+      paddingVertical: 16,
     },
     contentHeader: {
       flexDirection: 'row',
@@ -265,48 +205,108 @@ const getStyles = (colors: any) =>
       flex: 1,
       // gap: 4, // Not supported in React Native StyleSheet
     },
-    actions: {
-      flexDirection: 'row',
-      // gap: 4, // Not supported in React Native StyleSheet
-      alignSelf: 'flex-start',
+    dateContainer: {
+      flex: 1,
     },
-    actionButton: {
-      padding: 6,
-      borderRadius: 6,
-      backgroundColor: colors.background,
-    },
-    actionButtonSecond: {
-      marginLeft: 8,
-    },
-    actionIcon: {
-      fontSize: 16,
-    },
-    eventTitle: {
-      fontSize: 16,
-      fontWeight: '600',
+    dateText: {
       color: colors.text,
-      marginBottom: 4,
+      fontSize: 14,
+      fontWeight: '600',
+    },
+    emptyContainer: {
+      alignItems: 'center',
+      backgroundColor: colors.card,
+      borderRadius: 16,
+      padding: 32,
+    },
+    emptySubtext: {
+      color: colors.textMuted,
+      fontSize: 14,
+      textAlign: 'center',
+    },
+    emptyText: {
+      color: colors.text,
+      fontSize: 16,
+      marginBottom: 8,
+    },
+    eventCard: {
+      backgroundColor: colors.card,
+      borderRadius: 12,
+      marginLeft: 48,
+      padding: 16,
+    },
+    eventContent: {
+      // gap: 4, // Not supported in React Native StyleSheet
     },
     eventDetail: {
-      fontSize: 14,
       color: colors.textSecondary,
+      fontSize: 14,
       marginBottom: 4,
     },
+    eventHeader: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginBottom: 12,
+    },
     eventNotes: {
-      fontSize: 12,
       color: colors.textMuted,
+      fontSize: 12,
       fontStyle: 'italic',
       marginTop: 4,
+    },
+    eventTitle: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 4,
+    },
+    eventWrapper: {
+      marginBottom: 16,
+      position: 'relative',
+    },
+    iconApplication: {
+      backgroundColor: colors.primary,
+    },
+    iconCircle: {
+      alignItems: 'center',
+      borderColor: colors.background,
+      borderRadius: 20,
+      borderWidth: 3,
+      height: 40,
+      justifyContent: 'center',
+      marginLeft: -64,
+      marginRight: 16,
+      width: 40,
+    },
+    iconText: {
+      fontSize: 20,
+    },
+    iconWeight: {
+      backgroundColor: colors.success,
+    },
+    timeText: {
+      color: colors.textMuted,
+      fontSize: 12,
+      marginTop: 2,
+    },
+    timelineContainer: {
+      paddingLeft: 8,
+    },
+    title: {
+      color: colors.text,
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 16,
     },
     weightDiff: {
       fontSize: 14,
       fontWeight: '600',
       marginBottom: 4,
     },
-    weightUp: {
-      color: colors.error,
-    },
     weightDown: {
       color: colors.success,
+    },
+    weightUp: {
+      color: colors.error,
     },
   });

@@ -186,12 +186,15 @@ export function NextShotWidget({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 24,
+  button: {
+    marginTop: 8,
   },
   card: {
-    padding: 24,
     alignItems: 'center',
+    padding: 24,
+  },
+  container: {
+    marginBottom: 24,
   },
   content: {
     alignItems: 'center',
@@ -201,17 +204,14 @@ const styles = StyleSheet.create({
     fontSize: 36,
     marginBottom: 4,
   },
+  widgetSubtitle: {
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
   widgetTitle: {
     fontSize: 28,
     fontWeight: '700',
     textAlign: 'center',
-  },
-  widgetSubtitle: {
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-  button: {
-    marginTop: 8,
   },
 });

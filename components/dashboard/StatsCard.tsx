@@ -25,30 +25,30 @@ export function StatsCard({ icon, label, value, subtitle }: StatsCardProps) {
 const getStyles = (colors: any) =>
   StyleSheet.create({
     card: {
-      flex: 1,
+      alignItems: 'center',
       backgroundColor: colors.card,
       borderRadius: 16,
-      padding: 16,
-      alignItems: 'center',
+      flex: 1,
       minHeight: 120,
+      padding: 16,
     },
     icon: {
       fontSize: 32,
       marginBottom: 8,
     },
     label: {
-      fontSize: 12,
       color: colors.textMuted,
+      fontSize: 12,
       marginBottom: 4,
     },
+    subtitle: {
+      color: colors.textSecondary,
+      fontSize: 10,
+      marginTop: 4,
+    },
     value: {
+      color: colors.text,
       fontSize: 24,
       fontWeight: 'bold',
-      color: colors.text,
-    },
-    subtitle: {
-      fontSize: 10,
-      color: colors.textSecondary,
-      marginTop: 4,
     },
   });

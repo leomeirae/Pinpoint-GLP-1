@@ -354,242 +354,242 @@ export const PersonalitySelector: React.FC<PersonalitySelectorProps> = ({
 };
 
 const styles = StyleSheet.create({
+  actions: {
+    gap: 12,
+    marginTop: 8,
+  },
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
   },
   contentContainer: {
     padding: 20,
     paddingBottom: 40,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+  exampleBox: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
   },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: '#666',
+  exampleLabel: {
+    color: '#999',
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  exampleText: {
+    color: '#333',
+    fontSize: 14,
+    fontStyle: 'italic',
   },
   header: {
     marginBottom: 24,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 22,
-  },
-  previewBox: {
-    backgroundColor: '#f9fafb',
-    borderWidth: 2,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 32,
-  },
-  previewLabel: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
-  },
-  previewMessage: {
-    fontSize: 16,
-    color: '#1a1a1a',
-    lineHeight: 22,
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1a1a1a',
-    marginBottom: 4,
-  },
-  sectionDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
-  },
-  styleGrid: {
-    gap: 12,
-  },
-  styleCard: {
-    padding: 20,
+  infoBox: {
+    backgroundColor: '#f0f9ff',
     borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    borderWidth: 2,
-    borderColor: 'transparent',
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+    padding: 16,
   },
-  styleTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
+  infoIcon: {
+    fontSize: 20,
   },
-  styleDescription: {
+  infoText: {
+    color: '#1e40af',
+    flex: 1,
     fontSize: 14,
+    lineHeight: 20,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  loadingText: {
     color: '#666',
-    marginBottom: 12,
+    fontSize: 16,
+    marginTop: 12,
   },
-  exampleBox: {
-    backgroundColor: '#fff',
-    padding: 12,
-    borderRadius: 8,
-  },
-  exampleLabel: {
-    fontSize: 12,
-    color: '#999',
-    marginBottom: 4,
-  },
-  exampleText: {
+  motivationDescription: {
+    color: '#666',
     fontSize: 14,
-    color: '#333',
-    fontStyle: 'italic',
   },
   motivationGrid: {
     gap: 12,
   },
-  motivationOption: {
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
   motivationLabel: {
+    color: '#333',
     fontSize: 15,
     fontWeight: '600',
-    color: '#333',
     marginBottom: 4,
   },
-  motivationDescription: {
-    fontSize: 14,
-    color: '#666',
-  },
-  sliderContainer: {
-    backgroundColor: '#f9fafb',
-    padding: 20,
-    borderRadius: 12,
-  },
-  sliderLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  sliderLabel: {
-    fontSize: 13,
-    color: '#666',
-  },
-  sliderValue: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
-  toneGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  toneOption: {
-    width: '48%',
-    padding: 16,
-    borderRadius: 12,
+  motivationOption: {
     backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    borderWidth: 2,
     borderColor: 'transparent',
-  },
-  toneIcon: {
-    fontSize: 32,
-    marginBottom: 8,
-  },
-  toneLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-  },
-  toneDescription: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
-  },
-  switchRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#f9fafb',
-    padding: 20,
     borderRadius: 12,
+    borderWidth: 2,
+    padding: 16,
   },
-  switchLabel: {
-    flex: 1,
-    marginRight: 16,
+  previewBox: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 16,
+    borderWidth: 2,
+    marginBottom: 32,
+    padding: 20,
   },
-  switchTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-  },
-  switchDescription: {
-    fontSize: 14,
+  previewLabel: {
     color: '#666',
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    marginBottom: 8,
+    textTransform: 'uppercase',
   },
-  actions: {
-    gap: 12,
-    marginTop: 8,
+  previewMessage: {
+    color: '#1a1a1a',
+    fontSize: 16,
+    lineHeight: 22,
   },
   saveButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
     alignItems: 'center',
+    borderRadius: 12,
     justifyContent: 'center',
     minHeight: 52,
+    paddingVertical: 16,
   },
   saveButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
+  section: {
+    marginBottom: 32,
+  },
+  sectionDescription: {
+    color: '#666',
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    color: '#1a1a1a',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
   skipButton: {
-    paddingVertical: 12,
     alignItems: 'center',
+    paddingVertical: 12,
   },
   skipButtonText: {
     fontSize: 15,
     fontWeight: '500',
   },
-  infoBox: {
-    flexDirection: 'row',
-    backgroundColor: '#f0f9ff',
-    padding: 16,
+  slider: {
+    height: 40,
+    width: '100%',
+  },
+  sliderContainer: {
+    backgroundColor: '#f9fafb',
     borderRadius: 12,
-    marginTop: 24,
+    padding: 20,
+  },
+  sliderLabel: {
+    color: '#666',
+    fontSize: 13,
+  },
+  sliderLabels: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  sliderValue: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  styleCard: {
+    backgroundColor: '#f5f5f5',
+    borderColor: 'transparent',
+    borderRadius: 12,
+    borderWidth: 2,
+    padding: 20,
+  },
+  styleDescription: {
+    color: '#666',
+    fontSize: 14,
+    marginBottom: 12,
+  },
+  styleGrid: {
     gap: 12,
   },
-  infoIcon: {
-    fontSize: 20,
+  styleTitle: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
   },
-  infoText: {
-    flex: 1,
+  subtitle: {
+    color: '#666',
+    fontSize: 16,
+    lineHeight: 22,
+  },
+  switchDescription: {
+    color: '#666',
     fontSize: 14,
-    color: '#1e40af',
-    lineHeight: 20,
+  },
+  switchLabel: {
+    flex: 1,
+    marginRight: 16,
+  },
+  switchRow: {
+    alignItems: 'center',
+    backgroundColor: '#f9fafb',
+    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  switchTitle: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  title: {
+    color: '#1a1a1a',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  toneDescription: {
+    color: '#666',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  toneGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  toneIcon: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  toneLabel: {
+    color: '#333',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  toneOption: {
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderColor: 'transparent',
+    borderRadius: 12,
+    borderWidth: 2,
+    padding: 16,
+    width: '48%',
   },
 });

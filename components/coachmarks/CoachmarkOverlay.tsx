@@ -60,9 +60,7 @@ export function CoachmarkOverlay() {
           </TouchableOpacity>
 
           {/* Title */}
-          <Text style={[styles.title, { color: colors.text }]}>
-            {currentCoachmark.title}
-          </Text>
+          <Text style={[styles.title, { color: colors.text }]}>{currentCoachmark.title}</Text>
 
           {/* Description */}
           <Text style={[styles.description, { color: colors.textSecondary }]}>
@@ -99,46 +97,53 @@ export function CoachmarkOverlay() {
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-    justifyContent: 'center',
+  actions: {
     alignItems: 'center',
-    padding: ShotsyDesignTokens.spacing.xl,
-  },
-  contentContainer: {
-    width: '100%',
-    maxWidth: 400,
-    borderRadius: ShotsyDesignTokens.borderRadius.lg,
-    padding: ShotsyDesignTokens.spacing.xl,
-    ...ShotsyDesignTokens.shadows.card,
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.md,
+    justifyContent: 'space-between',
   },
   closeButton: {
-    position: 'absolute',
-    top: ShotsyDesignTokens.spacing.md,
-    right: ShotsyDesignTokens.spacing.md,
-    width: 32,
+    alignItems: 'center',
     height: 32,
     justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
+    right: ShotsyDesignTokens.spacing.md,
+    top: ShotsyDesignTokens.spacing.md,
+    width: 32,
     zIndex: 1,
   },
-  title: {
-    ...ShotsyDesignTokens.typography.h3,
-    fontWeight: '600',
-    marginBottom: ShotsyDesignTokens.spacing.md,
-    paddingRight: ShotsyDesignTokens.spacing.xl,
+  contentContainer: {
+    borderRadius: ShotsyDesignTokens.borderRadius.lg,
+    maxWidth: 400,
+    padding: ShotsyDesignTokens.spacing.xl,
+    width: '100%',
+    ...ShotsyDesignTokens.shadows.card,
   },
   description: {
     ...ShotsyDesignTokens.typography.body,
     lineHeight: 22,
     marginBottom: ShotsyDesignTokens.spacing.xl,
   },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  nextButton: {
     alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.md,
+    borderRadius: ShotsyDesignTokens.borderRadius.md,
+    flexDirection: 'row',
+    gap: ShotsyDesignTokens.spacing.sm,
+    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
+    paddingVertical: ShotsyDesignTokens.spacing.md,
+  },
+  nextButtonText: {
+    ...ShotsyDesignTokens.typography.label,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  overlay: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    flex: 1,
+    justifyContent: 'center',
+    padding: ShotsyDesignTokens.spacing.xl,
   },
   skipButton: {
     padding: ShotsyDesignTokens.spacing.md,
@@ -147,17 +152,10 @@ const styles = StyleSheet.create({
     ...ShotsyDesignTokens.typography.label,
     fontWeight: '600',
   },
-  nextButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: ShotsyDesignTokens.spacing.sm,
-    paddingHorizontal: ShotsyDesignTokens.spacing.lg,
-    paddingVertical: ShotsyDesignTokens.spacing.md,
-    borderRadius: ShotsyDesignTokens.borderRadius.md,
-  },
-  nextButtonText: {
-    ...ShotsyDesignTokens.typography.label,
-    color: '#FFFFFF',
+  title: {
+    ...ShotsyDesignTokens.typography.h3,
     fontWeight: '600',
+    marginBottom: ShotsyDesignTokens.spacing.md,
+    paddingRight: ShotsyDesignTokens.spacing.xl,
   },
 });
